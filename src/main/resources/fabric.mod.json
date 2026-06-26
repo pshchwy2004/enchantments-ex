@@ -3,9 +3,9 @@
 	"id": "enchantments-ex",
 	"version": "${version}",
 	"name": "Enchantments EX",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Enchant your enchantments.",
 	"authors": [
-		"Me!"
+		"pshchwy2004"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -20,6 +20,9 @@
 		],
 		"client": [
 			"com.pshchwy.enex.client.EnchantmentsEXClient"
+		],
+		"fabric-datagen": [
+			"com.pshchwy.enex.EnchantmentsEXDataGenerator"
 		]
 	},
 	"mixins": [
