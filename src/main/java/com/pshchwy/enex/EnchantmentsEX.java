@@ -1,5 +1,6 @@
 package com.pshchwy.enex;
 
+import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +21,7 @@ public class EnchantmentsEX implements ModInitializer {
 	public void onInitialize() {
 		// Initializes the mod.
 		LOGGER.info("Initializing " + MOD_ID); // This goes first.
-
+		EXEnchantmentEffects.registerEnchantmentEffects();
 		LOGGER.info("Successfully initialized " + MOD_ID); // This goes last.
 	}
 
