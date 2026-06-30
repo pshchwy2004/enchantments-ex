@@ -36,9 +36,9 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         // enchantment max level
                         2,
                         // base cost for level 1 of the enchantment, and min levels required for something higher
-                        Enchantment.dynamicCost(1, 10),
+                        Enchantment.dynamicCost(5, 20),
                         // same fields as above but for max cost
-                        Enchantment.dynamicCost(1, 15),
+                        Enchantment.dynamicCost(55, 20),
                         // anvil cost
                         5,
                         // valid slots
