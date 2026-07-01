@@ -3,6 +3,7 @@ package com.pshchwy.enex.enchantment;
 import com.mojang.serialization.MapCodec;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.effect.KnockbackEXEffect;
+import com.pshchwy.enex.enchantment.effect.SharpnessEXEffect;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -14,6 +15,9 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> KNOCKBACK_EX = of("knockback_ex");
     public static MapCodec<KnockbackEXEffect> KNOCKBACK_EX_EFFECT = register("knockback_ex_effect", KnockbackEXEffect.CODEC);
+
+    public static final ResourceKey<Enchantment> SHARPNESS_EX = of("sharpness_ex");
+    public static MapCodec<SharpnessEXEffect> SHARPNESS_EX_EFFECT = register("sharpness_ex_effect", SharpnessEXEffect.CODEC);
 
     private static ResourceKey<Enchantment> of(String path) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path);

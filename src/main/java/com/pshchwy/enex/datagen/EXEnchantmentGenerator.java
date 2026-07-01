@@ -3,6 +3,7 @@ package com.pshchwy.enex.datagen;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import com.pshchwy.enex.enchantment.effect.KnockbackEXEffect;
+import com.pshchwy.enex.enchantment.effect.SharpnessEXEffect;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
@@ -30,7 +31,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         // register Knockback EX
         register(entries, EXEnchantmentEffects.KNOCKBACK_EX, Enchantment.enchantment(
                 Enchantment.definition(
-                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
+                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.SWORD_ENCHANTABLE),
                         // weight of showing up in enchantment table
                         1,
                         // enchantment max level
@@ -42,7 +43,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         // anvil cost
                         5,
                         // valid slots
-                        EquipmentSlotGroup.HAND
+                        EquipmentSlotGroup.MAINHAND
                 )
             ).withEffect(
                 EnchantmentEffectComponents.POST_ATTACK,
@@ -53,6 +54,30 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.KNOCKBACK,
                         new AddValue(LevelBasedValue.perLevel(1.0f, 1.0f))
                 )
+        );
+        // register Sharpness EX
+        register(entries, EXEnchantmentEffects.SHARPNESS_EX, Enchantment.enchantment(
+                        Enchantment.definition(
+                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                // weight of showing up in enchantment table
+                                1,
+                                // enchantment max level
+                                2,
+                                // base cost for level 1 of the enchantment, and min levels required for something higher
+                                Enchantment.dynamicCost(5, 20),
+                                // same fields as above but for max cost
+                                Enchantment.dynamicCost(55, 20),
+                                // anvil cost
+                                5,
+                                // valid slots
+                                EquipmentSlotGroup.MAINHAND
+                        )
+                ).withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        new SharpnessEXEffect(LevelBasedValue.perLevel(0.4f, 0.2f))
+                ) // add Sharpness attributes
         );
     }
 
