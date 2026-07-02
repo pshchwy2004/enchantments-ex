@@ -1,0 +1,42 @@
+{
+  "anvil_cost": 5,
+  "description": {
+    "translate": "enchantment.enchantments-ex.aqua_affinity_ex"
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": {
+          "type": "minecraft:linear",
+          "base": 4.0,
+          "per_level_above_first": 4.0
+        },
+        "attribute": "minecraft:player.submerged_mining_speed",
+        "id": "minecraft:enchantment.aqua_affinity_ex",
+        "operation": "add_multiplied_total"
+      }
+    ],
+    "minecraft:tick": [
+      {
+        "effect": {
+          "type": "enchantments-ex:aqua_affinity_ex_effect",
+          "amount": 0.0
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 25,
+    "per_level_above_first": 8
+  },
+  "max_level": 1,
+  "min_cost": {
+    "base": 5,
+    "per_level_above_first": 8
+  },
+  "slots": [
+    "head"
+  ],
+  "supported_items": "#minecraft:enchantable/head_armor",
+  "weight": 1
+}

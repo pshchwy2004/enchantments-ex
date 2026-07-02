@@ -2,6 +2,7 @@ package com.pshchwy.enex.enchantment;
 
 import com.mojang.serialization.MapCodec;
 import com.pshchwy.enex.EnchantmentsEX;
+import com.pshchwy.enex.enchantment.effect.AquaAffinityEXEffect;
 import com.pshchwy.enex.enchantment.effect.KnockbackEXEffect;
 import com.pshchwy.enex.enchantment.effect.SharpnessEXEffect;
 import com.pshchwy.enex.enchantment.effect.SmiteEXEffect;
@@ -24,6 +25,7 @@ public class EXEnchantmentEffects {
     public static MapCodec<SmiteEXEffect> SMITE_EX_EFFECT = register("smite_ex_effect", SmiteEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> AQUA_AFFINITY_EX = of("aqua_affinity_ex");
+    public static MapCodec<AquaAffinityEXEffect> AQUA_AFFINITY_EX_EFFECT = register("aqua_affinity_ex_effect", AquaAffinityEXEffect.CODEC);
 
     private static ResourceKey<Enchantment> of(String path) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path);

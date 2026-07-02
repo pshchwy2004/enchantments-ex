@@ -10,7 +10,7 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 
 | Enchantment              | New Function                                                                            |
 |--------------------------|-----------------------------------------------------------------------------------------|
-| Aqua Affinity EX         | TBD                                                                                     |
+| Aqua Affinity EX         | Immune to Mining Fatigue.                                                               |
 | Bane of Arthropods EX    | TBD                                                                                     |
 | Blast Protection EX      | TBD                                                                                     |
 | Breach EX                | TBD                                                                                     |

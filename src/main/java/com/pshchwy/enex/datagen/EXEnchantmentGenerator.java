@@ -2,6 +2,7 @@ package com.pshchwy.enex.datagen;
 
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
+import com.pshchwy.enex.enchantment.effect.AquaAffinityEXEffect;
 import com.pshchwy.enex.enchantment.effect.KnockbackEXEffect;
 import com.pshchwy.enex.enchantment.effect.SharpnessEXEffect;
 import com.pshchwy.enex.enchantment.effect.SmiteEXEffect;
@@ -10,6 +11,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.EntityTypePredicate;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -17,12 +19,17 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentTarget;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.AddValue;
+import net.minecraft.world.item.enchantment.effects.AllOf;
 import net.minecraft.world.item.enchantment.effects.EnchantmentAttributeEffect;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -149,7 +156,21 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 // valid slots
                                 EquipmentSlotGroup.HEAD
                         )
-                ) // add vanilla Aqua Affinity Attribute Effect
+                ).withEffect( // Vanilla Aqua Affinity EX
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                // id
+                                ResourceLocation.withDefaultNamespace("enchantment.aqua_affinity_ex"),
+                                // attribute
+                                Attributes.SUBMERGED_MINING_SPEED,
+                                // Multiplier
+                                LevelBasedValue.perLevel(4.0f),
+                                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                        )
+                ).withEffect(
+                        EnchantmentEffectComponents.TICK,
+                        new AquaAffinityEXEffect(LevelBasedValue.constant(0.0f))
+                )
         );
     }
 
