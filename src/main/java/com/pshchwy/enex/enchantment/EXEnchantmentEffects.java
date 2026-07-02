@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.effect.KnockbackEXEffect;
 import com.pshchwy.enex.enchantment.effect.SharpnessEXEffect;
+import com.pshchwy.enex.enchantment.effect.SmiteEXEffect;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -18,6 +19,9 @@ public class EXEnchantmentEffects {
 
     public static final ResourceKey<Enchantment> SHARPNESS_EX = of("sharpness_ex");
     public static MapCodec<SharpnessEXEffect> SHARPNESS_EX_EFFECT = register("sharpness_ex_effect", SharpnessEXEffect.CODEC);
+
+    public static final ResourceKey<Enchantment> SMITE_EX = of("smite_ex");
+    public static MapCodec<SmiteEXEffect> SMITE_EX_EFFECT = register("smite_ex_effect", SmiteEXEffect.CODEC);
 
     private static ResourceKey<Enchantment> of(String path) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path);
