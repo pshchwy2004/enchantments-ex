@@ -1,17 +1,17 @@
 {
   "anvil_cost": 5,
   "description": {
-    "translate": "enchantment.enchantments-ex.knockback_ex"
+    "translate": "enchantment.enchantments-ex.sharpness_ex"
   },
   "effects": {
-    "minecraft:knockback": [
+    "minecraft:damage": [
       {
         "effect": {
           "type": "minecraft:add",
           "value": {
             "type": "minecraft:linear",
             "base": 1.0,
-            "per_level_above_first": 1.0
+            "per_level_above_first": 0.5
           }
         }
       }
@@ -20,7 +20,7 @@
       {
         "affected": "victim",
         "effect": {
-          "type": "enchantments-ex:knockback_ex_effect",
+          "type": "enchantments-ex:sharpness_ex_effect",
           "amount": {
             "type": "minecraft:linear",
             "base": 0.4,
@@ -32,13 +32,13 @@
     ]
   },
   "max_cost": {
-    "base": 55,
-    "per_level_above_first": 20
+    "base": 21,
+    "per_level_above_first": 11
   },
-  "max_level": 2,
+  "max_level": 5,
   "min_cost": {
-    "base": 5,
-    "per_level_above_first": 20
+    "base": 1,
+    "per_level_above_first": 11
   },
   "slots": [
     "mainhand"

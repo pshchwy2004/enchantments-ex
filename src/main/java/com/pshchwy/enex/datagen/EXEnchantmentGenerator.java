@@ -62,11 +62,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
-                                2,
+                                5,
                                 // base cost for level 1 of the enchantment, and min levels required for something higher
-                                Enchantment.dynamicCost(5, 20),
+                                Enchantment.dynamicCost(1, 11),
                                 // same fields as above but for max cost
-                                Enchantment.dynamicCost(55, 20),
+                                Enchantment.dynamicCost(21, 11),
                                 // anvil cost
                                 5,
                                 // valid slots
@@ -77,7 +77,10 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
                         new SharpnessEXEffect(LevelBasedValue.perLevel(0.4f, 0.2f))
-                ) // add Sharpness attributes
+                ).withEffect(
+                        EnchantmentEffectComponents.DAMAGE,
+                        new AddValue(LevelBasedValue.perLevel(1.0f, 0.5f))
+                )
         );
     }
 

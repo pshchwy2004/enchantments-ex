@@ -27,7 +27,7 @@ public record SharpnessEXEffect(LevelBasedValue amount) implements EnchantmentEn
         if (target instanceof LivingEntity livingTarget) {
             // random chance to apply Wither 2 for 10s
             RandomSource random = world.getRandom();
-            if (random.nextDouble() < 0.25) { // TODO actually test this
+            if (random.nextFloat() < 0.25f) { // TODO actually test this; meant to have a 25% Wither II chance per hit
                 livingTarget.addEffect(
                         new MobEffectInstance(
                                 MobEffects.WITHER,
