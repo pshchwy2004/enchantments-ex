@@ -10,9 +10,11 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.EntityTypePredicate;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -21,6 +23,7 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentTarget;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.AddValue;
+import net.minecraft.world.item.enchantment.effects.EnchantmentAttributeEffect;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
@@ -126,6 +129,27 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 )
                 )
                 )
+        );
+
+        // register Aqua Affinity EX
+        register(entries, EXEnchantmentEffects.AQUA_AFFINITY_EX, Enchantment.enchantment(
+                        Enchantment.definition(
+                                // which items can be enchanted
+                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
+                                // weight of showing up in enchantment table
+                                1,
+                                // enchantment max level
+                                1,
+                                // base cost for level 1 of the enchantment, and min levels required for something higher
+                                Enchantment.dynamicCost(5, 8),
+                                // same fields as above but for max cost
+                                Enchantment.dynamicCost(25, 8),
+                                // anvil cost
+                                5,
+                                // valid slots
+                                EquipmentSlotGroup.HEAD
+                        )
+                ) // add vanilla Aqua Affinity Attribute Effect
         );
     }
 

@@ -23,6 +23,8 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> SMITE_EX = of("smite_ex");
     public static MapCodec<SmiteEXEffect> SMITE_EX_EFFECT = register("smite_ex_effect", SmiteEXEffect.CODEC);
 
+    public static final ResourceKey<Enchantment> AQUA_AFFINITY_EX = of("aqua_affinity_ex");
+
     private static ResourceKey<Enchantment> of(String path) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path);
         return ResourceKey.create(Registries.ENCHANTMENT, id);
