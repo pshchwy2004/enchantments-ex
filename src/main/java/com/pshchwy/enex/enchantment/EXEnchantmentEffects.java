@@ -2,10 +2,7 @@ package com.pshchwy.enex.enchantment;
 
 import com.mojang.serialization.MapCodec;
 import com.pshchwy.enex.EnchantmentsEX;
-import com.pshchwy.enex.enchantment.effect.AquaAffinityEXEffect;
-import com.pshchwy.enex.enchantment.effect.KnockbackEXEffect;
-import com.pshchwy.enex.enchantment.effect.SharpnessEXEffect;
-import com.pshchwy.enex.enchantment.effect.SmiteEXEffect;
+import com.pshchwy.enex.enchantment.effect.*;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -26,6 +23,14 @@ public class EXEnchantmentEffects {
 
     public static final ResourceKey<Enchantment> AQUA_AFFINITY_EX = of("aqua_affinity_ex");
     public static MapCodec<AquaAffinityEXEffect> AQUA_AFFINITY_EX_EFFECT = register("aqua_affinity_ex_effect", AquaAffinityEXEffect.CODEC);
+
+    public static final ResourceKey<Enchantment> BANE_OF_ARTHROPODS_EX = of("bane_of_arthropods_ex");
+    public static MapCodec<BaneOfArthropodsEXEffect> BANE_OF_ARTHROPODS_EX_EFFECT = register("bane_of_arthropods_ex_effect", BaneOfArthropodsEXEffect.CODEC);
+
+    public static final ResourceKey<Enchantment> BLAST_PROTECTION_EX = of("blast_protection_ex");
+    public static MapCodec<BlastProtectionEXEffect> BLAST_PROTECTION_EX_EFFECT = register("blast_protection_ex_effect", BlastProtectionEXEffect.CODEC);
+
+    public static final ResourceKey<Enchantment> BREACH_EX = of("breach_ex");
 
     private static ResourceKey<Enchantment> of(String path) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path);

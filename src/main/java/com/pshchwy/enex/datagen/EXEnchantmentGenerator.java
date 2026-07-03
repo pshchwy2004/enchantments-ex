@@ -2,23 +2,24 @@ package com.pshchwy.enex.datagen;
 
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
-import com.pshchwy.enex.enchantment.effect.AquaAffinityEXEffect;
-import com.pshchwy.enex.enchantment.effect.KnockbackEXEffect;
-import com.pshchwy.enex.enchantment.effect.SharpnessEXEffect;
-import com.pshchwy.enex.enchantment.effect.SmiteEXEffect;
+import com.pshchwy.enex.enchantment.effect.*;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
+import net.minecraft.advancements.critereon.DamageSourcePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.EntityTypePredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -30,8 +31,10 @@ import net.minecraft.world.item.enchantment.EnchantmentTarget;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.AddValue;
 import net.minecraft.world.item.enchantment.effects.AllOf;
+import net.minecraft.world.item.enchantment.effects.ApplyMobEffect;
 import net.minecraft.world.item.enchantment.effects.EnchantmentAttributeEffect;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import org.jetbrains.annotations.NotNull;
@@ -97,7 +100,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 ).withEffect(
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(1.0f, 0.5f))
-                )
+                ).exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
         );
         // register Smite EX
         register(entries, EXEnchantmentEffects.SMITE_EX, Enchantment.enchantment(
@@ -135,7 +138,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         )
                                 )
                 )
-                )
+                ).exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
         );
 
         // register Aqua Affinity EX
@@ -170,6 +173,121 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 ).withEffect(
                         EnchantmentEffectComponents.TICK,
                         new AquaAffinityEXEffect(LevelBasedValue.constant(0.0f))
+                )
+        );
+
+        // register Bane of Arthropods EX
+        register(entries, EXEnchantmentEffects.BANE_OF_ARTHROPODS_EX, Enchantment.enchantment(
+                        Enchantment.definition(
+                                // which items can be enchanted
+                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
+                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                // weight of showing up in enchantment table
+                                1,
+                                // enchantment max level
+                                5,
+                                // base cost for level 1 of the enchantment, and min levels required for something higher
+                                Enchantment.dynamicCost(5, 8),
+                                // same fields as above but for max cost
+                                Enchantment.dynamicCost(25, 8),
+                                // anvil cost
+                                5,
+                                // valid slots
+                                EquipmentSlotGroup.MAINHAND
+                        )
+                ).withEffect(
+                        EnchantmentEffectComponents.DAMAGE,
+                        new AddValue(LevelBasedValue.perLevel(2.5f, 2.5f)),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.THIS,
+                                EntityPredicate.Builder.entity()
+                                        .entityType(
+                                                EntityTypePredicate.of(
+                                                        registries.lookupOrThrow(Registries.ENTITY_TYPE)
+                                                                .getOrThrow(EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS).key()
+                                                )
+                                        )
+                        )
+                ).withEffect(
+                        EnchantmentEffectComponents.TICK,
+                        new BaneOfArthropodsEXEffect(LevelBasedValue.constant(0.0f))
+                ).withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        new ApplyMobEffect(
+                                HolderSet.<MobEffect>direct(MobEffects.MOVEMENT_SLOWDOWN),
+                                LevelBasedValue.constant(1.5F),
+                                LevelBasedValue.perLevel(1.5F, 0.5F),
+                                LevelBasedValue.constant(3.0F),
+                                LevelBasedValue.constant(3.0F)
+                        ),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                .entityType(EntityTypePredicate.of(EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS))
+                                )
+                                .and(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)))
+                ).exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+        );
+
+        // register Blast Protection EX
+        register(entries, EXEnchantmentEffects.BLAST_PROTECTION_EX, Enchantment.enchantment(
+                        Enchantment.definition(
+                                // which items can be enchanted
+                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
+                                // weight of showing up in enchantment table
+                                1,
+                                // enchantment max level
+                                4,
+                                // base cost for level 1 of the enchantment, and min levels required for something higher
+                                Enchantment.dynamicCost(5, 8),
+                                // same fields as above but for max cost
+                                Enchantment.dynamicCost(13, 8),
+                                // anvil cost
+                                5,
+                                // valid slots
+                                EquipmentSlotGroup.ARMOR
+                        )
+                ).withEffect(
+                        EnchantmentEffectComponents.TICK,
+                        new BlastProtectionEXEffect(LevelBasedValue.perLevel(1.0f))
+                ).exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE))
+        );
+
+        // register Breach EX
+        register(entries, EXEnchantmentEffects.BREACH_EX, Enchantment.enchantment(
+                        Enchantment.definition(
+                                // which items can be enchanted
+                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.MACE_ENCHANTABLE),
+                                // weight of showing up in enchantment table
+                                1,
+                                // enchantment max level
+                                4,
+                                // base cost for level 1 of the enchantment, and min levels required for something higher
+                                Enchantment.dynamicCost(15, 9),
+                                // same fields as above but for max cost
+                                Enchantment.dynamicCost(65, 9),
+                                // anvil cost
+                                5,
+                                // valid slots
+                                EquipmentSlotGroup.MAINHAND
+                        )
+                ).withEffect(EnchantmentEffectComponents.ARMOR_EFFECTIVENESS, new AddValue(LevelBasedValue.perLevel(-0.15F))
+                ).exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE)
+                ).withEffect( // BIG damage to mobs with large health
+                        EnchantmentEffectComponents.DAMAGE,
+                        new AddValue(LevelBasedValue.perLevel(10.0f, 5.0f)),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.THIS,
+                                EntityPredicate.Builder.entity()
+                                        .entityType(
+                                                EntityTypePredicate.of(
+                                                        registries.lookupOrThrow(Registries.ENTITY_TYPE)
+                                                                .getOrThrow(EXMobTagProvider.BREACH_EX_VULNERABLE).key()
+                                                )
+                                        )
+                        )
                 )
         );
     }
