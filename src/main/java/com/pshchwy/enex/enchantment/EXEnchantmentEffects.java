@@ -32,6 +32,8 @@ public class EXEnchantmentEffects {
 
     public static final ResourceKey<Enchantment> BREACH_EX = of("breach_ex");
 
+    public static final ResourceKey<Enchantment> CHANNELING_EX = of("channeling_ex");
+
     private static ResourceKey<Enchantment> of(String path) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path);
         return ResourceKey.create(Registries.ENCHANTMENT, id);

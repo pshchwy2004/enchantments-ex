@@ -14,7 +14,7 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Bane of Arthropods EX    | Immune to Poison. Cobwebs break on contact while holding weapon.                            |
 | Blast Protection EX      | Nearby Creepers gain Slowness according to the enchantment level.                           |
 | Breach EX                | Deals extra damage per level to Ravagers, Ender Dragons, Withers, Iron Golems, and Wardens. |
-| Channeling EX            | TBD                                                                                         |
+| Channeling EX            | No longer needs thunderstorms to summon lightning.                                          |
 | Density EX               | TBD                                                                                         |
 | Depth Strider EX         | TBD                                                                                         |
 | Efficiency EX            | TBD                                                                                         |

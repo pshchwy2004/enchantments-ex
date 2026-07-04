@@ -16,11 +16,14 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -29,14 +32,10 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentTarget;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
-import net.minecraft.world.item.enchantment.effects.AddValue;
-import net.minecraft.world.item.enchantment.effects.AllOf;
-import net.minecraft.world.item.enchantment.effects.ApplyMobEffect;
-import net.minecraft.world.item.enchantment.effects.EnchantmentAttributeEffect;
+import net.minecraft.world.item.enchantment.effects.*;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
@@ -289,6 +288,58 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         )
                         )
                 )
+        );
+
+        // register Channeling EX
+        register(entries, EXEnchantmentEffects.CHANNELING_EX, Enchantment.enchantment(
+                        Enchantment.definition(
+                                // which items can be enchanted
+                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
+                                // weight of showing up in enchantment table
+                                1,
+                                // enchantment max level
+                                1,
+                                // base cost for level 1 of the enchantment, and min levels required for something higher
+                                Enchantment.constantCost(25),
+                                // same fields as above but for max cost
+                                Enchantment.constantCost(50),
+                                // anvil cost
+                                5,
+                                // valid slots
+                                EquipmentSlotGroup.MAINHAND
+                        )
+                ).withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        AllOf.entityEffects(
+                                new SummonEntityEffect(HolderSet.<EntityType<?>>direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder()), false),
+                                new PlaySoundEffect(SoundEvents.TRIDENT_THUNDER, ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
+                        ),
+                        AllOfCondition.allOf(
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                .located(net.minecraft.advancements.critereon.LocationPredicate.Builder.location().setCanSeeSky(true))
+                                ),
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(EntityType.TRIDENT)
+                                )
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.HIT_BLOCK,
+                        AllOf.entityEffects(
+                                new SummonEntityEffect(HolderSet.<EntityType<?>>direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder()), false),
+                                new PlaySoundEffect(SoundEvents.TRIDENT_THUNDER, ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
+                        ),
+                        AllOfCondition.allOf(
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(EntityType.TRIDENT)
+                                ),
+                                LocationCheck.checkLocation(net.minecraft.advancements.critereon.LocationPredicate.Builder.location().setCanSeeSky(true))
+                        )
+            )
         );
     }
 
