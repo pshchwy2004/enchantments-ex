@@ -341,6 +341,65 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
             )
         );
+
+        // register Density EX
+        register(entries, EXEnchantmentEffects.DENSITY_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.MACE_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        5,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(5, 8),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(25, 8),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                ).exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+                .withEffect(EnchantmentEffectComponents.SMASH_DAMAGE_PER_FALLEN_BLOCK, new AddValue(LevelBasedValue.perLevel(0.5F)))
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        new DensityEXEffect(LevelBasedValue.perLevel(0.4f, 0.2f))
+                )
+        );
+
+        // register Depth Strider EX
+        register(entries, EXEnchantmentEffects.DEPTH_STRIDER_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(10, 10),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(25, 10),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.FEET
+                                )
+                        )
+                        .exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.BOOTS_EXCLUSIVE))
+                        .withEffect(
+                                EnchantmentEffectComponents.ATTRIBUTES,
+                                new EnchantmentAttributeEffect(
+                                        ResourceLocation.withDefaultNamespace("enchantment.depth_strider_ex"),
+                                        Attributes.WATER_MOVEMENT_EFFICIENCY,
+                                        LevelBasedValue.perLevel(0.33333334F),
+                                        AttributeModifier.Operation.ADD_VALUE
+                                )
+                        )
+        );
     }
 
     private void register(Entries entries, ResourceKey<Enchantment> key, Enchantment.Builder builder, ResourceCondition... resourceConditions) {

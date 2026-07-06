@@ -8,49 +8,49 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 
 ## Enchantment Function Documentation
 
-| Enchantment              | New Function                                                                                |
-|--------------------------|---------------------------------------------------------------------------------------------|
-| Aqua Affinity EX         | Immune to Mining Fatigue.                                                                   |
-| Bane of Arthropods EX    | Immune to Poison. Cobwebs break on contact while holding weapon.                            |
-| Blast Protection EX      | Nearby Creepers gain Slowness according to the enchantment level.                           |
-| Breach EX                | Deals extra damage per level to Ravagers, Ender Dragons, Withers, Iron Golems, and Wardens. |
-| Channeling EX            | No longer needs thunderstorms to summon lightning.                                          |
-| Density EX               | TBD                                                                                         |
-| Depth Strider EX         | TBD                                                                                         |
-| Efficiency EX            | TBD                                                                                         |
-| Feather Falling EX       | TBD                                                                                         |
-| Fire Aspect EX           | TBD                                                                                         |
-| Fire Protection EX       | TBD                                                                                         |
-| Flame EX                 | TBD                                                                                         |
-| Fortune EX               | TBD                                                                                         |
-| Frost Walker EX          | TBD                                                                                         |
-| Impaling EX              | TBD                                                                                         |
-| Infinity EX              | TBD                                                                                         |
-| Knockback EX             | Knocks enemies upward. Higher levels will create higher upward velocity per hit.            |
-| Looting EX               | TBD                                                                                         |
-| Loyalty EX               | TBD                                                                                         |
-| Luck of the Sea EX       | TBD                                                                                         |
-| Lunge EX                 | TBD                                                                                         |
-| Lure EX                  | TBD                                                                                         |
-| Mending EX               | TBD                                                                                         |
-| Multishot EX             | TBD                                                                                         |
-| Piercing EX              | TBD                                                                                         |
-| Power EX                 | TBD                                                                                         |
-| Projectile Protection EX | TBD                                                                                         |
-| Protection EX            | TBD                                                                                         |
-| Punch EX                 | TBD                                                                                         |
-| Quick Charge EX          | TBD                                                                                         |
-| Respiration EX           | TBD                                                                                         |
-| Riptide EX               | TBD                                                                                         |
-| Sharpness EX             | Has a 25% chance of applying Wither II to targets.                                          |
-| Silk Touch EX            | TBD                                                                                         |
-| Smite EX                 | Applies Weakness V to all undead mobs and Wardens, and Weakness I to all other targets.     |
-| Soul Speed EX            | TBD                                                                                         |
-| Sweeping Edge EX         | TBD                                                                                         |
-| Swift Sneak EX           | TBD                                                                                         |
-| Thorns EX                | TBD                                                                                         |
-| Unbreaking EX            | TBD                                                                                         |
-| Wind Burst EX            | TBD                                                                                         |
+| Enchantment              | New Function                                                                                        |
+|--------------------------|-----------------------------------------------------------------------------------------------------|
+| Aqua Affinity EX         | Immune to Mining Fatigue.                                                                           |
+| Bane of Arthropods EX    | Immune to Poison. Cobwebs break on contact while holding weapon.                                    |
+| Blast Protection EX      | Nearby Creepers gain Slowness according to the enchantment level.                                   |
+| Breach EX                | Deals extra damage per level to Ravagers, Ender Dragons, Withers, Iron Golems, and Wardens.         |
+| Channeling EX            | No longer needs thunderstorms to summon lightning.                                                  |
+| Density EX               | Smash attacks inflict Weakness, Slowness, and Nausea to its target, and Resistance to the attacker. |
+| Depth Strider EX         | TBD                                                                                                 |
+| Efficiency EX            | TBD                                                                                                 |
+| Feather Falling EX       | TBD                                                                                                 |
+| Fire Aspect EX           | TBD                                                                                                 |
+| Fire Protection EX       | TBD                                                                                                 |
+| Flame EX                 | TBD                                                                                                 |
+| Fortune EX               | TBD                                                                                                 |
+| Frost Walker EX          | TBD                                                                                                 |
+| Impaling EX              | TBD                                                                                                 |
+| Infinity EX              | TBD                                                                                                 |
+| Knockback EX             | Knocks enemies upward. Higher levels will create higher upward velocity per hit.                    |
+| Looting EX               | TBD                                                                                                 |
+| Loyalty EX               | TBD                                                                                                 |
+| Luck of the Sea EX       | TBD                                                                                                 |
+| Lunge EX                 | TBD                                                                                                 |
+| Lure EX                  | TBD                                                                                                 |
+| Mending EX               | TBD                                                                                                 |
+| Multishot EX             | TBD                                                                                                 |
+| Piercing EX              | TBD                                                                                                 |
+| Power EX                 | TBD                                                                                                 |
+| Projectile Protection EX | TBD                                                                                                 |
+| Protection EX            | TBD                                                                                                 |
+| Punch EX                 | TBD                                                                                                 |
+| Quick Charge EX          | TBD                                                                                                 |
+| Respiration EX           | TBD                                                                                                 |
+| Riptide EX               | TBD                                                                                                 |
+| Sharpness EX             | Has a 25% chance of applying Wither II to targets.                                                  |
+| Silk Touch EX            | TBD                                                                                                 |
+| Smite EX                 | Applies Weakness V to all undead mobs and Wardens, and Weakness I to all other targets.             |
+| Soul Speed EX            | TBD                                                                                                 |
+| Sweeping Edge EX         | TBD                                                                                                 |
+| Swift Sneak EX           | TBD                                                                                                 |
+| Thorns EX                | TBD                                                                                                 |
+| Unbreaking EX            | TBD                                                                                                 |
+| Wind Burst EX            | TBD                                                                                                 |
 
 ## Setup
 

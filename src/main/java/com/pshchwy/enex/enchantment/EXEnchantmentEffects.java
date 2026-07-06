@@ -34,6 +34,11 @@ public class EXEnchantmentEffects {
 
     public static final ResourceKey<Enchantment> CHANNELING_EX = of("channeling_ex");
 
+    public static final ResourceKey<Enchantment> DENSITY_EX = of("density_ex");
+    public static MapCodec<DensityEXEffect> DENSITY_EX_EFFECT = register("density_ex_effect", DensityEXEffect.CODEC);
+
+    public static final ResourceKey<Enchantment> DEPTH_STRIDER_EX = of("depth_strider_ex");
+
     private static ResourceKey<Enchantment> of(String path) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path);
         return ResourceKey.create(Registries.ENCHANTMENT, id);
