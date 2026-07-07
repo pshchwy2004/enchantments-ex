@@ -6,9 +6,7 @@ import com.pshchwy.enex.enchantment.effect.*;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
-import net.minecraft.advancements.critereon.DamageSourcePredicate;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.EntityTypePredicate;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
@@ -34,6 +32,7 @@ import net.minecraft.world.item.enchantment.EnchantmentTarget;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.*;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import org.jetbrains.annotations.NotNull;
@@ -308,7 +307,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 // valid slots
                                 EquipmentSlotGroup.MAINHAND
                         )
-                ).withEffect(
+                )
+                .withEffect(
                         EnchantmentEffectComponents.POST_ATTACK,
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
@@ -389,16 +389,16 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.FEET
                                 )
                         )
-                        .exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.BOOTS_EXCLUSIVE))
-                        .withEffect(
-                                EnchantmentEffectComponents.ATTRIBUTES,
-                                new EnchantmentAttributeEffect(
-                                        ResourceLocation.withDefaultNamespace("enchantment.depth_strider_ex"),
-                                        Attributes.WATER_MOVEMENT_EFFICIENCY,
-                                        LevelBasedValue.perLevel(0.33333334F),
-                                        AttributeModifier.Operation.ADD_VALUE
-                                )
+                .exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.BOOTS_EXCLUSIVE))
+                .withEffect(
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.depth_strider_ex"),
+                                Attributes.WATER_MOVEMENT_EFFICIENCY,
+                                LevelBasedValue.perLevel(0.33333334F),
+                                AttributeModifier.Operation.ADD_VALUE
                         )
+                )
         );
     }
 
