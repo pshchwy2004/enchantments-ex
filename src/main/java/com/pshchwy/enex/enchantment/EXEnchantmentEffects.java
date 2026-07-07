@@ -16,7 +16,6 @@ public class EXEnchantmentEffects {
     public static MapCodec<KnockbackEXEffect> KNOCKBACK_EX_EFFECT = register("knockback_ex_effect", KnockbackEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> SHARPNESS_EX = of("sharpness_ex");
-    public static MapCodec<SharpnessEXEffect> SHARPNESS_EX_EFFECT = register("sharpness_ex_effect", SharpnessEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> SMITE_EX = of("smite_ex");
     public static MapCodec<SmiteEXEffect> SMITE_EX_EFFECT = register("smite_ex_effect", SmiteEXEffect.CODEC);

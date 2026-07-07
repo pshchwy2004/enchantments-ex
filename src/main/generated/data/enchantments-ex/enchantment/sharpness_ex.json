@@ -20,12 +20,16 @@
       {
         "affected": "victim",
         "effect": {
-          "type": "enchantments-ex:sharpness_ex_effect",
-          "amount": {
+          "type": "minecraft:apply_mob_effect",
+          "max_amplifier": 1.0,
+          "max_duration": {
             "type": "minecraft:linear",
-            "base": 0.4,
-            "per_level_above_first": 0.2
-          }
+            "base": 1.5,
+            "per_level_above_first": 0.5
+          },
+          "min_amplifier": 1.0,
+          "min_duration": 1.5,
+          "to_apply": "minecraft:wither"
         },
         "enchanted": "attacker"
       }

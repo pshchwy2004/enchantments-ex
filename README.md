@@ -16,7 +16,7 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Breach EX                | Deals extra damage per level to Ravagers, Ender Dragons, Withers, Iron Golems, and Wardens.         |
 | Channeling EX            | No longer needs thunderstorms to summon lightning.                                                  |
 | Density EX               | Smash attacks inflict Weakness, Slowness, and Nausea to its target, and Resistance to the attacker. |
-| Depth Strider EX         | TBD                                                                                                 |
+| Depth Strider EX         | Attack speed is increased per level underwater.                                                     |
 | Efficiency EX            | TBD                                                                                                 |
 | Feather Falling EX       | TBD                                                                                                 |
 | Fire Aspect EX           | TBD                                                                                                 |
@@ -42,7 +42,7 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Quick Charge EX          | TBD                                                                                                 |
 | Respiration EX           | TBD                                                                                                 |
 | Riptide EX               | TBD                                                                                                 |
-| Sharpness EX             | Has a 25% chance of applying Wither II to targets.                                                  |
+| Sharpness EX             | Has a chance scaling by level of applying Wither II to targets.                                     |
 | Silk Touch EX            | TBD                                                                                                 |
 | Smite EX                 | Applies Weakness V to all undead mobs and Wardens, and Weakness I to all other targets.             |
 | Soul Speed EX            | TBD                                                                                                 |

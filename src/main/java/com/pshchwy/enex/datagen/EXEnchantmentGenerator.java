@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
+import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
@@ -95,7 +96,14 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.POST_ATTACK,
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
-                        new SharpnessEXEffect(LevelBasedValue.perLevel(0.4f, 0.2f))
+                        new ApplyMobEffect(
+                                HolderSet.<MobEffect>direct(MobEffects.WITHER),
+                                LevelBasedValue.constant(1.5F),
+                                LevelBasedValue.perLevel(1.5F, 0.5F),
+                                LevelBasedValue.constant(1.0F),
+                                LevelBasedValue.constant(1.0F)
+                        ),
+                        LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))
                 ).withEffect(
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(1.0f, 0.5f))
