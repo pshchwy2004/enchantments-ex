@@ -15,6 +15,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
@@ -398,6 +399,34 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 LevelBasedValue.perLevel(0.33333334F),
                                 AttributeModifier.Operation.ADD_VALUE
                         )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.LOCATION_CHANGED,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.depth_strider_ex"),
+                                Attributes.ATTACK_SPEED,
+                                LevelBasedValue.perLevel(0.25F, 0.25F),
+                                AttributeModifier.Operation.ADD_VALUE
+                        ),
+                        AnyOfCondition.anyOf(
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                .movementAffectedBy(
+                                                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
+                                                                .setFluid(net.minecraft.advancements.critereon.FluidPredicate.Builder.fluid().of(Fluids.WATER))
+                                                )
+                                ),
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                .movementAffectedBy(
+                                                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
+                                                                .setFluid(net.minecraft.advancements.critereon.FluidPredicate.Builder.fluid().of(Fluids.FLOWING_WATER))
+                                                )
+                                )
+                        )
+
                 )
         );
     }
