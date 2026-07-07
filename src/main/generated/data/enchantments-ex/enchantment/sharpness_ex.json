@@ -31,7 +31,18 @@
           "min_duration": 1.5,
           "to_apply": "minecraft:wither"
         },
-        "enchanted": "attacker"
+        "enchanted": "attacker",
+        "requirements": {
+          "chance": {
+            "type": "minecraft:enchantment_level",
+            "amount": {
+              "type": "minecraft:linear",
+              "base": 0.15,
+              "per_level_above_first": 0.15
+            }
+          },
+          "condition": "minecraft:random_chance"
+        }
       }
     ]
   },

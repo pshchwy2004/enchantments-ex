@@ -17,7 +17,7 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Channeling EX            | No longer needs thunderstorms to summon lightning.                                                  |
 | Density EX               | Smash attacks inflict Weakness, Slowness, and Nausea to its target, and Resistance to the attacker. |
 | Depth Strider EX         | Attack speed is increased per level underwater.                                                     |
-| Efficiency EX            | TBD                                                                                                 |
+| Efficiency EX            | Extra damage against shulkers.                                                                      |
 | Feather Falling EX       | TBD                                                                                                 |
 | Fire Aspect EX           | TBD                                                                                                 |
 | Fire Protection EX       | TBD                                                                                                 |

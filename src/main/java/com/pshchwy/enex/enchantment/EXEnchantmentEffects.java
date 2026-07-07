@@ -38,6 +38,8 @@ public class EXEnchantmentEffects {
 
     public static final ResourceKey<Enchantment> DEPTH_STRIDER_EX = of("depth_strider_ex");
 
+    public static final ResourceKey<Enchantment> EFFICIENCY_EX = of("efficiency_ex");
+
     private static ResourceKey<Enchantment> of(String path) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path);
         return ResourceKey.create(Registries.ENCHANTMENT, id);

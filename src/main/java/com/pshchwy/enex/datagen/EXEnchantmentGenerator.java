@@ -12,6 +12,7 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -435,6 +436,60 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 )
                         )
 
+                )
+        );
+
+        // register Efficiency EX
+        register(entries, EXEnchantmentEffects.EFFICIENCY_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.MINING_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        5,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(1, 10),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(51, 10),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                .withEffect(
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.efficiency_ex"), Attributes.MINING_EFFICIENCY, new LevelBasedValue.LevelsSquared(1.0F), AttributeModifier.Operation.ADD_VALUE
+                        )
+                )
+                .withEffect( // extra damage to shulkers
+                        EnchantmentEffectComponents.DAMAGE,
+                        new AddValue(LevelBasedValue.perLevel(12.5f, 10.0f)),
+
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.THIS,
+                                EntityPredicate.Builder.entity()
+                                        .entityType(
+                                                EntityTypePredicate.of(
+                                                        EntityType.SHULKER
+                                                )
+                                        )
+                        )
+                )
+                .withEffect( // zero armor for shulkers
+                        EnchantmentEffectComponents.ARMOR_EFFECTIVENESS,
+                        new SetValue(LevelBasedValue.constant(0.0F)),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.THIS,
+                                EntityPredicate.Builder.entity()
+                                        .entityType(
+                                                EntityTypePredicate.of(
+                                                        EntityType.SHULKER
+                                                )
+                                        )
+                        )
                 )
         );
     }
