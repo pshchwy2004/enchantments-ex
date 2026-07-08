@@ -37,6 +37,7 @@ public class EXEnchantmentEffects {
     public static MapCodec<DensityEXEffect> DENSITY_EX_EFFECT = register("density_ex_effect", DensityEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> DEPTH_STRIDER_EX = of("depth_strider_ex");
+    public static MapCodec<DepthStriderEXEffect> DEPTH_STRIDER_EX_EFFECT = register("depth_strider_ex_effect", DepthStriderEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> EFFICIENCY_EX = of("efficiency_ex");
 

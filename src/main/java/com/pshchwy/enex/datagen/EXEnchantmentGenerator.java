@@ -437,6 +437,10 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
 
                 )
+                .withEffect(
+                        EnchantmentEffectComponents.TICK,
+                        new DepthStriderEXEffect(LevelBasedValue.perLevel(1.0f))
+                )
         );
 
         // register Efficiency EX
@@ -462,6 +466,12 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
                                 ResourceLocation.withDefaultNamespace("enchantment.efficiency_ex"), Attributes.MINING_EFFICIENCY, new LevelBasedValue.LevelsSquared(1.0F), AttributeModifier.Operation.ADD_VALUE
+                        )
+                )
+                .withEffect( // more block interaction range
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.efficiency_ex"), Attributes.BLOCK_INTERACTION_RANGE, LevelBasedValue.constant(2.25F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .withEffect( // extra damage to shulkers
