@@ -533,6 +533,52 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
                 )
         );
+
+        // register Fire Aspect EX
+        register(entries, EXEnchantmentEffects.FIRE_ASPECT_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.FIRE_ASPECT_ENCHANTABLE),
+                                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        2,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(10, 20),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(60, 20),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        new Ignite(LevelBasedValue.perLevel(4.0F)),
+                        DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true))
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE,
+                        new AddValue(LevelBasedValue.perLevel(5.0f, 5.0f)),
+                        AnyOfCondition.anyOf(
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        EntityPredicate.Builder.entity()
+                                                .flags(new EntityFlagsPredicate.Builder().setOnFire(true))
+                                ),
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                .entityType(EntityTypePredicate.of(EXMobTagProvider.FIRE_IMMUNE))
+                                                .build()
+                                )
+                        )
+                )
+        );
     }
 
     private void register(Entries entries, ResourceKey<Enchantment> key, Enchantment.Builder builder, ResourceCondition... resourceConditions) {

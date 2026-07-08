@@ -1,0 +1,18 @@
+{
+  "replace": true,
+  "values": [
+    "minecraft:ender_dragon",
+    "minecraft:zoglin",
+    "minecraft:vex",
+    "minecraft:warden",
+    "minecraft:ender_dragon",
+    "minecraft:wither",
+    "minecraft:ender_dragon",
+    "minecraft:blaze",
+    "minecraft:wither_skeleton",
+    "minecraft:ghast",
+    "minecraft:magma_cube",
+    "minecraft:zombified_piglin",
+    "minecraft:strider"
+  ]
+}

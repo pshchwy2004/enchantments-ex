@@ -8,6 +8,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -18,6 +19,7 @@ import java.util.concurrent.CompletableFuture;
 public class EXMobTagProvider extends FabricTagProvider<EntityType<?>> {
 
     public static final TagKey<EntityType<?>> BREACH_EX_VULNERABLE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "boss_mobs"));
+    public static final TagKey<EntityType<?>> FIRE_IMMUNE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "immune_to_fire"));
 
     /**
      * Constructs a new {@link FabricTagProvider} with the default computed path.
@@ -38,8 +40,23 @@ public class EXMobTagProvider extends FabricTagProvider<EntityType<?>> {
                 .add(EntityType.IRON_GOLEM)
                 .add(EntityType.WARDEN)
                 .add(EntityType.RAVAGER)
+                .add(EntityType.WITHER)
+                .setReplace(true);
+
+        getOrCreateTagBuilder(FIRE_IMMUNE)
+                .add(EntityType.ENDER_DRAGON)
+                .add(EntityType.ZOGLIN)
+                .add(EntityType.VEX)
+                .add(EntityType.WARDEN)
                 .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.WITHER)
+                .add(EntityType.ENDER_DRAGON)
+                .add(EntityType.BLAZE)
+                .add(EntityType.WITHER_SKELETON)
+                .add(EntityType.GHAST)
+                .add(EntityType.MAGMA_CUBE)
+                .add(EntityType.ZOMBIFIED_PIGLIN)
+                .add(EntityType.STRIDER)
                 .setReplace(true);
     }
 }
