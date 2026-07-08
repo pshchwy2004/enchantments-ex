@@ -12,13 +12,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 
 public class EXEnchantmentEffects {
-    public static final ResourceKey<Enchantment> KNOCKBACK_EX = of("knockback_ex");
-    public static MapCodec<KnockbackEXEffect> KNOCKBACK_EX_EFFECT = register("knockback_ex_effect", KnockbackEXEffect.CODEC);
-
-    public static final ResourceKey<Enchantment> SHARPNESS_EX = of("sharpness_ex");
-
-    public static final ResourceKey<Enchantment> SMITE_EX = of("smite_ex");
-    public static MapCodec<SmiteEXEffect> SMITE_EX_EFFECT = register("smite_ex_effect", SmiteEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> AQUA_AFFINITY_EX = of("aqua_affinity_ex");
     public static MapCodec<AquaAffinityEXEffect> AQUA_AFFINITY_EX_EFFECT = register("aqua_affinity_ex_effect", AquaAffinityEXEffect.CODEC);
@@ -42,6 +35,72 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> EFFICIENCY_EX = of("efficiency_ex");
 
     public static final ResourceKey<Enchantment> FEATHER_FALLING_EX = of("feather_falling_ex");
+
+    public static final ResourceKey<Enchantment> FIRE_ASPECT_EX = of("fire_aspect_ex");
+
+    public static final ResourceKey<Enchantment> FIRE_PROTECTION_EX = of("fire_protection_ex");
+
+    public static final ResourceKey<Enchantment> FLAME_EX = of("flame_ex");
+
+    public static final ResourceKey<Enchantment> FORTUNE_EX = of("fortune_ex");
+
+    public static final ResourceKey<Enchantment> FROST_WALKER_EX = of("frost_walker_ex");
+
+    public static final ResourceKey<Enchantment> IMPALING_EX = of("impaling_ex");
+
+    public static final ResourceKey<Enchantment> INFINITY_EX = of("infinity_ex");
+
+    public static final ResourceKey<Enchantment> KNOCKBACK_EX = of("knockback_ex");
+    public static MapCodec<KnockbackEXEffect> KNOCKBACK_EX_EFFECT = register("knockback_ex_effect", KnockbackEXEffect.CODEC);
+
+    public static final ResourceKey<Enchantment> LOOTING_EX = of("looting_ex");
+
+    public static final ResourceKey<Enchantment> LOYALTY_EX = of("loyalty_ex");
+
+    public static final ResourceKey<Enchantment> LUCK_OF_THE_SEA_EX = of("luck_of_the_sea_ex");
+
+    public static final ResourceKey<Enchantment> LUNGE_EX = of("lunge_ex");
+
+    public static final ResourceKey<Enchantment> LURE_EX = of("lure_ex");
+
+    public static final ResourceKey<Enchantment> MENDING_EX = of("mending_ex");
+
+    public static final ResourceKey<Enchantment> MULTISHOT_EX = of("multishot_ex");
+
+    public static final ResourceKey<Enchantment> PIERCING_EX = of("piercing_ex");
+
+    public static final ResourceKey<Enchantment> POWER_EX = of("power_ex");
+
+    public static final ResourceKey<Enchantment> PROJECTILE_PROTECTION_EX = of("projectile_protection_ex");
+
+    public static final ResourceKey<Enchantment> PROTECTION_EX = of("protection_ex");
+
+    public static final ResourceKey<Enchantment> PUNCH_EX = of("punch_ex");
+
+    public static final ResourceKey<Enchantment> QUICK_CHARGE_EX = of("quick_charge_ex");
+
+    public static final ResourceKey<Enchantment> RESPIRATION_EX = of("respiration_ex");
+
+    public static final ResourceKey<Enchantment> RIPTIDE_EX = of("riptide_ex");
+
+    public static final ResourceKey<Enchantment> SHARPNESS_EX = of("sharpness_ex");
+
+    public static final ResourceKey<Enchantment> SILK_TOUCH_EX = of("silk_touch_ex");
+
+    public static final ResourceKey<Enchantment> SMITE_EX = of("smite_ex");
+    public static MapCodec<SmiteEXEffect> SMITE_EX_EFFECT = register("smite_ex_effect", SmiteEXEffect.CODEC);
+
+    public static final ResourceKey<Enchantment> SOUL_SPEED_EX = of("soul_speed_ex");
+
+    public static final ResourceKey<Enchantment> SWEEPING_EDGE_EX = of("sweeping_edge_ex");
+
+    public static final ResourceKey<Enchantment> SWIFT_SNEAK_EX = of("swift_sneak_ex");
+
+    public static final ResourceKey<Enchantment> THORNS_EX = of("thorns_ex");
+
+    public static final ResourceKey<Enchantment> UNBREAKING_EX = of("unbreaking_ex");
+
+    public static final ResourceKey<Enchantment> WIND_BURST_EX = of("wind_burst_ex");
 
     private static ResourceKey<Enchantment> of(String path) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path);
