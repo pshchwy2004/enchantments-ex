@@ -1,0 +1,57 @@
+{
+  "anvil_cost": 5,
+  "description": {
+    "translate": "enchantment.enchantments-ex.feather_falling_ex"
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": 7.0,
+        "attribute": "minecraft:generic.safe_fall_distance",
+        "id": "minecraft:enchantment.feather_falling_ex",
+        "operation": "add_value"
+      }
+    ],
+    "minecraft:damage_protection": [
+      {
+        "effect": {
+          "type": "minecraft:add",
+          "value": {
+            "type": "minecraft:linear",
+            "base": 3.0,
+            "per_level_above_first": 3.0
+          }
+        },
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "tags": [
+              {
+                "expected": true,
+                "id": "minecraft:is_fall"
+              },
+              {
+                "expected": false,
+                "id": "minecraft:bypasses_invulnerability"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 11,
+    "per_level_above_first": 6
+  },
+  "max_level": 5,
+  "min_cost": {
+    "base": 5,
+    "per_level_above_first": 6
+  },
+  "slots": [
+    "feet"
+  ],
+  "supported_items": "#minecraft:enchantable/foot_armor",
+  "weight": 1
+}

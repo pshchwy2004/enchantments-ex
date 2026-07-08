@@ -41,6 +41,8 @@ public class EXEnchantmentEffects {
 
     public static final ResourceKey<Enchantment> EFFICIENCY_EX = of("efficiency_ex");
 
+    public static final ResourceKey<Enchantment> FEATHER_FALLING_EX = of("feather_falling_ex");
+
     private static ResourceKey<Enchantment> of(String path) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path);
         return ResourceKey.create(Registries.ENCHANTMENT, id);

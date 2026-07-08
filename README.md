@@ -18,7 +18,7 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Density EX               | Smash attacks inflict Weakness, Slowness, and Nausea to its target, and Resistance to the attacker.   |
 | Depth Strider EX         | Attack speed is increased per level underwater. Nearby dolphins gain Strength, Resistance, and Speed. |
 | Efficiency EX            | Extra damage against shulkers. Increased block interaction range.                                     |
-| Feather Falling EX       | TBD                                                                                                   |
+| Feather Falling EX       | Safe fall distance is increased by 7 blocks.                                                          |
 | Fire Aspect EX           | TBD                                                                                                   |
 | Fire Protection EX       | TBD                                                                                                   |
 | Flame EX                 | TBD                                                                                                   |

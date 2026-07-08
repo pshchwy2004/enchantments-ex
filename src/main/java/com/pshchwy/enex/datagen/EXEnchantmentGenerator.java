@@ -16,10 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.EnchantmentTags;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.*;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
@@ -462,7 +459,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.MAINHAND
                                 )
                         )
-                .withEffect(
+                .withEffect( // vanilla efficiency
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
                                 ResourceLocation.withDefaultNamespace("enchantment.efficiency_ex"), Attributes.MINING_EFFICIENCY, new LevelBasedValue.LevelsSquared(1.0F), AttributeModifier.Operation.ADD_VALUE
@@ -499,6 +496,40 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                                         EntityType.SHULKER
                                                 )
                                         )
+                        )
+                )
+        );
+
+        // register Feather Falling EX
+        register(entries, EXEnchantmentEffects.FEATHER_FALLING_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        5,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(5, 6),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(11, 6),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.FEET
+                                )
+                        )
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE_PROTECTION,
+                        new AddValue(LevelBasedValue.perLevel(3.0F)),
+                        DamageSourceCondition.hasDamageSource(
+                                DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.IS_FALL)).tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
+                        )
+                )
+                .withEffect( // increase blocks needed to start taking FD
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.feather_falling_ex"), Attributes.SAFE_FALL_DISTANCE, LevelBasedValue.constant(7.0F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
         );
