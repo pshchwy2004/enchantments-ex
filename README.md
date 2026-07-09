@@ -21,7 +21,7 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Feather Falling EX       | Safe fall distance is increased by 7 blocks.                                                              |
 | Fire Aspect EX           | Deals extra damage per level to all targets already on fire or targets that are naturally immune to fire. |
 | Fire Protection EX       | Extra level-based scaled damage protection when in the Nether.                                            |
-| Flame EX                 | TBD                                                                                                       |
+| Flame EX                 | Deals extra damage per level to all targets already on fire or targets that are naturally immune to fire. |
 | Fortune EX               | TBD                                                                                                       |
 | Frost Walker EX          | TBD                                                                                                       |
 | Impaling EX              | TBD                                                                                                       |
