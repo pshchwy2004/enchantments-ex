@@ -15,26 +15,34 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.*;
 import net.minecraft.util.valueproviders.ConstantFloat;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentTarget;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.WorldDimensions;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelProvider;
+import org.intellij.lang.annotations.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
@@ -46,10 +54,16 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
     }
     @Override
     protected void configure(HolderLookup.Provider registries, Entries entries) {
+        // easy variables for access
+        HolderGetter<DamageType> damageTypes = registries.lookupOrThrow(Registries.DAMAGE_TYPE);
+        HolderGetter<Enchantment> enchantments = registries.lookupOrThrow(Registries.ENCHANTMENT);
+        HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
+        HolderGetter<Block> blocks = registries.lookupOrThrow(Registries.BLOCK);
+        HolderGetter<EntityType<?>>  entityTypes = registries.lookupOrThrow(Registries.ENTITY_TYPE);
         // register Knockback EX
         register(entries, EXEnchantmentEffects.KNOCKBACK_EX, Enchantment.enchantment(
                 Enchantment.definition(
-                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                        items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
                         // weight of showing up in enchantment table
                         1,
                         // enchantment max level
@@ -76,7 +90,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         // register Sharpness EX
         register(entries, EXEnchantmentEffects.SHARPNESS_EX, Enchantment.enchantment(
                         Enchantment.definition(
-                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -105,13 +119,13 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 ).withEffect(
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(1.0f, 0.5f))
-                ).exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+                ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
         );
         // register Smite EX
         register(entries, EXEnchantmentEffects.SMITE_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
-                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -138,19 +152,19 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EntityPredicate.Builder.entity()
                                 .entityType(
                                         EntityTypePredicate.of(
-                                                registries.lookupOrThrow(Registries.ENTITY_TYPE)
+                                                entityTypes
                                                         .getOrThrow(EntityTypeTags.SENSITIVE_TO_SMITE).key()
                                         )
                                 )
                 )
-                ).exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+                ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
         );
 
         // register Aqua Affinity EX
         register(entries, EXEnchantmentEffects.AQUA_AFFINITY_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
-                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -185,8 +199,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, EXEnchantmentEffects.BANE_OF_ARTHROPODS_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
-                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
-                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -208,7 +222,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 EntityPredicate.Builder.entity()
                                         .entityType(
                                                 EntityTypePredicate.of(
-                                                        registries.lookupOrThrow(Registries.ENTITY_TYPE)
+                                                        entityTypes
                                                                 .getOrThrow(EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS).key()
                                                 )
                                         )
@@ -233,14 +247,14 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                                 .entityType(EntityTypePredicate.of(EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS))
                                 )
                                 .and(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)))
-                ).exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+                ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
         );
 
         // register Blast Protection EX
         register(entries, EXEnchantmentEffects.BLAST_PROTECTION_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
-                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -257,14 +271,14 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 ).withEffect(
                         EnchantmentEffectComponents.TICK,
                         new BlastProtectionEXEffect(LevelBasedValue.perLevel(1.0f))
-                ).exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE))
+                ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE))
         );
 
         // register Breach EX
         register(entries, EXEnchantmentEffects.BREACH_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
-                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.MACE_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.MACE_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -279,7 +293,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 EquipmentSlotGroup.MAINHAND
                         )
                 ).withEffect(EnchantmentEffectComponents.ARMOR_EFFECTIVENESS, new AddValue(LevelBasedValue.perLevel(-0.15F))
-                ).exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE)
+                ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE)
                 ).withEffect( // BIG damage to mobs with large health
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(10.0f, 5.0f)),
@@ -288,7 +302,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 EntityPredicate.Builder.entity()
                                         .entityType(
                                                 EntityTypePredicate.of(
-                                                        registries.lookupOrThrow(Registries.ENTITY_TYPE)
+                                                        entityTypes
                                                                 .getOrThrow(EXMobTagProvider.BREACH_EX_VULNERABLE).key()
                                                 )
                                         )
@@ -300,7 +314,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, EXEnchantmentEffects.CHANNELING_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
-                                registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -353,7 +367,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, EXEnchantmentEffects.DENSITY_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
-                                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.MACE_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.MACE_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
@@ -367,7 +381,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         // valid slots
                                         EquipmentSlotGroup.MAINHAND
                                 )
-                ).exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+                ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
                 .withEffect(EnchantmentEffectComponents.SMASH_DAMAGE_PER_FALLEN_BLOCK, new AddValue(LevelBasedValue.perLevel(0.5F)))
                 .withEffect(
                         EnchantmentEffectComponents.POST_ATTACK,
@@ -381,7 +395,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, EXEnchantmentEffects.DEPTH_STRIDER_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
-                                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
@@ -396,7 +410,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.FEET
                                 )
                         )
-                .exclusiveWith(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.BOOTS_EXCLUSIVE))
+                .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.BOOTS_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
@@ -444,7 +458,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, EXEnchantmentEffects.EFFICIENCY_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
-                                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.MINING_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.MINING_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
@@ -504,7 +518,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, EXEnchantmentEffects.FEATHER_FALLING_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
-                                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
@@ -538,8 +552,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, EXEnchantmentEffects.FIRE_ASPECT_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
-                                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.FIRE_ASPECT_ENCHANTABLE),
-                                        registries.lookupOrThrow(Registries.ITEM).getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.FIRE_ASPECT_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
@@ -576,6 +590,57 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                                 .entityType(EntityTypePredicate.of(EXMobTagProvider.FIRE_IMMUNE))
                                                 .build()
                                 )
+                        )
+                )
+        );
+
+        // register Fire Protection EX
+        register(entries, EXEnchantmentEffects.FIRE_PROTECTION_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        4,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(10, 8),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(18, 8),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.ARMOR
+                                )
+                        )
+                .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE))
+                .withEffect( // vanilla fire dmg reduction
+                        EnchantmentEffectComponents.DAMAGE_PROTECTION,
+                        new AddValue(LevelBasedValue.perLevel(2.0F)),
+                        AllOfCondition.allOf(
+                                DamageSourceCondition.hasDamageSource(
+                                        DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.IS_FIRE)).tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
+                                )
+                        )
+                )
+                .withEffect( // vanilla burning time reduction
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.fire_protection_ex"),
+                                Attributes.BURNING_TIME,
+                                LevelBasedValue.perLevel(-0.15F),
+                                AttributeModifier.Operation.ADD_MULTIPLIED_BASE
+                        )
+                )
+                .withEffect( // damage protection per level when in the nether
+                        EnchantmentEffectComponents.DAMAGE_PROTECTION,
+                        new AddValue(LevelBasedValue.perLevel(1.0F)),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.THIS,
+                                EntityPredicate.Builder.entity()
+                                        .located(
+                                                LocationPredicate.Builder.inDimension(Level.NETHER)
+                                        )
                         )
                 )
         );
