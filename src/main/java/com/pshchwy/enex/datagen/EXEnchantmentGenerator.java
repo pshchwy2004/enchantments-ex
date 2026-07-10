@@ -963,6 +963,56 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 )
                 .withEffect(EnchantmentEffectComponents.MOB_EXPERIENCE, new MultiplyValue(LevelBasedValue.perLevel(2.5f, 1.0f)))
         );
+
+        // register Loyalty EX
+        register(entries, EXEnchantmentEffects.LOYALTY_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(12, 7),
+                                        // same fields as above but for max cost
+                                        Enchantment.constantCost(50),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                .withEffect(EnchantmentEffectComponents.TRIDENT_RETURN_ACCELERATION, new AddValue(LevelBasedValue.perLevel(1.0F))) // vanilla effect
+                .withEffect( // hit block? take all items o algo
+                        EnchantmentEffectComponents.HIT_BLOCK,
+                        new ItemRetrievalEffect(LevelBasedValue.constant(1.0f))
+                )
+
+        );
+
+        // register Luck of the Sea EX
+        register(entries, EXEnchantmentEffects.LUCK_OF_THE_SEA_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.FISHING_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(15, 9),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(65, 9),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                .withEffect(EnchantmentEffectComponents.FISHING_LUCK_BONUS, new AddValue(LevelBasedValue.perLevel(1.0F)))
+
+        );
     }
 
     private void register(Entries entries, ResourceKey<Enchantment> key, Enchantment.Builder builder, ResourceCondition... resourceConditions) {

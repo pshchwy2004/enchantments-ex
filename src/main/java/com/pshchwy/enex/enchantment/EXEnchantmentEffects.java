@@ -8,6 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 
@@ -57,6 +58,7 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> LOOTING_EX = of("looting_ex");
 
     public static final ResourceKey<Enchantment> LOYALTY_EX = of("loyalty_ex");
+    public static MapCodec<ItemRetrievalEffect> ITEM_RETRIEVAL_EFFECT = register("item_retrieval_effect", ItemRetrievalEffect.CODEC);
 
     public static final ResourceKey<Enchantment> LUCK_OF_THE_SEA_EX = of("luck_of_the_sea_ex");
 

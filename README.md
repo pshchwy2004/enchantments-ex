@@ -28,8 +28,8 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Infinity EX              | Now works on spectral and tipped arrows as well as firework rockets when applied to Crossbows via command.                                                 |
 | Knockback EX             | Knocks enemies upward. Higher levels will create higher upward velocity per hit.                                                                           |
 | Looting EX               | Multiplies mob experience gain depending on level.                                                                                                         |
-| Loyalty EX               | TBD                                                                                                                                                        |
-| Luck of the Sea EX       | TBD                                                                                                                                                        |
+| Loyalty EX               | When the trident hits a block, teleports any item within 3 blocks of where the trident landed to the player who threw it.                                  |
+| Luck of the Sea EX       | Obtaining treasure from fishing will include additional loot, including rare, formerly non-renewable items.                                                |
 | Lunge EX                 | TBD                                                                                                                                                        |
 | Lure EX                  | TBD                                                                                                                                                        |
 | Mending EX               | TBD                                                                                                                                                        |

@@ -214,6 +214,33 @@ public class EXLootTableModifiers {
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
+
+            // luck of the sea fishing shenanigans
+            if (source.isBuiltin() && key.location().equals(ResourceLocation.fromNamespaceAndPath("minecraft", "gameplay/fishing/treasure"))) {
+                LootPool.Builder poolBuilder = LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.IRON_INGOT).setWeight(20))
+                        .add(LootItem.lootTableItem(Items.EMERALD).setWeight(20))
+                        .add(LootItem.lootTableItem(Items.ELYTRA).setWeight(1))
+                        .add(LootItem.lootTableItem(Items.NETHERITE_SCRAP).setWeight(1))
+                        .add(LootItem.lootTableItem(Items.SHULKER_SHELL).setWeight(1))
+                        .add(LootItem.lootTableItem(Items.HEART_OF_THE_SEA).setWeight(1))
+                        .add(LootItem.lootTableItem(Items.DRAGON_HEAD).setWeight(1))
+                        .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(10))
+                        .add(LootItem.lootTableItem(Items.CONDUIT).setWeight(10))
+                        .add(LootItem.lootTableItem(Items.ENCHANTED_GOLDEN_APPLE).setWeight(5))
+                        .add(LootItem.lootTableItem(Items.SPONGE).setWeight(20))
+                        .add(LootItem.lootTableItem(Items.ECHO_SHARD).setWeight(10))
+                        .when(
+                                MatchTool.toolMatches(
+                                        ItemPredicate.Builder.item()
+                                                .withSubPredicate(
+                                                        ItemSubPredicates.ENCHANTMENTS,
+                                                        ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX), MinMaxBounds.Ints.atLeast(1))))
+                                                )
+                                )
+                        );
+                tableBuilder.withPool(poolBuilder);
+            }
         });
     }
 }
