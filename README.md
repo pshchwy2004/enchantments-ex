@@ -23,7 +23,7 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Fire Protection EX       | Extra level-based scaled damage protection when in the Nether.                                                                                      |
 | Flame EX                 | Deals extra damage per level to all targets already on fire or targets that are naturally immune to fire.                                           |
 | Fortune EX               | Overworld ores will additionally drop their block version when mined. Nether Gold Ore drops gold ingots, and Ancient Debris drops Netherite Ingots. |
-| Frost Walker EX          | TBD                                                                                                                                                 |
+| Frost Walker EX          | Reduces freezing damage and increases speed when walking on Ice per level.                                                                          |
 | Impaling EX              | TBD                                                                                                                                                 |
 | Infinity EX              | TBD                                                                                                                                                 |
 | Knockback EX             | Knocks enemies upward. Higher levels will create higher upward velocity per hit.                                                                    |

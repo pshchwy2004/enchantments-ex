@@ -7,10 +7,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.minecraft.advancements.critereon.*;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
+import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
@@ -37,7 +34,10 @@ import net.minecraft.world.item.enchantment.effects.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.WorldDimensions;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
@@ -45,6 +45,7 @@ import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelP
 import org.intellij.lang.annotations.Identifier;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
@@ -711,6 +712,123 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 )
                         )
                         .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.MINING_EXCLUSIVE))
+        );
+
+        // register Frost Walker EX
+        register(entries, EXEnchantmentEffects.FROST_WALKER_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        2,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(10, 10),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(10, 10),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.FEET
+                                )
+                        )
+                        .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.BOOTS_EXCLUSIVE))
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE_IMMUNITY,
+                        DamageImmunity.INSTANCE,
+                        DamageSourceCondition.hasDamageSource(
+                                DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.BURN_FROM_STEPPING)).tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.LOCATION_CHANGED,
+                        new ReplaceDisk(
+                                new LevelBasedValue.Clamped(LevelBasedValue.perLevel(3.0F, 1.0F), 0.0F, 16.0F),
+                                LevelBasedValue.constant(1.0F),
+                                new Vec3i(0, -1, 0),
+                                Optional.of(
+                                        net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate.allOf(
+                                                net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate.matchesTag(new Vec3i(0, 1, 0), BlockTags.AIR),
+                                                net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate.matchesBlocks(Blocks.WATER),
+                                                net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate.matchesFluids(Fluids.WATER),
+                                                BlockPredicate.unobstructed()
+                                        )
+                                ),
+                                BlockStateProvider.simple(Blocks.FROSTED_ICE),
+                                Optional.of(GameEvent.BLOCK_PLACE)
+                        ),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.THIS,
+                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                        .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setOnGround(true))
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.LOCATION_CHANGED,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.frost_walker_ex"),
+                                Attributes.MOVEMENT_SPEED,
+                                LevelBasedValue.perLevel(0.0405F, 0.0105F),
+                                AttributeModifier.Operation.ADD_VALUE
+                        ),
+                        AllOfCondition.allOf(
+                                InvertedLootItemCondition.invert(
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.THIS,
+                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                        .vehicle(net.minecraft.advancements.critereon.EntityPredicate.Builder.entity())
+                                        )
+                                ),
+                                AnyOfCondition.anyOf(
+                                        AllOfCondition.allOf(
+                                                EnchantmentActiveCheck.enchantmentActiveCheck(),
+                                                LootItemEntityPropertyCondition.hasProperties(
+                                                        LootContext.EntityTarget.THIS,
+                                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                                .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
+                                                ),
+                                                AnyOfCondition.anyOf(
+                                                        LootItemEntityPropertyCondition.hasProperties(
+                                                                LootContext.EntityTarget.THIS,
+                                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                                        .movementAffectedBy(
+                                                                                net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
+                                                                                        .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.ICE))
+                                                                        )
+                                                        ),
+                                                        LootItemEntityPropertyCondition.hasProperties(
+                                                                LootContext.EntityTarget.THIS,
+                                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                                        .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setOnGround(false))
+                                                                        .build()
+                                                        )
+                                                )
+                                        ),
+                                        AllOfCondition.allOf(
+                                                EnchantmentActiveCheck.enchantmentInactiveCheck(),
+                                                LootItemEntityPropertyCondition.hasProperties(
+                                                        LootContext.EntityTarget.THIS,
+                                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                                .movementAffectedBy(
+                                                                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
+                                                                                .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.ICE))
+                                                                )
+                                                                .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
+                                                )
+                                        )
+                                )
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE_PROTECTION,
+                        new AddValue(LevelBasedValue.perLevel(5.0F)),
+                        AllOfCondition.allOf(
+                                DamageSourceCondition.hasDamageSource(
+                                        DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.IS_FREEZING)).tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
+                                )
+                        )
+                )
         );
     }
 
