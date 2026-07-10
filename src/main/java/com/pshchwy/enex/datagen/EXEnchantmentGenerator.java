@@ -26,6 +26,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentTarget;
@@ -712,6 +713,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 )
                         )
                         .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.MINING_EXCLUSIVE))
+                        .withEffect(EnchantmentEffectComponents.BLOCK_EXPERIENCE, new MultiplyValue(LevelBasedValue.perLevel(1.5f, 0.5f)))
         );
 
         // register Frost Walker EX
@@ -829,6 +831,137 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 )
                         )
                 )
+        );
+
+        // register Impaling EX
+        register(entries, EXEnchantmentEffects.IMPALING_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        5,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(1, 8),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(21, 8),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                        .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE,
+                        new AddValue(LevelBasedValue.perLevel(2.5F)),
+                        AnyOfCondition.anyOf(
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                .entityType(EntityTypePredicate.of(EntityTypeTags.SENSITIVE_TO_IMPALING))
+                                                .build()
+                                ),
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                .located(
+                                                        LocationPredicate.Builder.location()
+                                                                .setFluid(
+                                                                    FluidPredicate.Builder.fluid().of(Fluids.WATER)
+                                                                )
+                                                )
+                                ),
+                                AllOfCondition.allOf(
+                                        AnyOfCondition.anyOf(
+                                                WeatherCheck.weather().setRaining(true),
+                                                WeatherCheck.weather().setThundering(true)
+                                        ),
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.THIS,
+                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                        .located(
+                                                                LocationPredicate.Builder.location()
+                                                                        .setCanSeeSky(true)
+                                                        )
+                                        )
+                                )
+
+                        )
+
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        new BreathStealEffect(LevelBasedValue.constant(1.0f))
+                )
+        );
+
+        // register Infinity EX
+        register(entries, EXEnchantmentEffects.INFINITY_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        1,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.constantCost(20),
+                                        // same fields as above but for max cost
+                                        Enchantment.constantCost(50),
+                                        // anvil cost
+                                        10,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.BOW_EXCLUSIVE))
+                .withEffect(
+                        EnchantmentEffectComponents.AMMO_USE,
+                        new SetValue(LevelBasedValue.constant(0.0F)),
+                        AnyOfCondition.anyOf(
+                                MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(Items.ARROW)),
+                                MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(Items.SPECTRAL_ARROW)),
+                                MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(Items.TIPPED_ARROW)),
+                                MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(Items.FIREWORK_ROCKET))
+                        )
+
+                )
+        );
+
+        // register Looting EX
+        register(entries, EXEnchantmentEffects.LOOTING_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(15, 9),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(65, 9),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                .withEffect( // vanilla Looting
+                        EnchantmentEffectComponents.EQUIPMENT_DROPS,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        new AddValue(LevelBasedValue.perLevel(0.01F)),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.ATTACKER,
+                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.PLAYER))
+                        )
+                )
+                .withEffect(EnchantmentEffectComponents.MOB_EXPERIENCE, new MultiplyValue(LevelBasedValue.perLevel(2.5f, 1.0f)))
         );
     }
 

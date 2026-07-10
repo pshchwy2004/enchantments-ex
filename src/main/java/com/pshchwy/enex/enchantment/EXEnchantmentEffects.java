@@ -47,6 +47,7 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> FROST_WALKER_EX = of("frost_walker_ex");
 
     public static final ResourceKey<Enchantment> IMPALING_EX = of("impaling_ex");
+    public static MapCodec<BreathStealEffect> BREATH_STEAL_EFFECT = register("breath_steal_effect", BreathStealEffect.CODEC);
 
     public static final ResourceKey<Enchantment> INFINITY_EX = of("infinity_ex");
 
