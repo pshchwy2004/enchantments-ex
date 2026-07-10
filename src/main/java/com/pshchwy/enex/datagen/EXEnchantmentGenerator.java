@@ -690,6 +690,28 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 )
 
         );
+
+        // register Fortune EX
+        register(entries, EXEnchantmentEffects.FORTUNE_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.MINING_LOOT_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(15, 9),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(65, 9),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                        .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.MINING_EXCLUSIVE))
+        );
     }
 
     private void register(Entries entries, ResourceKey<Enchantment> key, Enchantment.Builder builder, ResourceCondition... resourceConditions) {
