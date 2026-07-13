@@ -53,6 +53,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
     @Override
     protected void configure(HolderLookup.Provider registries, Entries entries) {
         // easy variables for access
+        @SuppressWarnings("unused")
         HolderGetter<DamageType> damageTypes = registries.lookupOrThrow(Registries.DAMAGE_TYPE);
         HolderGetter<Enchantment> enchantments = registries.lookupOrThrow(Registries.ENCHANTMENT);
         HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
@@ -1544,6 +1545,36 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         new PlaySoundEffect(SoundEvents.SOUL_ESCAPE, ConstantFloat.of(0.6F), UniformFloat.of(0.6F, 1.0F)),
                         AllOfCondition.allOf(
                                 LootItemRandomChanceCondition.randomChance(0.35F), LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, soulSpeedBuilder)
+                        )
+                )
+        );
+
+        // register Sweeping Edge EX
+        register(entries, EXEnchantmentEffects.SWEEPING_EDGE_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(5, 9),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(20, 9),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                .withEffect(
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.sweeping_edge_ex"),
+                                Attributes.SWEEPING_DAMAGE_RATIO,
+                                new LevelBasedValue.Fraction(LevelBasedValue.perLevel(1.0F), LevelBasedValue.perLevel(2.0F, 1.0F)),
+                                AttributeModifier.Operation.ADD_VALUE
                         )
                 )
         );
