@@ -1,5 +1,6 @@
 package com.pshchwy.enex.datagen;
 
+import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import com.pshchwy.enex.enchantment.effect.*;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -14,6 +15,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.*;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -268,6 +270,22 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.TICK,
                         new BlastProtectionEXEffect(LevelBasedValue.perLevel(1.0f))
                 ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE))
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE_PROTECTION,
+                        new AddValue(LevelBasedValue.perLevel(2.0F)),
+                        DamageSourceCondition.hasDamageSource(
+                                DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.IS_EXPLOSION)).tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.blast_protection_ex"),
+                                Attributes.EXPLOSION_KNOCKBACK_RESISTANCE,
+                                LevelBasedValue.perLevel(0.15F),
+                                AttributeModifier.Operation.ADD_VALUE
+                        )
+                )
         );
 
         // register Breach EX
@@ -1033,6 +1051,195 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         new LureEffect(LevelBasedValue.constant(0.0f))
                 )
 
+        );
+
+        // register Mending EX
+        register(entries, EXEnchantmentEffects.MENDING_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.DURABILITY_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        1,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(25, 25),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(25, 25),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.ANY
+                                )
+                        )
+                .withEffect(EnchantmentEffectComponents.REPAIR_WITH_XP, new MultiplyValue(LevelBasedValue.constant(4.0F)))
+
+        );
+
+        // register Multishot EX
+        register(entries, EXEnchantmentEffects.MULTISHOT_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        5,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(10, 5),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(20, 5),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                // not exclusive with piercing
+                .withEffect(EnchantmentEffectComponents.PROJECTILE_COUNT, new AddValue(LevelBasedValue.perLevel(4.0F)))
+                .withEffect(EnchantmentEffectComponents.PROJECTILE_SPREAD, new AddValue(LevelBasedValue.perLevel(5.0F)))
+
+        );
+
+        // register Piercing EX
+        register(entries, EXEnchantmentEffects.PIERCING_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        4,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(1, 10),
+                                        // same fields as above but for max cost
+                                        Enchantment.constantCost(50),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                        // not exclusive with multishot
+                .withEffect(EnchantmentEffectComponents.PROJECTILE_PIERCING, new AddValue(LevelBasedValue.perLevel(1.0F)))
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE,
+                        new AddValue(LevelBasedValue.perLevel(2.5f, 2.5f)),
+                        AnyOfCondition.anyOf(
+                                AllOfCondition.allOf(
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
+                                        ),
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.THIS,
+                                                EntityPredicate.Builder.entity()
+                                                        .entityType(
+                                                                EntityTypePredicate.of(
+                                                                        entityTypes
+                                                                                .getOrThrow(EntityTypeTags.SKELETONS).key()
+                                                                )
+                                                        )
+                                        )
+                                ),
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(EntityType.FIREWORK_ROCKET).build()
+                                )
+                        )
+
+                )
+        );
+
+        // register Power EX
+        register(entries, EXEnchantmentEffects.POWER_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        5,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(1, 10),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(16, 10),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE,
+                        new AddValue(LevelBasedValue.perLevel(0.5F)),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        new ApplyMobEffect(
+                                HolderSet.direct(MobEffects.WITHER),
+                                LevelBasedValue.constant(1.5F),
+                                LevelBasedValue.perLevel(1.5F, 0.5F),
+                                LevelBasedValue.constant(1.0F),
+                                LevelBasedValue.constant(1.0F)
+                        ),
+                        AllOfCondition.allOf(
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
+                                ),
+                                LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))
+                        )
+
+                )
+        );
+
+        // register Projectile Protection EX
+        register(entries, EXEnchantmentEffects.PROJECTILE_PROTECTION_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        4,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(3, 6),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(9, 6),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.ARMOR
+                                )
+                        )
+                .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE))
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE_PROTECTION,
+                        new AddValue(LevelBasedValue.perLevel(2.0F)),
+                        AnyOfCondition.anyOf(
+                                DamageSourceCondition.hasDamageSource(
+                                        DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.IS_PROJECTILE)).tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
+                                ),
+                                DamageSourceCondition.hasDamageSource( // sonic boom damage reduction
+                                        DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.BYPASSES_ENCHANTMENTS)).tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
+                                )
+                        )
+
+                )
+                .withEffect( // reduces generic knockback
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.projectile_protection_ex"),
+                                Attributes.KNOCKBACK_RESISTANCE,
+                                LevelBasedValue.perLevel(0.15F),
+                                AttributeModifier.Operation.ADD_VALUE
+                        )
+                )
         );
     }
 

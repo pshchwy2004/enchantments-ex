@@ -4,7 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ExampleMixin",
-    "FishingHookMixin"
+    "FishingHookAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

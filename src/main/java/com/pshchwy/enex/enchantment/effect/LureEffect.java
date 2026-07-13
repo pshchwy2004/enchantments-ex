@@ -2,7 +2,7 @@ package com.pshchwy.enex.enchantment.effect;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.pshchwy.enex.mixin.FishingHookMixin;
+import com.pshchwy.enex.mixin.FishingHookAccessor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -29,7 +29,7 @@ public record LureEffect(LevelBasedValue amount) implements EnchantmentEntityEff
         // executes per tick
         // if the player is fishing and the fishing hook is out, automatically reel in when the reel is ready
 
-        if (target instanceof Player player && player.fishing != null && ((FishingHookMixin) player.fishing).enex$getNibble() > 0) {
+        if (target instanceof Player player && player.fishing != null && ((FishingHookAccessor) player.fishing).enex$getNibble() > 0) {
             FishingHook fishingHook = player.fishing;
             fishingHook.retrieve(context.itemStack());
         }

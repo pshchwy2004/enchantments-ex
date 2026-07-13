@@ -8,49 +8,49 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 
 ## Enchantment Function Documentation
 
-| Enchantment              | New Function                                                                                                                                               |
-|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Aqua Affinity EX         | Immune to Mining Fatigue.                                                                                                                                  |
-| Bane of Arthropods EX    | Immune to Poison. Cobwebs break on contact while holding weapon.                                                                                           |
-| Blast Protection EX      | Nearby Creepers gain Slowness according to the enchantment level.                                                                                          |
-| Breach EX                | Deals extra damage per level to Ravagers, Ender Dragons, Withers, Iron Golems, and Wardens.                                                                |
-| Channeling EX            | No longer needs active thunderstorms to summon lightning.                                                                                                  |
-| Density EX               | Smash attacks inflict Weakness, Slowness, and Nausea to its target, and Resistance to the attacker.                                                        |
-| Depth Strider EX         | Attack speed is increased per level underwater. Nearby dolphins gain Strength, Resistance, and Speed.                                                      |
-| Efficiency EX            | Extra damage against shulkers. Increased block interaction range.                                                                                          |
-| Feather Falling EX       | Safe fall distance is increased by 7 blocks.                                                                                                               |
-| Fire Aspect EX           | Deals extra damage per level to all targets already on fire or targets that are naturally immune to fire.                                                  |
-| Fire Protection EX       | Extra level-based scaled damage protection when in the Nether.                                                                                             |
-| Flame EX                 | Deals extra damage per level to all targets already on fire or targets that are naturally immune to fire.                                                  |
-| Fortune EX               | Overworld ores will additionally drop their block version when mined. Nether Gold Ore drops gold ingots, and Ancient Debris drops Netherite Ingots.        |
-| Frost Walker EX          | Reduces freezing damage and increases speed when walking on Ice per level.                                                                                 |
-| Impaling EX              | Damage bonus now applies on Bedrock conditions (when the weather is raining or thundering, or when the target is in water). Also, adds air supply per hit. |
-| Infinity EX              | Now works on spectral and tipped arrows as well as firework rockets when applied to Crossbows via command.                                                 |
-| Knockback EX             | Knocks enemies upward. Higher levels will create higher upward velocity per hit.                                                                           |
-| Looting EX               | Multiplies mob experience gain depending on level.                                                                                                         |
-| Loyalty EX               | When the trident hits a block, teleports any item within 3 blocks of where the trident landed to the player who threw it.                                  |
-| Luck of the Sea EX       | Obtaining treasure from fishing will include additional loot, including rare, formerly non-renewable items.                                                |
-| Lunge EX                 | Not yet implemented in 1.21.1                                                                                                                              |
-| Lure EX                  | Any item within 2 blocks of the fishing bobber is instantly retrieved by the player, and the fishing rod automatically returns when it catches fish.       |
-| Mending EX               | TBD                                                                                                                                                        |
-| Multishot EX             | TBD                                                                                                                                                        |
-| Piercing EX              | TBD                                                                                                                                                        |
-| Power EX                 | TBD                                                                                                                                                        |
-| Projectile Protection EX | TBD                                                                                                                                                        |
-| Protection EX            | TBD                                                                                                                                                        |
-| Punch EX                 | TBD                                                                                                                                                        |
-| Quick Charge EX          | TBD                                                                                                                                                        |
-| Respiration EX           | TBD                                                                                                                                                        |
-| Riptide EX               | TBD                                                                                                                                                        |
-| Sharpness EX             | Has a chance scaling by level of applying Wither II to targets.                                                                                            |
-| Silk Touch EX            | TBD                                                                                                                                                        |
-| Smite EX                 | Applies Weakness V to all undead mobs and Wardens, and Weakness I to all other targets.                                                                    |
-| Soul Speed EX            | TBD                                                                                                                                                        |
-| Sweeping Edge EX         | TBD                                                                                                                                                        |
-| Swift Sneak EX           | TBD                                                                                                                                                        |
-| Thorns EX                | TBD                                                                                                                                                        |
-| Unbreaking EX            | TBD                                                                                                                                                        |
-| Wind Burst EX            | TBD                                                                                                                                                        |
+| Enchantment              | New Function                                                                                                                                                                               |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Aqua Affinity EX         | Immune to Mining Fatigue.                                                                                                                                                                  |
+| Bane of Arthropods EX    | Immune to Poison. Cobwebs break on contact while holding weapon.                                                                                                                           |
+| Blast Protection EX      | Nearby Creepers gain Slowness according to the enchantment level.                                                                                                                          |
+| Breach EX                | Deals extra damage per level to Ravagers, Ender Dragons, Withers, Iron Golems, and Wardens.                                                                                                |
+| Channeling EX            | No longer needs active thunderstorms to summon lightning.                                                                                                                                  |
+| Density EX               | Smash attacks inflict Weakness, Slowness, and Nausea to its target, and Resistance to the attacker.                                                                                        |
+| Depth Strider EX         | Attack speed is increased per level underwater. Nearby dolphins gain Strength, Resistance, and Speed.                                                                                      |
+| Efficiency EX            | Extra damage against shulkers. Increased block interaction range.                                                                                                                          |
+| Feather Falling EX       | Safe fall distance is increased by 7 blocks.                                                                                                                                               |
+| Fire Aspect EX           | Deals extra damage per level to all targets already on fire or targets that are naturally immune to fire.                                                                                  |
+| Fire Protection EX       | Extra level-based scaled damage protection when in the Nether.                                                                                                                             |
+| Flame EX                 | Deals extra damage per level to all targets already on fire or targets that are naturally immune to fire.                                                                                  |
+| Fortune EX               | Overworld ores will additionally drop their block version when mined. Nether Gold Ore drops gold ingots, and Ancient Debris drops Netherite Ingots.                                        |
+| Frost Walker EX          | Reduces freezing damage and increases speed when walking on Ice per level.                                                                                                                 |
+| Impaling EX              | Damage bonus now applies on Bedrock conditions (when the weather is raining or thundering, or when the target is in water). Also, adds air supply per hit.                                 |
+| Infinity EX              | Now works on spectral and tipped arrows as well as firework rockets when applied to Crossbows via command.                                                                                 |
+| Knockback EX             | Knocks enemies upward. Higher levels will create higher upward velocity per hit.                                                                                                           |
+| Looting EX               | Multiplies mob experience gain depending on level.                                                                                                                                         |
+| Loyalty EX               | When the trident hits a block, teleports any item within 3 blocks of where the trident landed to the player who threw it.                                                                  |
+| Luck of the Sea EX       | Obtaining treasure from fishing will include additional loot, including rare, formerly non-renewable items.                                                                                |
+| Lunge EX                 | Not implemented in 1.21.1                                                                                                                                                                  |
+| Lure EX                  | Any item within 2 blocks of the fishing bobber is instantly retrieved by the player, and the fishing rod automatically returns when it catches fish.                                       |
+| Mending EX               | The durability repair effectiveness is doubled.                                                                                                                                            |
+| Multishot EX             | Maximum enchantment level is increased to 5, shoots 4 arrows per level, and halves the projectile spread per level. Also, can enchant Bows and is compatible with Piercing or Piercing EX. |
+| Piercing EX              | Compatible with Multishot and Multishot EX, can be applied to bows, and does extra damage when using firework rockets or targeting Skeletons.                                              |
+| Power EX                 | Has a chance scaling by level of applying Wither II to targets.                                                                                                                            |
+| Projectile Protection EX | Reduces knockback, and its projectile protection now also extends to the Warden's Sonic Boom.                                                                                              |
+| Protection EX            | TBD                                                                                                                                                                                        |
+| Punch EX                 | TBD                                                                                                                                                                                        |
+| Quick Charge EX          | TBD                                                                                                                                                                                        |
+| Respiration EX           | TBD                                                                                                                                                                                        |
+| Riptide EX               | TBD                                                                                                                                                                                        |
+| Sharpness EX             | Has a chance scaling by level of applying Wither II to targets.                                                                                                                            |
+| Silk Touch EX            | TBD                                                                                                                                                                                        |
+| Smite EX                 | Applies Weakness V to all undead mobs and Wardens, and Weakness I to all other targets.                                                                                                    |
+| Soul Speed EX            | TBD                                                                                                                                                                                        |
+| Sweeping Edge EX         | TBD                                                                                                                                                                                        |
+| Swift Sneak EX           | TBD                                                                                                                                                                                        |
+| Thorns EX                | TBD                                                                                                                                                                                        |
+| Unbreaking EX            | TBD                                                                                                                                                                                        |
+| Wind Burst EX            | TBD                                                                                                                                                                                        |
 
 ## Setup
 

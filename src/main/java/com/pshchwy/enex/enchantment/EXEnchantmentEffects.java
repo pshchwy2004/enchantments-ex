@@ -69,6 +69,7 @@ public class EXEnchantmentEffects {
 
     public static final ResourceKey<Enchantment> LUCK_OF_THE_SEA_EX = of("luck_of_the_sea_ex");
 
+    @SuppressWarnings("unused")
     public static final ResourceKey<Enchantment> LUNGE_EX = of("lunge_ex");
 
     public static final ResourceKey<Enchantment> LURE_EX = of("lure_ex");
