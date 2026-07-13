@@ -2,14 +2,12 @@ package com.pshchwy.enex.enchantment.effect;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.BlockPos;
+import com.pshchwy.enex.mixin.FishingHookMixin;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.Dolphin;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
@@ -19,19 +17,29 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public record ItemRetrievalEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
-    public static final MapCodec<ItemRetrievalEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
+public record LureEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
+    public static final MapCodec<LureEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    LevelBasedValue.CODEC.fieldOf("amount").forGetter(ItemRetrievalEffect::amount)
-            ).apply(instance, ItemRetrievalEffect::new)
+                    LevelBasedValue.CODEC.fieldOf("amount").forGetter(LureEffect::amount)
+            ).apply(instance, LureEffect::new)
     );
 
     @Override
     public void apply(ServerLevel world, int level, EnchantedItemInUse context, Entity target, Vec3 pos) {
-        // executes when the trident hits a block
-        // any item within 3 blocks is instantly teleported to the player
-        if (context.owner() instanceof Player player) {
-            AABB box = AABB.ofSize(pos, 3, 3, 3);
+        // executes per tick
+        // if the player is fishing and the fishing hook is out, automatically reel in when the reel is ready
+
+        if (target instanceof Player player && player.fishing != null && ((FishingHookMixin) player.fishing).enex$getNibble() > 0) {
+            FishingHook fishingHook = player.fishing;
+            fishingHook.retrieve(context.itemStack());
+        }
+
+        // any item within 2 blocks of the fishing hook is automatically teleported to the player
+
+        if (target instanceof Player player && player.fishing != null) {
+            FishingHook fishingHook = player.fishing;
+            Vec3 fishingPos = fishingHook.position();
+            AABB box = AABB.ofSize(fishingPos, 2, 2, 2);
             List<ItemEntity> items = world.getEntitiesOfClass(
                     ItemEntity.class,
                     box
@@ -39,9 +47,8 @@ public record ItemRetrievalEffect(LevelBasedValue amount) implements Enchantment
             for (ItemEntity item : items) { // teleport
                 item.setPos(player.getX(), player.getY(), player.getZ());
             }
+
         }
-
-
     }
 
     @Override

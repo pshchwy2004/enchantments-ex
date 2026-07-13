@@ -30,8 +30,8 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Looting EX               | Multiplies mob experience gain depending on level.                                                                                                         |
 | Loyalty EX               | When the trident hits a block, teleports any item within 3 blocks of where the trident landed to the player who threw it.                                  |
 | Luck of the Sea EX       | Obtaining treasure from fishing will include additional loot, including rare, formerly non-renewable items.                                                |
-| Lunge EX                 | TBD                                                                                                                                                        |
-| Lure EX                  | TBD                                                                                                                                                        |
+| Lunge EX                 | Not yet implemented in 1.21.1                                                                                                                              |
+| Lure EX                  | Any item within 2 blocks of the fishing bobber is instantly retrieved by the player, and the fishing rod automatically returns when it catches fish.       |
 | Mending EX               | TBD                                                                                                                                                        |
 | Multishot EX             | TBD                                                                                                                                                        |
 | Piercing EX              | TBD                                                                                                                                                        |

@@ -1,6 +1,5 @@
 package com.pshchwy.enex.datagen;
 
-import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import com.pshchwy.enex.enchantment.effect.*;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -9,20 +8,16 @@ import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.*;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
@@ -36,14 +31,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.levelgen.WorldDimensions;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelProvider;
-import org.intellij.lang.annotations.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -986,7 +979,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(EnchantmentEffectComponents.TRIDENT_RETURN_ACCELERATION, new AddValue(LevelBasedValue.perLevel(1.0F))) // vanilla effect
                 .withEffect( // hit block? take all items o algo
                         EnchantmentEffectComponents.HIT_BLOCK,
-                        new ItemRetrievalEffect(LevelBasedValue.constant(1.0f))
+                        new TridentItemRetrievalEffect(LevelBasedValue.constant(1.0f))
                 )
 
         );
@@ -1010,7 +1003,34 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.MAINHAND
                                 )
                         )
-                .withEffect(EnchantmentEffectComponents.FISHING_LUCK_BONUS, new AddValue(LevelBasedValue.perLevel(1.0F)))
+                .withEffect(EnchantmentEffectComponents.FISHING_LUCK_BONUS, new AddValue(LevelBasedValue.perLevel(1.0F))) // changes happen in the loot tables
+
+        );
+
+        // register Lure EX
+        register(entries, EXEnchantmentEffects.LURE_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.FISHING_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(15, 9),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(65, 9),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                .withEffect(EnchantmentEffectComponents.FISHING_TIME_REDUCTION, new AddValue(LevelBasedValue.perLevel(5.0F)))
+                .withEffect(
+                        EnchantmentEffectComponents.TICK,
+                        new LureEffect(LevelBasedValue.constant(0.0f))
+                )
 
         );
     }

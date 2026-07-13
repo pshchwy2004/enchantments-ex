@@ -7,7 +7,7 @@
     "minecraft:hit_block": [
       {
         "effect": {
-          "type": "enchantments-ex:item_retrieval_effect",
+          "type": "enchantments-ex:trident_item_retrieval_effect",
           "amount": 1.0
         }
       }
