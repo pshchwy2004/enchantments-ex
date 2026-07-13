@@ -14,7 +14,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.*;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -50,9 +49,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
     @Override
     protected void configure(HolderLookup.Provider registries, Entries entries) {
         // easy variables for access
+        @SuppressWarnings("unused")
         HolderGetter<DamageType> damageTypes = registries.lookupOrThrow(Registries.DAMAGE_TYPE);
         HolderGetter<Enchantment> enchantments = registries.lookupOrThrow(Registries.ENCHANTMENT);
         HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
+        @SuppressWarnings("unused")
         HolderGetter<Block> blocks = registries.lookupOrThrow(Registries.BLOCK);
         HolderGetter<EntityType<?>>  entityTypes = registries.lookupOrThrow(Registries.ENTITY_TYPE);
         // register Knockback EX
@@ -104,7 +105,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
                         new ApplyMobEffect(
-                                HolderSet.<MobEffect>direct(MobEffects.WITHER),
+                                HolderSet.direct(MobEffects.WITHER),
                                 LevelBasedValue.constant(1.5F),
                                 LevelBasedValue.perLevel(1.5F, 0.5F),
                                 LevelBasedValue.constant(1.0F),
@@ -230,7 +231,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
                         new ApplyMobEffect(
-                                HolderSet.<MobEffect>direct(MobEffects.MOVEMENT_SLOWDOWN),
+                                HolderSet.direct(MobEffects.MOVEMENT_SLOWDOWN),
                                 LevelBasedValue.constant(1.5F),
                                 LevelBasedValue.perLevel(1.5F, 0.5F),
                                 LevelBasedValue.constant(3.0F),
@@ -329,7 +330,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
                         AllOf.entityEffects(
-                                new SummonEntityEffect(HolderSet.<EntityType<?>>direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder()), false),
+                                new SummonEntityEffect(HolderSet.direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder()), false),
                                 new PlaySoundEffect(SoundEvents.TRIDENT_THUNDER, ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
                         ),
                         AllOfCondition.allOf(
@@ -346,7 +347,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.HIT_BLOCK,
                         AllOf.entityEffects(
-                                new SummonEntityEffect(HolderSet.<EntityType<?>>direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder()), false),
+                                new SummonEntityEffect(HolderSet.direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder()), false),
                                 new PlaySoundEffect(SoundEvents.TRIDENT_THUNDER, ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
                         ),
                         AllOfCondition.allOf(

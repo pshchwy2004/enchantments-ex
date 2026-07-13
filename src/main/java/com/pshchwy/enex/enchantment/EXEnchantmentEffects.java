@@ -14,12 +14,15 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 public class EXEnchantmentEffects {
 
     public static final ResourceKey<Enchantment> AQUA_AFFINITY_EX = of("aqua_affinity_ex");
+    @SuppressWarnings("unused")
     public static MapCodec<AquaAffinityEXEffect> AQUA_AFFINITY_EX_EFFECT = register("aqua_affinity_ex_effect", AquaAffinityEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> BANE_OF_ARTHROPODS_EX = of("bane_of_arthropods_ex");
+    @SuppressWarnings("unused")
     public static MapCodec<BaneOfArthropodsEXEffect> BANE_OF_ARTHROPODS_EX_EFFECT = register("bane_of_arthropods_ex_effect", BaneOfArthropodsEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> BLAST_PROTECTION_EX = of("blast_protection_ex");
+    @SuppressWarnings("unused")
     public static MapCodec<BlastProtectionEXEffect> BLAST_PROTECTION_EX_EFFECT = register("blast_protection_ex_effect", BlastProtectionEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> BREACH_EX = of("breach_ex");
@@ -27,9 +30,11 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> CHANNELING_EX = of("channeling_ex");
 
     public static final ResourceKey<Enchantment> DENSITY_EX = of("density_ex");
+    @SuppressWarnings("unused")
     public static MapCodec<DensityEXEffect> DENSITY_EX_EFFECT = register("density_ex_effect", DensityEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> DEPTH_STRIDER_EX = of("depth_strider_ex");
+    @SuppressWarnings("unused")
     public static MapCodec<DepthStriderEXEffect> DEPTH_STRIDER_EX_EFFECT = register("depth_strider_ex_effect", DepthStriderEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> EFFICIENCY_EX = of("efficiency_ex");
@@ -47,16 +52,19 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> FROST_WALKER_EX = of("frost_walker_ex");
 
     public static final ResourceKey<Enchantment> IMPALING_EX = of("impaling_ex");
+    @SuppressWarnings("unused")
     public static MapCodec<BreathStealEffect> BREATH_STEAL_EFFECT = register("breath_steal_effect", BreathStealEffect.CODEC);
 
     public static final ResourceKey<Enchantment> INFINITY_EX = of("infinity_ex");
 
     public static final ResourceKey<Enchantment> KNOCKBACK_EX = of("knockback_ex");
+    @SuppressWarnings("unused")
     public static MapCodec<KnockbackEXEffect> KNOCKBACK_EX_EFFECT = register("knockback_ex_effect", KnockbackEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> LOOTING_EX = of("looting_ex");
 
     public static final ResourceKey<Enchantment> LOYALTY_EX = of("loyalty_ex");
+    @SuppressWarnings("unused")
     public static MapCodec<TridentItemRetrievalEffect> ITEM_RETRIEVAL_EFFECT = register("trident_item_retrieval_effect", TridentItemRetrievalEffect.CODEC);
 
     public static final ResourceKey<Enchantment> LUCK_OF_THE_SEA_EX = of("luck_of_the_sea_ex");
@@ -64,6 +72,7 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> LUNGE_EX = of("lunge_ex");
 
     public static final ResourceKey<Enchantment> LURE_EX = of("lure_ex");
+    @SuppressWarnings("unused")
     public static MapCodec<LureEffect> LURE_EFFECT = register("lure_effect", LureEffect.CODEC);
 
     public static final ResourceKey<Enchantment> MENDING_EX = of("mending_ex");
@@ -91,6 +100,7 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> SILK_TOUCH_EX = of("silk_touch_ex");
 
     public static final ResourceKey<Enchantment> SMITE_EX = of("smite_ex");
+    @SuppressWarnings("unused")
     public static MapCodec<SmiteEXEffect> SMITE_EX_EFFECT = register("smite_ex_effect", SmiteEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> SOUL_SPEED_EX = of("soul_speed_ex");
