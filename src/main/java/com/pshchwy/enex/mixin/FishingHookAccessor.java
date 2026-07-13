@@ -7,5 +7,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(FishingHook.class)
 public interface FishingHookAccessor {
     @Accessor("nibble")
-    public abstract int enex$getNibble();
+    int enex$getNibble();
 }

@@ -74,7 +74,7 @@ public class EXEnchantmentEffects {
 
     public static final ResourceKey<Enchantment> LURE_EX = of("lure_ex");
     @SuppressWarnings("unused")
-    public static MapCodec<LureEffect> LURE_EFFECT = register("lure_effect", LureEffect.CODEC);
+    public static MapCodec<LureEXEffect> LURE_EFFECT = register("lure_effect", LureEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> MENDING_EX = of("mending_ex");
 
@@ -93,6 +93,8 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> QUICK_CHARGE_EX = of("quick_charge_ex");
 
     public static final ResourceKey<Enchantment> RESPIRATION_EX = of("respiration_ex");
+    @SuppressWarnings("unused")
+    public static MapCodec<RespirationEXEffect> RESPIRATION_EX_EFFECT = register("respiration_ex_effect", RespirationEXEffect.CODEC);
 
     public static final ResourceKey<Enchantment> RIPTIDE_EX = of("riptide_ex");
 

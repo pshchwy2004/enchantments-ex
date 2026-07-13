@@ -1,0 +1,88 @@
+{
+  "anvil_cost": 5,
+  "description": {
+    "translate": "enchantment.enchantments-ex.protection_ex"
+  },
+  "effects": {
+    "minecraft:damage_protection": [
+      {
+        "effect": {
+          "type": "minecraft:add",
+          "value": {
+            "type": "minecraft:linear",
+            "base": 1.0,
+            "per_level_above_first": 1.0
+          }
+        },
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "tags": [
+              {
+                "expected": false,
+                "id": "minecraft:bypasses_invulnerability"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "minecraft:post_attack": [
+      {
+        "affected": "attacker",
+        "effect": {
+          "type": "minecraft:all_of",
+          "effects": [
+            {
+              "type": "minecraft:apply_mob_effect",
+              "max_amplifier": {
+                "type": "minecraft:linear",
+                "base": 1.0,
+                "per_level_above_first": 1.0
+              },
+              "max_duration": {
+                "type": "minecraft:linear",
+                "base": 2.5,
+                "per_level_above_first": 0.5
+              },
+              "min_amplifier": {
+                "type": "minecraft:linear",
+                "base": 1.0,
+                "per_level_above_first": 1.0
+              },
+              "min_duration": 1.5,
+              "to_apply": "minecraft:weakness"
+            }
+          ]
+        },
+        "enchanted": "victim",
+        "requirements": {
+          "chance": {
+            "type": "minecraft:enchantment_level",
+            "amount": {
+              "type": "minecraft:linear",
+              "base": 0.15,
+              "per_level_above_first": 0.15
+            }
+          },
+          "condition": "minecraft:random_chance"
+        }
+      }
+    ]
+  },
+  "exclusive_set": "#minecraft:exclusive_set/armor",
+  "max_cost": {
+    "base": 12,
+    "per_level_above_first": 21
+  },
+  "max_level": 4,
+  "min_cost": {
+    "base": 1,
+    "per_level_above_first": 11
+  },
+  "slots": [
+    "armor"
+  ],
+  "supported_items": "#minecraft:enchantable/armor",
+  "weight": 1
+}

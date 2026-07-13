@@ -1,6 +1,5 @@
 package com.pshchwy.enex.datagen;
 
-import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import com.pshchwy.enex.enchantment.effect.*;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -8,19 +7,21 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.*;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.*;
 import net.minecraft.util.valueproviders.ConstantFloat;
+import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -40,6 +41,7 @@ import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelProvider;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -51,7 +53,6 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
     @Override
     protected void configure(HolderLookup.Provider registries, Entries entries) {
         // easy variables for access
-        @SuppressWarnings("unused")
         HolderGetter<DamageType> damageTypes = registries.lookupOrThrow(Registries.DAMAGE_TYPE);
         HolderGetter<Enchantment> enchantments = registries.lookupOrThrow(Registries.ENCHANTMENT);
         HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
@@ -1048,7 +1049,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(EnchantmentEffectComponents.FISHING_TIME_REDUCTION, new AddValue(LevelBasedValue.perLevel(5.0F)))
                 .withEffect(
                         EnchantmentEffectComponents.TICK,
-                        new LureEffect(LevelBasedValue.constant(0.0f))
+                        new LureEXEffect(LevelBasedValue.constant(0.0f))
                 )
 
         );
@@ -1238,6 +1239,311 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 Attributes.KNOCKBACK_RESISTANCE,
                                 LevelBasedValue.perLevel(0.15F),
                                 AttributeModifier.Operation.ADD_VALUE
+                        )
+                )
+        );
+
+        // register Protection EX
+        register(entries, EXEnchantmentEffects.PROTECTION_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        4,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(1, 11),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(12, 21),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.ARMOR
+                                )
+                        )
+                        .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE))
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE_PROTECTION,
+                        new AddValue(LevelBasedValue.perLevel(1.0F)),
+                        DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY)))
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.VICTIM,
+                        EnchantmentTarget.ATTACKER,
+                        AllOf.entityEffects(
+                                new ApplyMobEffect(
+                                        HolderSet.direct(MobEffects.WEAKNESS),
+                                        LevelBasedValue.constant(1.5F),
+                                        LevelBasedValue.perLevel(2.5F, 0.5F),
+                                        LevelBasedValue.perLevel(1.0F),
+                                        LevelBasedValue.perLevel(1.0F)
+                                )
+                        ),
+                        LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))
+                )
+        );
+
+        // register Punch EX
+        register(entries, EXEnchantmentEffects.PUNCH_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        2,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(12, 20),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(37, 20),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+                .withEffect(
+                        EnchantmentEffectComponents.KNOCKBACK,
+                        new AddValue(LevelBasedValue.perLevel(1.0F)),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        new KnockbackEXEffect(LevelBasedValue.perLevel(0.4f, 0.2f)),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
+                        )
+                )
+        );
+
+        // register Quick Charge EX
+        register(entries, EXEnchantmentEffects.QUICK_CHARGE_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        5,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(12, 20),
+                                        // same fields as above but for max cost
+                                        Enchantment.constantCost(50),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND,
+                                        EquipmentSlotGroup.OFFHAND
+                                )
+                        )
+                .withSpecialEffect(EnchantmentEffectComponents.CROSSBOW_CHARGE_TIME, new AddValue(LevelBasedValue.perLevel(-0.25F)))
+                .withSpecialEffect(
+                        EnchantmentEffectComponents.CROSSBOW_CHARGING_SOUNDS,
+                        List.of(
+                                new CrossbowItem.ChargingSounds(Optional.of(SoundEvents.CROSSBOW_QUICK_CHARGE_1), Optional.empty(), Optional.of(SoundEvents.CROSSBOW_LOADING_END)),
+                                new CrossbowItem.ChargingSounds(Optional.of(SoundEvents.CROSSBOW_QUICK_CHARGE_2), Optional.empty(), Optional.of(SoundEvents.CROSSBOW_LOADING_END)),
+                                new CrossbowItem.ChargingSounds(Optional.of(SoundEvents.CROSSBOW_QUICK_CHARGE_3), Optional.empty(), Optional.of(SoundEvents.CROSSBOW_LOADING_END))
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.PROJECTILE_SPAWNED,
+                        new Ignite(LevelBasedValue.constant(100.0F))
+                )
+        );
+
+        // register Respiration EX
+        register(entries, EXEnchantmentEffects.RESPIRATION_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(10, 10),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(40, 10),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.HEAD
+                                )
+                        )
+                .withEffect(
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.respiration_ex"),
+                                Attributes.OXYGEN_BONUS,
+                                LevelBasedValue.perLevel(1.0F),
+                                AttributeModifier.Operation.ADD_VALUE
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.TICK,
+                        new RespirationEXEffect(LevelBasedValue.constant(1.0f))
+                )
+        );
+
+        // register Riptide EX
+        register(entries, EXEnchantmentEffects.RIPTIDE_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(17, 7),
+                                        // same fields as above but for max cost
+                                        Enchantment.constantCost(50),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.HAND
+                                )
+                        )
+                        .withEffect(
+                                EnchantmentEffectComponents.ATTRIBUTES,
+                                new EnchantmentAttributeEffect(
+                                        ResourceLocation.withDefaultNamespace("enchantment.riptide_ex"),
+                                        Attributes.OXYGEN_BONUS,
+                                        LevelBasedValue.perLevel(1.0F),
+                                        AttributeModifier.Operation.ADD_VALUE
+                                )
+                        )
+                .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.RIPTIDE_EXCLUSIVE))
+                .withSpecialEffect(EnchantmentEffectComponents.TRIDENT_SPIN_ATTACK_STRENGTH, new AddValue(LevelBasedValue.perLevel(1.5F, 0.75F)))
+                .withSpecialEffect(
+                        EnchantmentEffectComponents.TRIDENT_SOUND, List.of(SoundEvents.TRIDENT_RIPTIDE_1, SoundEvents.TRIDENT_RIPTIDE_2, SoundEvents.TRIDENT_RIPTIDE_3)
+                )
+        );
+
+        // register Soul Speed EX
+        // builder def
+        net.minecraft.advancements.critereon.EntityPredicate.Builder soulSpeedBuilder = net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                .periodicTick(5)
+                .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setIsFlying(false).setOnGround(true))
+                .moving(MovementPredicate.horizontalSpeed(MinMaxBounds.Doubles.atLeast(1.0E-5F)))
+                .movementAffectedBy(
+                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
+                                .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.SOUL_SPEED_BLOCKS))
+                );
+        register(entries, EXEnchantmentEffects.SOUL_SPEED_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(10, 10),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(25, 10),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.FEET
+                                )
+                        )
+                .withEffect(
+                        EnchantmentEffectComponents.LOCATION_CHANGED,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.soul_speed"),
+                                Attributes.MOVEMENT_SPEED,
+                                LevelBasedValue.perLevel(0.0405F, 0.0105F),
+                                AttributeModifier.Operation.ADD_VALUE
+                        ),
+                        AllOfCondition.allOf(
+                                InvertedLootItemCondition.invert(
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.THIS,
+                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                        .vehicle(net.minecraft.advancements.critereon.EntityPredicate.Builder.entity())
+                                        )
+                                ),
+                                AnyOfCondition.anyOf(
+                                        AllOfCondition.allOf(
+                                                EnchantmentActiveCheck.enchantmentActiveCheck(),
+                                                LootItemEntityPropertyCondition.hasProperties(
+                                                        LootContext.EntityTarget.THIS,
+                                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                                .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
+                                                ),
+                                                AnyOfCondition.anyOf(
+                                                        LootItemEntityPropertyCondition.hasProperties(
+                                                                LootContext.EntityTarget.THIS,
+                                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                                        .movementAffectedBy(
+                                                                                net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
+                                                                                        .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.SOUL_SPEED_BLOCKS))
+                                                                        )
+                                                        ),
+                                                        LootItemEntityPropertyCondition.hasProperties(
+                                                                LootContext.EntityTarget.THIS,
+                                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                                        .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setOnGround(false))
+                                                                        .build()
+                                                        )
+                                                )
+                                        ),
+                                        AllOfCondition.allOf(
+                                                EnchantmentActiveCheck.enchantmentInactiveCheck(),
+                                                LootItemEntityPropertyCondition.hasProperties(
+                                                        LootContext.EntityTarget.THIS,
+                                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                                .movementAffectedBy(
+                                                                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
+                                                                                .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.SOUL_SPEED_BLOCKS))
+                                                                )
+                                                                .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
+                                                )
+                                        )
+                                )
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.LOCATION_CHANGED,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.soul_speed"),
+                                Attributes.MOVEMENT_EFFICIENCY,
+                                LevelBasedValue.constant(1.0F),
+                                AttributeModifier.Operation.ADD_VALUE
+                        ),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.THIS,
+                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                        .movementAffectedBy(
+                                                net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
+                                                        .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.SOUL_SPEED_BLOCKS))
+                                        )
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.TICK,
+                        new SpawnParticlesEffect(
+                                ParticleTypes.SOUL,
+                                SpawnParticlesEffect.inBoundingBox(),
+                                SpawnParticlesEffect.offsetFromEntityPosition(0.1F),
+                                SpawnParticlesEffect.movementScaled(-0.2F),
+                                SpawnParticlesEffect.fixedVelocity(ConstantFloat.of(0.1F)),
+                                ConstantFloat.of(1.0F)
+                        ),
+                        LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, soulSpeedBuilder)
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.TICK,
+                        new PlaySoundEffect(SoundEvents.SOUL_ESCAPE, ConstantFloat.of(0.6F), UniformFloat.of(0.6F, 1.0F)),
+                        AllOfCondition.allOf(
+                                LootItemRandomChanceCondition.randomChance(0.35F), LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, soulSpeedBuilder)
                         )
                 )
         );

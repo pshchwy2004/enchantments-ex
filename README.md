@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Enchantments EX is a Minecraft Fabric mod that aims to "enchant" the enchantment experience by adding a new tier of enchantments to all Vanilla enchantments (excluding Curses).
+Enchantments EX is a Minecraft Fabric mod that aims to "enchant" the enchantment experience by adding a new tier of enchantments to all Vanilla enchantments (excluding Curses and Silk Touch).
 
 Each EX enchantment will add additional buffs that complement your Minecraft experience and make you stronger.
 
@@ -37,15 +37,14 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Piercing EX              | Compatible with Multishot and Multishot EX, can be applied to bows, and does extra damage when using firework rockets or targeting Skeletons.                                              |
 | Power EX                 | Has a chance scaling by level of applying Wither II to targets.                                                                                                                            |
 | Projectile Protection EX | Reduces knockback, and its projectile protection now also extends to the Warden's Sonic Boom.                                                                                              |
-| Protection EX            | TBD                                                                                                                                                                                        |
-| Punch EX                 | TBD                                                                                                                                                                                        |
-| Quick Charge EX          | TBD                                                                                                                                                                                        |
-| Respiration EX           | TBD                                                                                                                                                                                        |
-| Riptide EX               | TBD                                                                                                                                                                                        |
+| Protection EX            | Attackers have a scaled chance of being inflicted with Weakness.                                                                                                                           |
+| Punch EX                 | Knocks enemies upward. Higher levels will create higher upward velocity per hit.                                                                                                           |
+| Quick Charge EX          | Maximum enchantment level raised to 5. Also, lights arrows on fire upon firing.                                                                                                            |
+| Respiration EX           | Any player with Dolphin's Grace, Water Breathing, or Conduit Power gains Regeneration per level.                                                                                           |
+| Riptide EX               | Can be used outside of water or rain.                                                                                                                                                      |
 | Sharpness EX             | Has a chance scaling by level of applying Wither II to targets.                                                                                                                            |
-| Silk Touch EX            | TBD                                                                                                                                                                                        |
 | Smite EX                 | Applies Weakness V to all undead mobs and Wardens, and Weakness I to all other targets.                                                                                                    |
-| Soul Speed EX            | TBD                                                                                                                                                                                        |
+| Soul Speed EX            | Does not drain durability when walking or running on Soul Sand or Soul Soil.                                                                                                               |
 | Sweeping Edge EX         | TBD                                                                                                                                                                                        |
 | Swift Sneak EX           | TBD                                                                                                                                                                                        |
 | Thorns EX                | TBD                                                                                                                                                                                        |

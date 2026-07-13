@@ -17,11 +17,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public record LureEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
-    public static final MapCodec<LureEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
+public record LureEXEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
+    public static final MapCodec<LureEXEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(
-                    LevelBasedValue.CODEC.fieldOf("amount").forGetter(LureEffect::amount)
-            ).apply(instance, LureEffect::new)
+                    LevelBasedValue.CODEC.fieldOf("amount").forGetter(LureEXEffect::amount)
+            ).apply(instance, LureEXEffect::new)
     );
 
     @Override
