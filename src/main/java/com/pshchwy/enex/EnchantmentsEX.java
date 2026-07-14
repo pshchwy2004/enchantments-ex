@@ -1,6 +1,8 @@
 package com.pshchwy.enex;
 
+import com.pshchwy.enex.block.EXBlocks;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
+import com.pshchwy.enex.item.EXItems;
 import com.pshchwy.enex.util.EXLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
 
@@ -22,6 +24,8 @@ public class EnchantmentsEX implements ModInitializer {
 	public void onInitialize() {
 		// Initializes the mod.
 		LOGGER.info("Initializing " + MOD_ID); // This goes first.
+		EXItems.initialize();
+		EXBlocks.initialize();
 		EXEnchantmentEffects.registerEnchantmentEffects();
 		EXLootTableModifiers.modifyLootTables();
 		LOGGER.info("Successfully initialized " + MOD_ID); // This goes last.
