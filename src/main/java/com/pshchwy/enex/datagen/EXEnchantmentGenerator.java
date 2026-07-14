@@ -1577,6 +1577,59 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 AttributeModifier.Operation.ADD_VALUE
                         )
                 )
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE,
+                        new AddValue(LevelBasedValue.perLevel(1.5f, 1.5f)),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.THIS,
+                                EntityPredicate.Builder.entity()
+                                        .entityType(
+                                                EntityTypePredicate.of(
+                                                        entityTypes
+                                                                .getOrThrow(EXMobTagProvider.FLYING_MOBS).key()
+                                                )
+                                        )
+                        )
+                )
+        );
+
+        // register Swift Sneak EX
+        register(entries, EXEnchantmentEffects.SWIFT_SNEAK_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        5,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(25, 25),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(75, 25),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.LEGS
+                                )
+                        )
+                .withEffect(
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.swift_sneak_ex"),
+                                Attributes.SNEAKING_SPEED,
+                                LevelBasedValue.perLevel(0.15F),
+                                AttributeModifier.Operation.ADD_VALUE
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                ResourceLocation.withDefaultNamespace("enchantment.swift_sneak_ex"),
+                                Attributes.STEP_HEIGHT,
+                                LevelBasedValue.constant(0.5F),
+                                AttributeModifier.Operation.ADD_VALUE
+                        )
+                )
         );
     }
 

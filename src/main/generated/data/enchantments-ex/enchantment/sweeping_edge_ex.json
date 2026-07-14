@@ -1,0 +1,61 @@
+{
+  "anvil_cost": 5,
+  "description": {
+    "translate": "enchantment.enchantments-ex.sweeping_edge_ex"
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": {
+          "type": "minecraft:fraction",
+          "denominator": {
+            "type": "minecraft:linear",
+            "base": 2.0,
+            "per_level_above_first": 1.0
+          },
+          "numerator": {
+            "type": "minecraft:linear",
+            "base": 1.0,
+            "per_level_above_first": 1.0
+          }
+        },
+        "attribute": "minecraft:player.sweeping_damage_ratio",
+        "id": "minecraft:enchantment.sweeping_edge_ex",
+        "operation": "add_value"
+      }
+    ],
+    "minecraft:damage": [
+      {
+        "effect": {
+          "type": "minecraft:add",
+          "value": {
+            "type": "minecraft:linear",
+            "base": 1.5,
+            "per_level_above_first": 1.5
+          }
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "type": "#enchantments-ex:flying_mobs"
+          }
+        }
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 20,
+    "per_level_above_first": 9
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 5,
+    "per_level_above_first": 9
+  },
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/sword",
+  "weight": 1
+}

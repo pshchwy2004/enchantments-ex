@@ -20,6 +20,7 @@ public class EXMobTagProvider extends FabricTagProvider<EntityType<?>> {
 
     public static final TagKey<EntityType<?>> BREACH_EX_VULNERABLE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "boss_mobs"));
     public static final TagKey<EntityType<?>> FIRE_IMMUNE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "immune_to_fire"));
+    public static final TagKey<EntityType<?>> FLYING_MOBS = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "flying_mobs"));
 
     /**
      * Constructs a new {@link FabricTagProvider} with the default computed path.
@@ -50,13 +51,25 @@ public class EXMobTagProvider extends FabricTagProvider<EntityType<?>> {
                 .add(EntityType.WARDEN)
                 .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.WITHER)
-                .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.BLAZE)
                 .add(EntityType.WITHER_SKELETON)
                 .add(EntityType.GHAST)
                 .add(EntityType.MAGMA_CUBE)
                 .add(EntityType.ZOMBIFIED_PIGLIN)
                 .add(EntityType.STRIDER)
+                .setReplace(true);
+
+        getOrCreateTagBuilder(FLYING_MOBS)
+                .add(EntityType.ENDER_DRAGON)
+                .add(EntityType.GHAST)
+                .add(EntityType.VEX)
+                .add(EntityType.ALLAY)
+                .add(EntityType.BLAZE)
+                .add(EntityType.WITHER)
+                .add(EntityType.BAT)
+                .add(EntityType.PARROT)
+                .add(EntityType.BEE)
+                .add(EntityType.PHANTOM)
                 .setReplace(true);
     }
 }
