@@ -47,9 +47,9 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Soul Speed EX            | Does not drain durability when walking or running on Soul Sand or Soul Soil.                                                                                                               |
 | Sweeping Edge EX         | Extra damage against all flying mobs.                                                                                                                                                      |
 | Swift Sneak EX           | Raised the maximum enchantment level to 5 and increases step size by 0.5 blocks.                                                                                                           |
-| Thorns EX                | TBD                                                                                                                                                                                        |
-| Unbreaking EX            | TBD                                                                                                                                                                                        |
-| Wind Burst EX            | TBD                                                                                                                                                                                        |
+| Thorns EX                | Increases the chance of activating per level, decreases less durability per use, and deals additional damage per level.                                                                    |
+| Unbreaking EX            | Attacking or being attacked will have a scaled chance of giving experience.                                                                                                                |
+| Wind Burst EX            | Performing an appropriate smash attack will now also grant Resistance and Strength. Additionally, reduces fall damage when held in hand.                                                   |
 
 ## Setup
 

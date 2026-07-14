@@ -16,6 +16,7 @@ import net.minecraft.tags.*;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -39,11 +40,13 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelProvider;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
     public EXEnchantmentGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
@@ -53,7 +56,6 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
     @Override
     protected void configure(HolderLookup.Provider registries, Entries entries) {
         // easy variables for access
-        @SuppressWarnings("unused")
         HolderGetter<DamageType> damageTypes = registries.lookupOrThrow(Registries.DAMAGE_TYPE);
         HolderGetter<Enchantment> enchantments = registries.lookupOrThrow(Registries.ENCHANTMENT);
         HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
@@ -1628,6 +1630,163 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 Attributes.STEP_HEIGHT,
                                 LevelBasedValue.constant(0.5F),
                                 AttributeModifier.Operation.ADD_VALUE
+                        )
+                )
+        );
+
+        // register Thorns EX
+        register(entries, EXEnchantmentEffects.THORNS_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(10, 20),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(60, 20),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.ARMOR
+                                )
+                        )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.VICTIM,
+                        EnchantmentTarget.ATTACKER,
+                        AllOf.entityEffects(
+                                new DamageEntity(LevelBasedValue.perLevel(1.0F, 1.0F), LevelBasedValue.perLevel(5.0F, 1.0F), damageTypes.getOrThrow(DamageTypes.THORNS)),
+                                new DamageItem(LevelBasedValue.constant(1.0F))
+                        ),
+                        LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.25F)))
+                )
+        );
+
+        // register Unbreaking EX
+        register(entries, EXEnchantmentEffects.UNBREAKING_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.DURABILITY_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        5,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(5, 8),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(55, 8),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.ANY
+                                )
+                        )
+                .withEffect(
+                        EnchantmentEffectComponents.ITEM_DAMAGE,
+                        new RemoveBinomial(new LevelBasedValue.Fraction(LevelBasedValue.perLevel(2.0F), LevelBasedValue.perLevel(10.0F, 2.5F))),
+                        MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(ItemTags.ARMOR_ENCHANTABLE))
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.ITEM_DAMAGE,
+                        new RemoveBinomial(new LevelBasedValue.Fraction(LevelBasedValue.perLevel(1.0F), LevelBasedValue.perLevel(2.0F, 1.0F))),
+                        InvertedLootItemCondition.invert(
+                                MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(ItemTags.ARMOR_ENCHANTABLE))
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.ATTACKER,
+                        new SummonEntityEffect(
+                                HolderSet.direct(EntityType.EXPERIENCE_ORB.builtInRegistryHolder()),
+                                false
+                        ),
+                        AllOfCondition.allOf(
+                                LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.VICTIM,
+                        EnchantmentTarget.VICTIM,
+                        new SummonEntityEffect(
+                                HolderSet.direct(EntityType.EXPERIENCE_ORB.builtInRegistryHolder()),
+                                false
+                        ),
+                        AllOfCondition.allOf(
+                                LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))
+                        )
+                )
+        );
+
+        // register Wind Burst EX
+        register(entries, EXEnchantmentEffects.WIND_BURST_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.DURABILITY_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(15, 9),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(65, 9),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.MAINHAND
+                                )
+                        )
+
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.ATTACKER,
+                        AllOf.entityEffects(
+                                new ExplodeEffect(
+                                        false,
+                                        Optional.empty(),
+                                        Optional.of(LevelBasedValue.lookup(List.of(1.2F, 1.75F, 2.2F), LevelBasedValue.perLevel(1.5F, 0.35F))),
+                                        blocks.get(BlockTags.BLOCKS_WIND_CHARGE_EXPLOSIONS).map(Function.identity()),
+                                        Vec3.ZERO,
+                                        LevelBasedValue.constant(3.5F),
+                                        false,
+                                        Level.ExplosionInteraction.TRIGGER,
+                                        ParticleTypes.GUST_EMITTER_SMALL,
+                                        ParticleTypes.GUST_EMITTER_LARGE,
+                                        SoundEvents.WIND_CHARGE_BURST
+                                ),
+                                new ApplyMobEffect(
+                                        HolderSet.direct(MobEffects.DAMAGE_BOOST),
+                                        LevelBasedValue.constant(10.0F),
+                                        LevelBasedValue.constant(10.0F),
+                                        LevelBasedValue.perLevel(1.0F),
+                                        LevelBasedValue.perLevel(1.0F)
+                                ),
+                                new ApplyMobEffect(
+                                        HolderSet.direct(MobEffects.DAMAGE_RESISTANCE),
+                                        LevelBasedValue.constant(10.0F),
+                                        LevelBasedValue.constant(10.0F),
+                                        LevelBasedValue.perLevel(1.0F),
+                                        LevelBasedValue.perLevel(1.0F)
+                                )
+                        ),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.DIRECT_ATTACKER,
+                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                        .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
+                                        .moving(MovementPredicate.fallDistance(MinMaxBounds.Doubles.atLeast(1.5)))
+                        )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE_PROTECTION,
+                        new AddValue(LevelBasedValue.perLevel(1.5F)),
+                        DamageSourceCondition.hasDamageSource(
+                                DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.IS_FALL)).tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
                         )
                 )
         );
