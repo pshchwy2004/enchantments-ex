@@ -12,12 +12,15 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class EXBlockEntities {
     public static final BlockEntityType<StampingTableBlockEntity> STAMPING_TABLE_BLOCK_ENTITY =
-            register("stamping_table", StampingTableBlockEntity::new, EXBlocks.STAMPING_TABLE);
+            register("stamping_table_entity", StampingTableBlockEntity::new, EXBlocks.STAMPING_TABLE);
 
     private static <T extends BlockEntity> BlockEntityType<T> register(String name,
                                                                        BlockEntityType.BlockEntitySupplier<? extends T> entityFactory,
                                                                        Block... blocks) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, name);
         return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, BlockEntityType.Builder.<T>of(entityFactory, blocks).build());
+    }
+    public static void initialize() {
+        EnchantmentsEX.LOGGER.info("Registering block entities for " + EnchantmentsEX.MOD_ID);
     }
 }
