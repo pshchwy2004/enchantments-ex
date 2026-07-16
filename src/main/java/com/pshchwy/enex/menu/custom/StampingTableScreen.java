@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class StampingTableScreen extends AbstractContainerScreen<StampingTableMenu> {
     public static final ResourceLocation GUI_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "textures/gui/stamping_table.png");
+            ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "textures/gui/stamping_table/stamping_table.png");
 
     public StampingTableScreen(StampingTableMenu abstractContainerMenu, Inventory inventory, Component component) {
         super(abstractContainerMenu, inventory, component);
@@ -26,7 +26,15 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(
+                GUI_TEXTURE,
+                x, y,             // Dest X, Y on the player's screen
+                0, 0,             // Source U, V (top-left of your texture file)
+                imageWidth,       // Width to draw on screen (176)
+                imageHeight,      // Height to draw on screen (166)
+                176,              // texture width
+                166               // texture height
+        );
     }
 
     @Override

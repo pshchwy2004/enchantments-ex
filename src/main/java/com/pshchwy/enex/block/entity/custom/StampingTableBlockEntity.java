@@ -31,6 +31,6 @@ public class StampingTableBlockEntity extends BlockEntity implements ExtendedScr
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return new StampingTableMenu(i, inventory);
+        return new StampingTableMenu(i, inventory, this.worldPosition);
     }
 }

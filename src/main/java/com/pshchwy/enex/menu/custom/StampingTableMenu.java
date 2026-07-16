@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class StampingTableMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
-    private final Container enchantSlots = new SimpleContainer(2) {
+    private final Container stampSlots = new SimpleContainer(2) {
         @Override
         public void setChanged() {
             super.setChanged();
@@ -24,14 +24,16 @@ public class StampingTableMenu extends AbstractContainerMenu {
         }
     };
 
-    public StampingTableMenu(int id, Inventory inventory) {
-        this(id, inventory, ContainerLevelAccess.NULL);
-    }
-
     public StampingTableMenu(int id, Inventory inventory, ContainerLevelAccess access) {
         super(EXMenus.STAMPING_TABLE_MENU, id);
         this.access = access;
-        this.addSlot(new Slot(inventory, 0, 14, 46));
+        this.addSlot(new Slot(this.stampSlots, 0, 15, 47) { // enchanted book placement
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.is(Items.ENCHANTED_BOOK);
+            }
+        });
+        this.addSlot(new Slot(this.stampSlots, 1, 35, 47));
         addPlayerHotbar(inventory);
         addPlayerInventory(inventory);
     }
@@ -87,7 +89,8 @@ public class StampingTableMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) { // canUse
-        return stillValid(this.access, player, EXBlocks.STAMPING_TABLE);
+        return stillValid(this.access, player, EXBlocks.STAMPING_TABLE)
+            && this.stampSlots.stillValid(player);
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

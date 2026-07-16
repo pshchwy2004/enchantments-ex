@@ -112,8 +112,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentTarget.VICTIM,
                         new ApplyMobEffect(
                                 HolderSet.direct(MobEffects.WITHER),
-                                LevelBasedValue.constant(1.5F),
-                                LevelBasedValue.perLevel(1.5F, 0.5F),
+                                LevelBasedValue.constant(15.0F),
+                                LevelBasedValue.perLevel(15.0F, 2.5F),
                                 LevelBasedValue.constant(1.0F),
                                 LevelBasedValue.constant(1.0F)
                         ),
