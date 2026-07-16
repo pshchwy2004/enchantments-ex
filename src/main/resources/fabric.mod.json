@@ -19,18 +19,14 @@
 			"com.pshchwy.enex.EnchantmentsEX"
 		],
 		"client": [
-			"com.pshchwy.enex.client.EnchantmentsEXClient"
+			"com.pshchwy.enex.EnchantmentsEXClient"
 		],
 		"fabric-datagen": [
 			"com.pshchwy.enex.EnchantmentsEXDataGenerator"
 		]
 	},
 	"mixins": [
-		"enchantments-ex.mixins.json",
-		{
-			"config": "enchantments-ex.client.mixins.json",
-			"environment": "client"
-		}
+		"enchantments-ex.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.19.3",

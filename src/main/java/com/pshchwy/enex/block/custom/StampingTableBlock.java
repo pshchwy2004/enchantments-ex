@@ -38,9 +38,13 @@ public class StampingTableBlock extends BaseEntityBlock {
     protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
-        }
+        } else {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof StampingTableBlockEntity) {
+                player.openMenu((StampingTableBlockEntity)blockEntity);
+            }
 
-        // player.openMenu(blockState.getMenuProvider(level, blockPos));
-        return InteractionResult.CONSUME;
+            return InteractionResult.CONSUME;
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.pshchwy.enex.block.entity.custom;
 
 import com.pshchwy.enex.block.entity.EXBlockEntities;
+import com.pshchwy.enex.menu.custom.StampingTableMenu;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -30,6 +31,6 @@ public class StampingTableBlockEntity extends BlockEntity implements ExtendedScr
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return null;
+        return new StampingTableMenu(i, inventory);
     }
 }
