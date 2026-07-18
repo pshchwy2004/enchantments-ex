@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "minecraft:block/birch_planks",
+    "east": "enchantments-ex:block/stamping_table_side",
+    "north": "enchantments-ex:block/stamping_table_side",
+    "particle": "enchantments-ex:block/stamping_table_side",
+    "south": "enchantments-ex:block/stamping_table_side",
+    "up": "enchantments-ex:block/stamping_table_top",
+    "west": "enchantments-ex:block/stamping_table_side"
+  }
+}

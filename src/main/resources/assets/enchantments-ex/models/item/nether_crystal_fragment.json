@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "enchantments-ex:item/nether_crystal_fragment"
+  }
+}
