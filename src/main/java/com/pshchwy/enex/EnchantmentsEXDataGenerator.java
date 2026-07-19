@@ -1,6 +1,7 @@
 package com.pshchwy.enex;
 
 import com.pshchwy.enex.datagen.EXEnchantmentGenerator;
+import com.pshchwy.enex.datagen.EXItemTagProvider;
 import com.pshchwy.enex.datagen.EXMobTagProvider;
 import com.pshchwy.enex.datagen.EXRecipeProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
@@ -13,6 +14,7 @@ public class EnchantmentsEXDataGenerator implements DataGeneratorEntrypoint {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack(); // create pack
         pack.addProvider(EXEnchantmentGenerator::new);
         pack.addProvider(EXMobTagProvider::new);
+        pack.addProvider(EXItemTagProvider::new);
         pack.addProvider(EXRecipeProvider::new);
     }
 }

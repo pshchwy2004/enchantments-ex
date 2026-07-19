@@ -1,6 +1,7 @@
 package com.pshchwy.enex.menu.custom;
 
 import com.pshchwy.enex.block.EXBlocks;
+import com.pshchwy.enex.item.EXItems;
 import com.pshchwy.enex.menu.EXMenus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
@@ -33,7 +34,13 @@ public class StampingTableMenu extends AbstractContainerMenu {
                 return stack.is(Items.ENCHANTED_BOOK);
             }
         });
-        this.addSlot(new Slot(this.stampSlots, 1, 35, 47));
+
+        this.addSlot(new Slot(this.stampSlots, 1, 35, 47) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return stack.is(EXItems.MOLTEN_INK);
+            }
+        });
         addPlayerHotbar(inventory);
         addPlayerInventory(inventory);
     }
@@ -46,29 +53,46 @@ public class StampingTableMenu extends AbstractContainerMenu {
     public @NotNull ItemStack quickMoveStack(Player player, int invSlot) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
+
         if (slot != null && slot.hasItem()) {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
-            if (invSlot == 0) {
-                if (!this.moveItemStackTo(itemStack2, 2, 38, true)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (invSlot == 1) {
-                if (!this.moveItemStackTo(itemStack2, 2, 38, true)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (itemStack2.is(Items.LAPIS_LAZULI)) { // change to stamping ink
-                if (!this.moveItemStackTo(itemStack2, 1, 2, true)) {
+
+            // CONSTANTS FOR THE SLOT INDEX RANGES
+            int customSlotsCount = 2;
+            int totalSlotsCount = 38; // 2 block slots + 9 hotbar + 27 main inventory
+
+            if (invSlot < customSlotsCount) {
+                // IF SHIFT-CLICKING OUT OF THE STAMPING TABLE SLOTS (0 or 1):
+                // Move items into the player inventory/hotbar (slots 2 to 38)
+                if (!this.moveItemStackTo(itemStack2, customSlotsCount, totalSlotsCount, true)) {
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (this.slots.getFirst().hasItem() || !this.slots.getFirst().mayPlace(itemStack2)) {
-                    return ItemStack.EMPTY;
+                // IF SHIFT-CLICKING OUT OF PLAYER INVENTORY/HOTBAR (slots 2 to 37):
+                if (itemStack2.is(Items.ENCHANTED_BOOK)) {
+                    // Try moving into the Enchanted Book slot (Slot 0)
+                    if (!this.moveItemStackTo(itemStack2, 0, 1, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (itemStack2.is(EXItems.MOLTEN_INK)) {
+                    // Try moving into the Molten Ink slot (Slot 1)
+                    if (!this.moveItemStackTo(itemStack2, 1, 2, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else {
+                    // For any other item, shift-click splits between player inventory and hotbar
+                    // Since hotbar is slots 2-10 and inventory is slots 11-37:
+                    if (invSlot >= 2 && invSlot <= 10) { // From hotbar
+                        if (!this.moveItemStackTo(itemStack2, 11, totalSlotsCount, false)) { // move to inventory
+                            return ItemStack.EMPTY;
+                        }
+                    } else if (invSlot >= 11 && invSlot < totalSlotsCount) { // From inventory
+                        if (!this.moveItemStackTo(itemStack2, 2, 11, false)) { // move to hotbar
+                            return ItemStack.EMPTY;
+                        }
+                    }
                 }
-
-                ItemStack itemStack3 = itemStack2.copyWithCount(1);
-                itemStack2.shrink(1);
-                this.slots.getFirst().setByPlayer(itemStack3);
             }
 
             if (itemStack2.isEmpty()) {

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stamping_table": {
+      "conditions": {
+        "items": [
+          {
+            "items": "enchantments-ex:stamping_table"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "enchantments-ex:stamping_table"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_stamping_table"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "enchantments-ex:stamping_table"
+    ]
+  }
+}

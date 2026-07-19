@@ -1,0 +1,12 @@
+{
+  "replace": true,
+  "values": [
+    {
+      "id": "#minecraft:wool_carpets",
+      "required": false
+    },
+    "minecraft:paper",
+    "minecraft:leather",
+    "minecraft:rabbit_hide"
+  ]
+}
