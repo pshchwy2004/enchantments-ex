@@ -1,9 +1,16 @@
 package com.pshchwy.enex.menu.custom;
 
 import com.pshchwy.enex.block.EXBlocks;
+import com.pshchwy.enex.enchantment.EXEnchantmentMap;
 import com.pshchwy.enex.item.EXItems;
 import com.pshchwy.enex.menu.EXMenus;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,7 +20,12 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StampingTableMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
@@ -24,10 +36,12 @@ public class StampingTableMenu extends AbstractContainerMenu {
             StampingTableMenu.this.slotsChanged(this);
         }
     };
+    private int selectedEnchantmentIndex;
 
     public StampingTableMenu(int id, Inventory inventory, ContainerLevelAccess access) {
         super(EXMenus.STAMPING_TABLE_MENU, id);
         this.access = access;
+        selectedEnchantmentIndex = -1;
         this.addSlot(new Slot(this.stampSlots, 0, 15, 47) { // enchanted book placement
             @Override
             public boolean mayPlace(ItemStack stack) {
@@ -54,22 +68,22 @@ public class StampingTableMenu extends AbstractContainerMenu {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
 
-        if (slot != null && slot.hasItem()) {
+        if (slot.hasItem()) {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
 
-            // CONSTANTS FOR THE SLOT INDEX RANGES
+            // slot index ranges
             int customSlotsCount = 2;
             int totalSlotsCount = 38; // 2 block slots + 9 hotbar + 27 main inventory
 
             if (invSlot < customSlotsCount) {
-                // IF SHIFT-CLICKING OUT OF THE STAMPING TABLE SLOTS (0 or 1):
+                // stamping table slots
                 // Move items into the player inventory/hotbar (slots 2 to 38)
                 if (!this.moveItemStackTo(itemStack2, customSlotsCount, totalSlotsCount, true)) {
                     return ItemStack.EMPTY;
                 }
             } else {
-                // IF SHIFT-CLICKING OUT OF PLAYER INVENTORY/HOTBAR (slots 2 to 37):
+                // player inventory slots
                 if (itemStack2.is(Items.ENCHANTED_BOOK)) {
                     // Try moving into the Enchanted Book slot (Slot 0)
                     if (!this.moveItemStackTo(itemStack2, 0, 1, false)) {
@@ -83,11 +97,11 @@ public class StampingTableMenu extends AbstractContainerMenu {
                 } else {
                     // For any other item, shift-click splits between player inventory and hotbar
                     // Since hotbar is slots 2-10 and inventory is slots 11-37:
-                    if (invSlot >= 2 && invSlot <= 10) { // From hotbar
+                    if (invSlot <= 10) { // From hotbar
                         if (!this.moveItemStackTo(itemStack2, 11, totalSlotsCount, false)) { // move to inventory
                             return ItemStack.EMPTY;
                         }
-                    } else if (invSlot >= 11 && invSlot < totalSlotsCount) { // From inventory
+                    } else if (invSlot < totalSlotsCount) { // From inventory
                         if (!this.moveItemStackTo(itemStack2, 2, 11, false)) { // move to hotbar
                             return ItemStack.EMPTY;
                         }
@@ -129,5 +143,146 @@ public class StampingTableMenu extends AbstractContainerMenu {
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
+    }
+
+    /**
+     * Parses the Enchanted Book's 1.21 Data Component map and extracts the list of holders.
+     */
+    public List<Holder<Enchantment>> getAvailableEnchantments() {
+        ItemStack bookStack = this.stampSlots.getItem(0);
+        if (bookStack.isEmpty() || !bookStack.is(Items.ENCHANTED_BOOK)) {
+            return List.of();
+        }
+
+        // Retrieve the immutable 1.21 enchantment mapping component
+        ItemEnchantments enchantsMap = bookStack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
+
+        List<Holder<Enchantment>> filteredList = new ArrayList<>();
+
+        for (Holder<Enchantment> holder : enchantsMap.keySet()) {
+            // get key -> add to new filtered list
+            holder.unwrapKey().ifPresent(key -> {
+                if (EXEnchantmentMap.isUpgradable(key)) {
+                    filteredList.add(holder);
+                }
+            });
+        }
+
+        return filteredList;
+    }
+
+    /**
+     * Automatically updates whenever an item is inserted, extracted, or modified.
+     */
+    @Override
+    public void slotsChanged(Container container) {
+        super.slotsChanged(container);
+
+        // If the items changed, reset the player's screen selection safely
+        if (container == this.stampSlots) {
+            ItemStack bookStack = this.stampSlots.getItem(0);
+            ItemStack inkStack = this.stampSlots.getItem(1);
+
+            // If either slot is completely emptied, reset selection state
+            if (bookStack.isEmpty() || inkStack.isEmpty()) {
+                this.selectedEnchantmentIndex = -1;
+            } else {
+                // Bounds safety check: if a new book has fewer enchantments than the old one, drop selection
+                int totalEnchants = getAvailableEnchantments().size();
+                if (this.selectedEnchantmentIndex >= totalEnchants) {
+                    this.selectedEnchantmentIndex = -1;
+                }
+            }
+        }
+    }
+
+    /**
+     * Allows the Screen to query which button should look active/selected.
+     */
+    public int getSelectedEnchantmentIndex() {
+        return this.selectedEnchantmentIndex;
+    }
+
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        List<Holder<Enchantment>> available = this.getAvailableEnchantments();
+
+        // verify index exists
+        if (id < 0 || id >= available.size()) {
+            return false;
+        }
+
+        ItemStack bookStack = this.stampSlots.getItem(0);
+        ItemStack inkStack = this.stampSlots.getItem(1);
+
+        // secondary check for items on the serverside
+        if (bookStack.isEmpty() || inkStack.isEmpty() || !inkStack.is(EXItems.MOLTEN_INK)) {
+            return false;
+        }
+
+        Holder<Enchantment> targetEnchant = available.get(id); // gets enchantment
+
+        // 4. Update the book's data components
+        // We create a copy of the book to safely mutate its components
+        ItemStack upgradedBook = bookStack.copy();
+        ItemEnchantments currentEnchants = upgradedBook.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
+        ItemEnchantments.Mutable builder = new ItemEnchantments.Mutable(currentEnchants);
+
+        int currentLevel = currentEnchants.getLevel(targetEnchant);
+
+        // Resolve the registry key for the target enchantment, fetch its upgrade key, and lookup the new Holder
+        targetEnchant.unwrapKey().ifPresent(originalKey -> {
+            ResourceKey<Enchantment> exKey = com.pshchwy.enex.enchantment.EXEnchantmentMap.getUpgrade(originalKey);
+
+            // get holder
+            player.level().registryAccess().registry(Registries.ENCHANTMENT).flatMap(registry -> registry.getHolder(exKey)).ifPresent(exHolder -> {
+                // remove the old enchantment from the book
+                builder.set(targetEnchant, 0);
+                // set new EX enchantment level
+                builder.set(exHolder, currentLevel);
+            });
+        });
+
+        // apply the mutated enchantment map back to the book copy
+        upgradedBook.set(DataComponents.STORED_ENCHANTMENTS, builder.toImmutable());
+
+        this.stampSlots.setItem(0, upgradedBook); // overwrite old book with upgraded version
+
+        // consume Molten Ink and return an empty glass bottle
+        inkStack.shrink(1); // even though Molten Ink can only have a max stack of 1, inventory edit shenanigans might cause unwanted behavior
+        if (inkStack.isEmpty()) {
+            // replace the slot with empty bottle
+            this.stampSlots.setItem(1, new ItemStack(Items.GLASS_BOTTLE));
+        } else {
+            // If the player had stacked multiple Molten Inks, give them the bottle directly
+            if (!player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE))) {
+                player.drop(new ItemStack(Items.GLASS_BOTTLE), false);
+            }
+        }
+
+        // TODO import stamp sound, replace ENCHANTMENT_TABLE_USE
+        player.level().playSound(
+                null,
+                player.blockPosition(),
+                SoundEvents.ENCHANTMENT_TABLE_USE,
+                SoundSource.BLOCKS,
+                1.0F,
+                1.0F
+        );
+
+        // Reset selection state
+        this.selectedEnchantmentIndex = -1;
+        this.slotsChanged(this.stampSlots);
+        return true;
+    }
+
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
+
+        // Eject the contents of the stamping table back to the player when they exit
+        this.access.execute((level, pos) -> {
+            this.clearContainer(player, this.stampSlots);
+        });
     }
 }

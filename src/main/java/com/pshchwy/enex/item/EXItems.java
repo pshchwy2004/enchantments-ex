@@ -2,10 +2,12 @@ package com.pshchwy.enex.item;
 
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.item.custom.MoltenInkItem;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PotionItem;
@@ -35,6 +37,10 @@ public class EXItems {
 
     public static void initialize() {
         EnchantmentsEX.LOGGER.info("Registering items for " + EnchantmentsEX.MOD_ID);
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS)
+                .register((creativeTab) -> creativeTab.accept(EXItems.NETHER_CRYSTAL_FRAGMENT));
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS)
+                .register((creativeTab) -> creativeTab.accept(EXItems.MOLTEN_INK));
         FabricBrewingRecipeRegistryBuilder.BUILD.register(
                 builder -> {
                     builder.registerItemRecipe(

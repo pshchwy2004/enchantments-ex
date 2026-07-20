@@ -100,6 +100,7 @@ public class EXEnchantmentEffects {
 
     public static final ResourceKey<Enchantment> SHARPNESS_EX = of("sharpness_ex");
 
+    @SuppressWarnings("unused")
     public static final ResourceKey<Enchantment> SILK_TOUCH_EX = of("silk_touch_ex");
 
     public static final ResourceKey<Enchantment> SMITE_EX = of("smite_ex");
