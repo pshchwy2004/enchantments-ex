@@ -41,6 +41,9 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
     private static final int BUTTON_WIDTH = 96;
     private static final int BUTTON_HEIGHT = 19;
     private static final int VISIBLE_ROWS = 3;
+    private static final int SCROLL_X = 158;
+    private static final int SCROLL_Y = 14;
+
 
     private float scrollOffs;
     private boolean scrolling;
@@ -69,8 +72,8 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         // scrollbar
-        int scrollbarX = x + 158;
-        int scrollbarYTop = y + 14;
+        int scrollbarX = x + SCROLL_X;
+        int scrollbarYTop = y + SCROLL_Y;
         int scrollbarHeight = 57;
         int scrollTrackLength = scrollbarHeight - 15;
         int thumbY = scrollbarYTop + (int)(this.scrollOffs * (float)scrollTrackLength);
@@ -137,15 +140,34 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             Component finalRenderText;
 
             // A cleaner, foolproof way if currentLevel is guaranteed to be >= 1:
-            if (currentLevel > 0) {
+            if (currentLevel > 0 || currentEnchant.value().getMaxLevel() > 1) {
                 finalRenderText = Component.translatable("enchantment.level." + currentLevel, displayName);
             } else {
-                // Fallback display if level reading failed or equals 0
+                // max level 1 enchants do not render roman numerals
                 finalRenderText = Component.empty();
             }
 
-            // 4. draw text
-            guiGraphics.drawString(this.font, displayName.getString() + " " + finalRenderText.getString(), renderX + 5, itemY + 5, textColor, true);
+            Component actualFinalRenderText = displayName.copy().append(" ").append(finalRenderText);
+
+            // draw text
+            float maxTextWidth = BUTTON_WIDTH - 10; // Leaves 5px padding on left and right
+            float textWidth = this.font.width(actualFinalRenderText);
+            float scale = 1.0F;
+
+            if (textWidth > maxTextWidth) {
+                scale = maxTextWidth / textWidth;
+            }
+
+            guiGraphics.pose().pushPose();
+            // Translate to the starting position of the text
+            guiGraphics.pose().translate(renderX + 5, itemY + 5, 0);
+            // Apply the scale factor uniformly to X and Y
+            guiGraphics.pose().scale(scale, scale, 1.0F);
+
+            // Draw at (0, 0) because we handled positioning via translate
+            guiGraphics.drawString(this.font, actualFinalRenderText, 0, 0, textColor, true);
+
+            guiGraphics.pose().popPose();
         }
     }
 
@@ -155,7 +177,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         int x = this.leftPos;
         int y = this.topPos;
 
-        if (this.isScrollBarActive() && mouseX >= (double)(x + 158) && mouseX < (double)(x + 169) && mouseY >= (double)(y + 14) && mouseY < (double)(y + 70)) {
+        if (this.isScrollBarActive() && mouseX >= (double)(x + SCROLL_X) && mouseX < (double)(x + 169) && mouseY >= (double)(y + 14) && mouseY < (double)(y + 70)) {
             this.scrolling = true;
             return true;
         }
@@ -185,7 +207,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (this.scrolling && this.isScrollBarActive()) {
-            int trackTop = this.topPos + 14;
+            int trackTop = this.topPos + SCROLL_Y;
             int trackBottom = trackTop + 57;
 
             this.scrollOffs = ((float)mouseY - (float)trackTop - 7.5F) / ((float)(trackBottom - trackTop) - 15.0F);

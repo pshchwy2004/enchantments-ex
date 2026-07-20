@@ -167,6 +167,12 @@ public class StampingTableMenu extends AbstractContainerMenu {
                 }
             });
         }
+        // sort list by string to ensure client-server continuity
+        filteredList.sort((h1, h2) -> {
+            String path1 = h1.unwrapKey().map(key -> key.location().toString()).orElse("");
+            String path2 = h2.unwrapKey().map(key -> key.location().toString()).orElse("");
+            return path1.compareTo(path2);
+        });
 
         return filteredList;
     }
