@@ -5,7 +5,8 @@ import com.pshchwy.enex.block.entity.EXBlockEntities;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import com.pshchwy.enex.item.EXItems;
 import com.pshchwy.enex.menu.EXMenus;
-import com.pshchwy.enex.util.EXLootTableModifiers;
+import com.pshchwy.enex.misc.EXLootTableModifiers;
+import com.pshchwy.enex.misc.EXSounds;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.resources.ResourceLocation;
@@ -29,6 +30,7 @@ public class EnchantmentsEX implements ModInitializer {
 		EXItems.initialize();
 		EXBlockEntities.initialize();
 		EXBlocks.initialize();
+		EXSounds.initialize();
 		EXMenus.initialize();
 		EXEnchantmentEffects.registerEnchantmentEffects();
 		EXLootTableModifiers.modifyLootTables();

@@ -1,4 +1,4 @@
-package com.pshchwy.enex.util;
+package com.pshchwy.enex.misc;
 
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;

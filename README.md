@@ -1,4 +1,4 @@
-# Enchantments EX
+![Enchantments EX](bigicon.png)
 
 ## Introduction
 

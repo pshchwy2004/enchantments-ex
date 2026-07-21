@@ -4,6 +4,7 @@ import com.pshchwy.enex.block.EXBlocks;
 import com.pshchwy.enex.enchantment.EXEnchantmentMap;
 import com.pshchwy.enex.item.EXItems;
 import com.pshchwy.enex.menu.EXMenus;
+import com.pshchwy.enex.misc.EXSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -266,11 +267,10 @@ public class StampingTableMenu extends AbstractContainerMenu {
             }
         }
 
-        // TODO import stamp sound, replace ENCHANTMENT_TABLE_USE
         player.level().playSound(
                 null,
                 player.blockPosition(),
-                SoundEvents.ENCHANTMENT_TABLE_USE,
+                EXSounds.STAMP,
                 SoundSource.BLOCKS,
                 1.0F,
                 1.0F

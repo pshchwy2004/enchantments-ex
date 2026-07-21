@@ -610,6 +610,37 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 )
                         )
                 )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        // Spawn particle burst at the target location
+                        new SpawnParticlesEffect(
+                                ParticleTypes.LAVA, // Particle type (e.g., LAVA, SMALL_FLAME, FLAME, LAVA, SWEEP_ATTACK, etc.)
+                                SpawnParticlesEffect.inBoundingBox(), // Spawns at victim position
+                                SpawnParticlesEffect.offsetFromEntityPosition(0.5F), // Box offset around victim
+                                SpawnParticlesEffect.movementScaled(0.2F), // Particle spread speed
+                                SpawnParticlesEffect.fixedVelocity(ConstantFloat.of(0.1F)),
+                                ConstantFloat.of(15.0F) // Number of particles to spawn
+                        ),
+                        // Matching condition: Must be direct attack AND target is on fire OR immune to fire
+                        AllOfCondition.allOf(
+                                DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)),
+                                AnyOfCondition.anyOf(
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.THIS,
+                                                EntityPredicate.Builder.entity()
+                                                        .flags(new EntityFlagsPredicate.Builder().setOnFire(true))
+                                        ),
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.THIS,
+                                                EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(EXMobTagProvider.FIRE_IMMUNE))
+                                                        .build()
+                                        )
+                                )
+                        )
+                )
         );
 
         // register Fire Protection EX
