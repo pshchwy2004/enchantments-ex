@@ -7,6 +7,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import java.util.HashMap;
 import java.util.Map;
 
+/// This class' function is to provide a map mapping the enchantments to their EX variants.
 public class EXEnchantmentMap {
     private static final Map<ResourceKey<Enchantment>, ResourceKey<Enchantment>> UPGRADE_MAP = new HashMap<>();
 

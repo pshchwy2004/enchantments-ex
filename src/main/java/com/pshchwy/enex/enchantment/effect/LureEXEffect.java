@@ -17,6 +17,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Lure EX effect. Causes the fishing hook to automatically reel when the reel is ready, and automatically retrieves items that are within 2 blocks of the reel.
+ * @param amount
+ */
 public record LureEXEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
     public static final MapCodec<LureEXEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(

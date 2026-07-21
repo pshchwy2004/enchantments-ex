@@ -14,6 +14,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/// This declares the Stamping Table Block.
 public class StampingTableBlock extends BaseEntityBlock {
     public StampingTableBlock(Properties properties) {
         super(properties);
@@ -33,7 +34,7 @@ public class StampingTableBlock extends BaseEntityBlock {
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new StampingTableBlockEntity(blockPos, blockState);
     }
-
+/// Handles right clicking to bring up the Stamping Table menu.
     @Override
     protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (level.isClientSide) {

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:punch",
+    {
+      "id": "enchantments-ex:punch_ex",
+      "required": false
+    }
+  ]
+}

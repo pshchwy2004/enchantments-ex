@@ -65,6 +65,7 @@
       }
     ]
   },
+  "exclusive_set": "#enchantments-ex:exclusive_set/power_exclusive",
   "max_cost": {
     "base": 16,
     "per_level_above_first": 10

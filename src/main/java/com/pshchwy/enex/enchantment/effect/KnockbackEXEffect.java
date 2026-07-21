@@ -11,6 +11,10 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Knockback EX effect. Causes the victim to gain a guaranteed vertical velocity.
+ * @param amount
+ */
 public record KnockbackEXEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
     public static final MapCodec<KnockbackEXEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(

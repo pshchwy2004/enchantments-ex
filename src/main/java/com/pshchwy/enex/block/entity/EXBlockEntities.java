@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
+/// This class declares all block entities.
 public class EXBlockEntities {
     public static final BlockEntityType<StampingTableBlockEntity> STAMPING_TABLE_BLOCK_ENTITY =
             register("stamping_table_entity", StampingTableBlockEntity::new, EXBlocks.STAMPING_TABLE);

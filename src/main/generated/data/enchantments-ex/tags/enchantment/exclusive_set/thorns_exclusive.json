@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:thorns",
+    {
+      "id": "enchantments-ex:thorns_ex",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:multishot",
+    {
+      "id": "enchantments-ex:multishot_ex",
+      "required": false
+    }
+  ]
+}

@@ -17,6 +17,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Depth Strider EX effect. Strengthens all dolphins in a 20 block radius.
+ * @param amount
+ */
 public record DepthStriderEXEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
     public static final MapCodec<DepthStriderEXEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(

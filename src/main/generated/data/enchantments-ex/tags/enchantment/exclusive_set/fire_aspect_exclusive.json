@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:fire_aspect",
+    {
+      "id": "enchantments-ex:fire_aspect_ex",
+      "required": false
+    }
+  ]
+}

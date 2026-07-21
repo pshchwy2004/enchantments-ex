@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:wind_burst",
+    {
+      "id": "enchantments-ex:wind_burst_ex",
+      "required": false
+    }
+  ]
+}

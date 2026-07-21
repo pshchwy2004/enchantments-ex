@@ -13,6 +13,7 @@
       }
     ]
   },
+  "exclusive_set": "#enchantments-ex:exclusive_set/mending_exclusive",
   "max_cost": {
     "base": 25,
     "per_level_above_first": 25

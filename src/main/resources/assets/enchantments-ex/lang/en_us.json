@@ -40,9 +40,11 @@
   "enchantment.enchantments-ex.wind_burst_ex": "Wind Burst §6EX",
 
   "block.enchantments-ex.stamping_table": "Stamping Table",
+  "block.enchantments-ex.stamping_table_function": "Stamping",
 
   "item.enchantments-ex.molten_ink": "Molten Ink",
   "item.enchantments-ex.nether_crystal_fragment": "Nether Crystal Fragment"
+
 
 
 }

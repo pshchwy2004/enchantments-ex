@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:fortune",
+    {
+      "id": "enchantments-ex:fortune_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/mining",
+      "required": false
+    }
+  ]
+}

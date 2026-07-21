@@ -84,6 +84,7 @@
       }
     ]
   },
+  "exclusive_set": "#enchantments-ex:exclusive_set/channeling_exclusive",
   "max_cost": {
     "base": 50,
     "per_level_above_first": 0

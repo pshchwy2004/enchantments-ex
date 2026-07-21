@@ -56,6 +56,7 @@
       }
     ]
   },
+  "exclusive_set": "#enchantments-ex:exclusive_set/efficiency_exclusive",
   "max_cost": {
     "base": 51,
     "per_level_above_first": 10

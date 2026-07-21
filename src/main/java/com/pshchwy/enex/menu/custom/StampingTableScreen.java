@@ -19,6 +19,10 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class is the client-side logic of the Stamping Table GUI, handling the frontend, visual elements of the GUI.
+ * Here, GUI elements, such as menu buttons, slots, the background, and text are drafted.
+ */
 public class StampingTableScreen extends AbstractContainerScreen<StampingTableMenu> {
     public static final ResourceLocation GUI_TEXTURE =
             ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "textures/gui/container/stamping_table/stamping_table.png");
@@ -60,6 +64,9 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
+    /**
+     * Rendering the background, all buttons, etc.
+     */
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -171,6 +178,9 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         }
     }
 
+    /**
+     * Executes when the mouse is clicked while the screen is open. Handles mouse scrolling.
+     */
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         this.scrolling = false;
@@ -204,6 +214,9 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+    /**
+     * Executes when the mouse is dragged.
+     */
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (this.scrolling && this.isScrollBarActive()) {
@@ -217,6 +230,9 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
 
+    /**
+     * Executes when scrolling input is detected.
+     */
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if (this.isScrollBarActive()) {
@@ -228,10 +244,16 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
 
+    /**
+     * Determines if the scroll bar can be used. Used to disable needless scrolling when Enchanted Books have 3 rows or less.
+     */
     private boolean isScrollBarActive() {
         return this.menu.getAvailableEnchantments().size() > VISIBLE_ROWS;
     }
 
+    /**
+     * Returns the maximum scroll row length.
+     */
     private int getScrollRowLength() {
         return this.menu.getAvailableEnchantments().size() - VISIBLE_ROWS;
     }

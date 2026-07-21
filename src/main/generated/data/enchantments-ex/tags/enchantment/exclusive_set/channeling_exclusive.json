@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:channeling",
+    {
+      "id": "enchantments-ex:channeling_ex",
+      "required": false
+    }
+  ]
+}

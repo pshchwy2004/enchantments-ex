@@ -56,7 +56,7 @@
       }
     ]
   },
-  "exclusive_set": "#minecraft:exclusive_set/armor",
+  "exclusive_set": "#enchantments-ex:exclusive_set/blast_protection_exclusive",
   "max_cost": {
     "base": 13,
     "per_level_above_first": 8

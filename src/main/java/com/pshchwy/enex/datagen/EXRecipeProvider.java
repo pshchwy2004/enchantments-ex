@@ -16,6 +16,7 @@ import net.minecraft.world.item.Items;
 
 import java.util.concurrent.CompletableFuture;
 
+/// This datagen class builds the recipe JSONs for the new items.
 public class EXRecipeProvider extends FabricRecipeProvider {
 
     public EXRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {

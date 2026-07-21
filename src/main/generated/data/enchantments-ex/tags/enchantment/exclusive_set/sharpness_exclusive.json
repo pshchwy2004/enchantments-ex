@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:sharpness",
+    {
+      "id": "enchantments-ex:sharpness_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/damage",
+      "required": false
+    }
+  ]
+}

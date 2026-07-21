@@ -1,0 +1,14 @@
+{
+  "replace": true,
+  "values": [
+    "minecraft:bane_of_arthropods",
+    {
+      "id": "enchantments-ex:bane_of_arthropods_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/damage",
+      "required": false
+    }
+  ]
+}

@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/// Mod initializer class. Every registry must first initialize in this one.
 public class EnchantmentsEX implements ModInitializer {
 	// mod id, very important
 	public static final String MOD_ID = "enchantments-ex";
@@ -23,6 +23,9 @@ public class EnchantmentsEX implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+	/**
+	 * Initializer class. Logger prints all initializing info.
+	 */
 	@Override
 	public void onInitialize() {
 		// Initializes the mod.

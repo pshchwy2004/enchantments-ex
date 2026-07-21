@@ -11,6 +11,7 @@ import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 
+/// Initializes all menus.
 public class EXMenus {
     public static final MenuType<StampingTableMenu> STAMPING_TABLE_MENU =
             Registry.register(

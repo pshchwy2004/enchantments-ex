@@ -6,13 +6,19 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.minecraft.advancements.critereon.*;
-import net.minecraft.core.*;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.*;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.damagesource.DamageType;
@@ -48,11 +54,15 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
+/// This class is a Provider that handles the registration of all new EX enchantments. Mapping their original variants happens in EXEnchantmentMap.java.
 public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
     public EXEnchantmentGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
         System.out.println("registering enchant generator...");
     }
+    /**
+     * Registers all EX enchantments.
+     */
     @Override
     protected void configure(HolderLookup.Provider registries, Entries entries) {
         // easy variables for access
@@ -88,6 +98,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.KNOCKBACK,
                         new AddValue(LevelBasedValue.perLevel(1.0f, 1.0f))
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.KNOCKBACK_EXCLUSIVE))
         );
         // register Sharpness EX
         register(entries, EXEnchantmentEffects.SHARPNESS_EX, Enchantment.enchantment(
@@ -121,7 +132,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 ).withEffect(
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(1.0f, 0.5f))
-                ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+                )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SHARPNESS_EXCLUSIVE))
         );
         // register Smite EX
         register(entries, EXEnchantmentEffects.SMITE_EX, Enchantment.enchantment(
@@ -159,7 +171,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         )
                                 )
                 )
-                ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+                )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SMITE_EXCLUSIVE))
         );
 
         // register Aqua Affinity EX
@@ -195,6 +208,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.TICK,
                         new AquaAffinityEXEffect(LevelBasedValue.constant(0.0f))
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.AQUA_AFFINITY_EXCLUSIVE))
         );
 
         // register Bane of Arthropods EX
@@ -249,7 +263,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                                 .entityType(EntityTypePredicate.of(EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS))
                                 )
                                 .and(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)))
-                ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+                )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.BANE_OF_ARTHROPODS_EXCLUSIVE))
         );
 
         // register Blast Protection EX
@@ -273,7 +288,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 ).withEffect(
                         EnchantmentEffectComponents.TICK,
                         new BlastProtectionEXEffect(LevelBasedValue.perLevel(1.0f))
-                ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE))
+                )
                 .withEffect(
                         EnchantmentEffectComponents.DAMAGE_PROTECTION,
                         new AddValue(LevelBasedValue.perLevel(2.0F)),
@@ -290,6 +305,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 AttributeModifier.Operation.ADD_VALUE
                         )
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.BLAST_PROTECTION_EXCLUSIVE))
         );
 
         // register Breach EX
@@ -311,8 +327,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 EquipmentSlotGroup.MAINHAND
                         )
                 ).withEffect(EnchantmentEffectComponents.ARMOR_EFFECTIVENESS, new AddValue(LevelBasedValue.perLevel(-0.15F))
-                ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE)
-                ).withEffect( // BIG damage to mobs with large health
+                )
+                .withEffect( // BIG damage to mobs with large health
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(10.0f, 5.0f)),
                         LootItemEntityPropertyCondition.hasProperties(
@@ -326,6 +342,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         )
                         )
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.BREACH_EXCLUSIVE))
         );
 
         // register Channeling EX
@@ -379,6 +396,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 LocationCheck.checkLocation(net.minecraft.advancements.critereon.LocationPredicate.Builder.location().setCanSeeSky(true))
                         )
             )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.CHANNELING_EXCLUSIVE))
         );
 
         // register Density EX
@@ -399,7 +417,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         // valid slots
                                         EquipmentSlotGroup.MAINHAND
                                 )
-                ).exclusiveWith(enchantments.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+                )
                 .withEffect(EnchantmentEffectComponents.SMASH_DAMAGE_PER_FALLEN_BLOCK, new AddValue(LevelBasedValue.perLevel(0.5F)))
                 .withEffect(
                         EnchantmentEffectComponents.POST_ATTACK,
@@ -407,6 +425,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentTarget.VICTIM,
                         new DensityEXEffect(LevelBasedValue.perLevel(0.4f, 0.2f))
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.DENSITY_EXCLUSIVE))
         );
 
         // register Depth Strider EX
@@ -428,7 +447,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.FEET
                                 )
                         )
-                .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.BOOTS_EXCLUSIVE))
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.DEPTH_STRIDER_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
@@ -517,6 +536,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         )
                         )
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.EFFICIENCY_EXCLUSIVE))
                 .withEffect( // zero armor for shulkers
                         EnchantmentEffectComponents.ARMOR_EFFECTIVENESS,
                         new SetValue(LevelBasedValue.constant(0.0F)),
@@ -564,6 +584,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 ResourceLocation.withDefaultNamespace("enchantment.feather_falling_ex"), Attributes.SAFE_FALL_DISTANCE, LevelBasedValue.constant(7.0F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FEATHER_FALLING_EXCLUSIVE))
         );
 
         // register Fire Aspect EX
@@ -593,6 +614,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         new Ignite(LevelBasedValue.perLevel(4.0F)),
                         DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true))
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FIRE_ASPECT_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(5.0f, 5.0f)),
@@ -662,7 +684,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.ARMOR
                                 )
                         )
-                .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE))
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FIRE_PROTECTION_EXCLUSIVE))
                 .withEffect( // vanilla fire dmg reduction
                         EnchantmentEffectComponents.DAMAGE_PROTECTION,
                         new AddValue(LevelBasedValue.perLevel(2.0F)),
@@ -737,6 +759,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
 
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FLAME_EXCLUSIVE))
 
         );
 
@@ -759,8 +782,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.MAINHAND
                                 )
                         )
-                        .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.MINING_EXCLUSIVE))
                         .withEffect(EnchantmentEffectComponents.BLOCK_EXPERIENCE, new MultiplyValue(LevelBasedValue.perLevel(1.5f, 0.5f)))
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FORTUNE_EXCLUSIVE))
         );
 
         // register Frost Walker EX
@@ -782,7 +805,6 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.FEET
                                 )
                         )
-                        .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.BOOTS_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.DAMAGE_IMMUNITY,
                         DamageImmunity.INSTANCE,
@@ -790,6 +812,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.BURN_FROM_STEPPING)).tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
                         )
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FROST_WALKER_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new ReplaceDisk(
@@ -899,7 +922,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.MAINHAND
                                 )
                         )
-                        .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.IMPALING_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(2.5F)),
@@ -965,7 +988,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.MAINHAND
                                 )
                         )
-                .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.BOW_EXCLUSIVE))
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.INFINITY_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.AMMO_USE,
                         new SetValue(LevelBasedValue.constant(0.0F)),
@@ -998,6 +1021,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.MAINHAND
                                 )
                         )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.LOOTING_EXCLUSIVE))
                 .withEffect( // vanilla Looting
                         EnchantmentEffectComponents.EQUIPMENT_DROPS,
                         EnchantmentTarget.ATTACKER,
@@ -1035,6 +1059,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.HIT_BLOCK,
                         new TridentItemRetrievalEffect(LevelBasedValue.constant(1.0f))
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.LOYALTY_EXCLUSIVE))
 
         );
 
@@ -1058,7 +1083,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 )
                         )
                 .withEffect(EnchantmentEffectComponents.FISHING_LUCK_BONUS, new AddValue(LevelBasedValue.perLevel(1.0F))) // changes happen in the loot tables
-
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.LUCK_OF_THE_SEA_EXCLUSIVE))
         );
 
         // register Lure EX
@@ -1084,7 +1109,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.TICK,
                         new LureEXEffect(LevelBasedValue.constant(0.0f))
-                )
+                ).exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.LURE_EXCLUSIVE))
 
         );
 
@@ -1108,7 +1133,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 )
                         )
                 .withEffect(EnchantmentEffectComponents.REPAIR_WITH_XP, new MultiplyValue(LevelBasedValue.constant(4.0F)))
-
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.MENDING_EXCLUSIVE))
         );
 
         // register Multishot EX
@@ -1134,7 +1159,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 // not exclusive with piercing
                 .withEffect(EnchantmentEffectComponents.PROJECTILE_COUNT, new AddValue(LevelBasedValue.perLevel(4.0F)))
                 .withEffect(EnchantmentEffectComponents.PROJECTILE_SPREAD, new AddValue(LevelBasedValue.perLevel(5.0F)))
-
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.MULTISHOT_EXCLUSIVE))
         );
 
         // register Piercing EX
@@ -1184,6 +1209,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
 
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.PIERCING_EXCLUSIVE))
         );
 
         // register Power EX
@@ -1231,6 +1257,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
 
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.POWER_EXCLUSIVE))
         );
 
         // register Projectile Protection EX
@@ -1252,7 +1279,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.ARMOR
                                 )
                         )
-                .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE))
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.PROJECTILE_PROTECTION_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.DAMAGE_PROTECTION,
                         new AddValue(LevelBasedValue.perLevel(2.0F)),
@@ -1296,7 +1323,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.ARMOR
                                 )
                         )
-                        .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE))
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.PROTECTION_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.DAMAGE_PROTECTION,
                         new AddValue(LevelBasedValue.perLevel(1.0F)),
@@ -1345,6 +1372,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
                         )
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.PUNCH_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.POST_ATTACK,
                         EnchantmentTarget.ATTACKER,
@@ -1377,6 +1405,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 )
                         )
                 .withSpecialEffect(EnchantmentEffectComponents.CROSSBOW_CHARGE_TIME, new AddValue(LevelBasedValue.perLevel(-0.25F)))
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.QUICK_CHARGE_EXCLUSIVE))
                 .withSpecialEffect(
                         EnchantmentEffectComponents.CROSSBOW_CHARGING_SOUNDS,
                         List.of(
@@ -1410,6 +1439,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.HEAD
                                 )
                         )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.RESPIRATION_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
@@ -1453,7 +1483,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         AttributeModifier.Operation.ADD_VALUE
                                 )
                         )
-                .exclusiveWith(enchantments.getOrThrow(EnchantmentTags.RIPTIDE_EXCLUSIVE))
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.RIPTIDE_EXCLUSIVES))
                 .withSpecialEffect(EnchantmentEffectComponents.TRIDENT_SPIN_ATTACK_STRENGTH, new AddValue(LevelBasedValue.perLevel(1.5F, 0.75F)))
                 .withSpecialEffect(
                         EnchantmentEffectComponents.TRIDENT_SOUND, List.of(SoundEvents.TRIDENT_RIPTIDE_1, SoundEvents.TRIDENT_RIPTIDE_2, SoundEvents.TRIDENT_RIPTIDE_3)
@@ -1488,6 +1518,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.FEET
                                 )
                         )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SOUL_SPEED_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
@@ -1610,6 +1641,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 AttributeModifier.Operation.ADD_VALUE
                         )
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SWEEPING_EDGE_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(1.5f, 1.5f)),
@@ -1654,6 +1686,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 AttributeModifier.Operation.ADD_VALUE
                         )
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SWIFT_SNEAK_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
@@ -1694,6 +1727,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         ),
                         LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.25F)))
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.THORNS_EXCLUSIVE))
         );
 
         // register Unbreaking EX
@@ -1720,6 +1754,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         new RemoveBinomial(new LevelBasedValue.Fraction(LevelBasedValue.perLevel(2.0F), LevelBasedValue.perLevel(10.0F, 2.5F))),
                         MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(ItemTags.ARMOR_ENCHANTABLE))
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.UNBREAKING_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.ITEM_DAMAGE,
                         new RemoveBinomial(new LevelBasedValue.Fraction(LevelBasedValue.perLevel(1.0F), LevelBasedValue.perLevel(2.0F, 1.0F))),
@@ -1772,7 +1807,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.MAINHAND
                                 )
                         )
-
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.WIND_BURST_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.POST_ATTACK,
                         EnchantmentTarget.ATTACKER,
@@ -1823,6 +1858,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         );
     }
 
+    /// Register function.
     private void register(Entries entries, ResourceKey<Enchantment> key, Enchantment.Builder builder, ResourceCondition... resourceConditions) {
         entries.add(key, builder.build(key.location()), resourceConditions);
     }

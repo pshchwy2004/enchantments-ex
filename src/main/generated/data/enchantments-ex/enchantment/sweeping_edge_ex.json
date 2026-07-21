@@ -44,6 +44,7 @@
       }
     ]
   },
+  "exclusive_set": "#enchantments-ex:exclusive_set/sweeping_edge_exclusive",
   "max_cost": {
     "base": 20,
     "per_level_above_first": 9

@@ -17,6 +17,7 @@
       }
     ]
   },
+  "exclusive_set": "#enchantments-ex:exclusive_set/luck_of_the_sea_exclusive",
   "max_cost": {
     "base": 65,
     "per_level_above_first": 9

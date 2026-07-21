@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 
+/// This class holds all the Resource Keys of all EX enchantments, and their effects. Their registration happens in datagen.EXEnchantmentGenerator.java.
 public class EXEnchantmentEffects {
 
     public static final ResourceKey<Enchantment> AQUA_AFFINITY_EX = of("aqua_affinity_ex");

@@ -36,7 +36,7 @@
       }
     ]
   },
-  "exclusive_set": "#minecraft:exclusive_set/damage",
+  "exclusive_set": "#enchantments-ex:exclusive_set/breach_exclusive",
   "max_cost": {
     "base": 65,
     "per_level_above_first": 9

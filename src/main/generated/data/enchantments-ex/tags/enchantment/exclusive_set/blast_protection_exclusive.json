@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:blast_protection",
+    {
+      "id": "enchantments-ex:blast_protection_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/armor",
+      "required": false
+    }
+  ]
+}

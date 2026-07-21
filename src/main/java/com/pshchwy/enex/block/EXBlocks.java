@@ -2,7 +2,6 @@ package com.pshchwy.enex.block;
 
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.block.custom.StampingTableBlock;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -14,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
+/// Block declaration class.
 public class EXBlocks {
     public static final Block STAMPING_TABLE = register(
             new StampingTableBlock(BlockBehaviour.Properties.of().sound(SoundType.WOOD)),

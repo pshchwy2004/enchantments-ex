@@ -1,0 +1,10 @@
+{
+  "replace": true,
+  "values": [
+    "minecraft:aqua_affinity",
+    {
+      "id": "enchantments-ex:aqua_affinity_ex",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:impaling",
+    {
+      "id": "enchantments-ex:impaling_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/damage",
+      "required": false
+    }
+  ]
+}

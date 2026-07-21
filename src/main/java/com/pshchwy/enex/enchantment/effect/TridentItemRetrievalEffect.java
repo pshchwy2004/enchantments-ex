@@ -15,6 +15,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * LoyaltyEX effect. Any item within 3 blocks of the thrown trident is automatically teleported to the player when it hits a block.
+ * @param amount
+ */
 public record TridentItemRetrievalEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
     public static final MapCodec<TridentItemRetrievalEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(

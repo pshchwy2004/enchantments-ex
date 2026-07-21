@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:mending",
+    {
+      "id": "enchantments-ex:mending_ex",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:unbreaking",
+    {
+      "id": "enchantments-ex:unbreaking_ex",
+      "required": false
+    }
+  ]
+}

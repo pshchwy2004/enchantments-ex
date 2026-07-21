@@ -77,7 +77,7 @@
       }
     ]
   },
-  "exclusive_set": "#minecraft:exclusive_set/damage",
+  "exclusive_set": "#enchantments-ex:exclusive_set/impaling_exclusive",
   "max_cost": {
     "base": 21,
     "per_level_above_first": 8

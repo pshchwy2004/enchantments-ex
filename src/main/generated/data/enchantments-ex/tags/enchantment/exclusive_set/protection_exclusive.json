@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:protection",
+    {
+      "id": "enchantments-ex:protection_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/armor",
+      "required": false
+    }
+  ]
+}

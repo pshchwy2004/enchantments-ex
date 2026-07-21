@@ -17,6 +17,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Blast Protection EX effect. This causes all creepers in a 5 block radius to get Slowness.
+ * @param amount
+ */
 public record BlastProtectionEXEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
     public static final MapCodec<BlastProtectionEXEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(

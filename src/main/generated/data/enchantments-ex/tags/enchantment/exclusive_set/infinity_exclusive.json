@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:infinity",
+    {
+      "id": "enchantments-ex:infinity_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/bow",
+      "required": false
+    }
+  ]
+}

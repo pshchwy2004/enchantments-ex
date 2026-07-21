@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:swift_sneak",
+    {
+      "id": "enchantments-ex:swift_sneak_ex",
+      "required": false
+    }
+  ]
+}

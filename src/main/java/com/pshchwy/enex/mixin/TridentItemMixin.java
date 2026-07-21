@@ -2,8 +2,6 @@ package com.pshchwy.enex.mixin;
 
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,15 +12,10 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.ThrownTrident;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TridentItem;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,7 +26,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(TridentItem.class)
+/// Trident mixin meant to change its behavior when enchanted with Riptide EX, allowing the player to use it even when not raining.
+@Mixin(TridentItem.class) @SuppressWarnings("unused")
 abstract class TridentItemMixin {
 
     @Shadow public abstract int getUseDuration(ItemStack itemStack, LivingEntity livingEntity);
@@ -43,7 +37,7 @@ abstract class TridentItemMixin {
     private void modUse(Level level, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
 
-        if (EnchantmentHelper.getTridentSpinAttackStrength(itemStack, player) > 0.0F && hasEnchantment(itemStack, EXEnchantmentEffects.RIPTIDE_EX)) {
+        if (EnchantmentHelper.getTridentSpinAttackStrength(itemStack, player) > 0.0F && hasEnchantment(itemStack)) {
             player.startUsingItem(interactionHand);
             cir.setReturnValue(InteractionResultHolder.consume(itemStack));
         }
@@ -55,7 +49,7 @@ abstract class TridentItemMixin {
             int j = this.getUseDuration(itemStack, livingEntity) - i;
             if (j >= 10) {
                 float f = EnchantmentHelper.getTridentSpinAttackStrength(itemStack, player);
-                if (f > 0.0F && !player.isInWaterOrRain() && hasEnchantment(itemStack, EXEnchantmentEffects.RIPTIDE_EX)) {
+                if (f > 0.0F && !player.isInWaterOrRain() && hasEnchantment(itemStack)) {
                     if (!(itemStack.getDamageValue() >= itemStack.getMaxDamage() - 1)) {
                         player.awardStat(Stats.ITEM_USED.get((TridentItem) (Object) this));
                         Holder<SoundEvent> holder = EnchantmentHelper.pickHighestLevel(itemStack, EnchantmentEffectComponents.TRIDENT_SOUND).orElse(SoundEvents.TRIDENT_THROW);
@@ -86,7 +80,7 @@ abstract class TridentItemMixin {
     }
 
     @Unique
-    private boolean hasEnchantment(ItemStack stack, ResourceKey<Enchantment> enchantment) {
-        return stack.getEnchantments().toString().contains(enchantment.location().getPath());
+    private boolean hasEnchantment(ItemStack stack) {
+        return stack.getEnchantments().toString().contains(EXEnchantmentEffects.RIPTIDE_EX.location().getPath());
     }
 }

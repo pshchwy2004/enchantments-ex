@@ -11,6 +11,10 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Impaling effect. Scaling with the level, hitting an enemy causes the holder to regain air supply.
+ * @param amount
+ */
 public record BreathStealEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
     public static final MapCodec<BreathStealEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(

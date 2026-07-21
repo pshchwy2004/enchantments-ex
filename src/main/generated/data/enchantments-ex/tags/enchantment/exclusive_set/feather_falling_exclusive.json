@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:feather_falling",
+    {
+      "id": "enchantments-ex:feather_falling_ex",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:depth_strider",
+    {
+      "id": "enchantments-ex:depth_strider_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/boots",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:density",
+    {
+      "id": "enchantments-ex:density_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/damage",
+      "required": false
+    }
+  ]
+}

@@ -10,10 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Block;
 
+/// Initializes all items.
 public class EXItems {
     public static final Item NETHER_CRYSTAL_FRAGMENT = register(
             new Item(

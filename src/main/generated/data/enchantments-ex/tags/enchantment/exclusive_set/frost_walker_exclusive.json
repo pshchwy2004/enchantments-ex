@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:frost_walker",
+    {
+      "id": "enchantments-ex:frost_walker_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/boots",
+      "required": false
+    }
+  ]
+}

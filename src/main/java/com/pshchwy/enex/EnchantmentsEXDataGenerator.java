@@ -1,12 +1,10 @@
 package com.pshchwy.enex;
 
-import com.pshchwy.enex.datagen.EXEnchantmentGenerator;
-import com.pshchwy.enex.datagen.EXItemTagProvider;
-import com.pshchwy.enex.datagen.EXMobTagProvider;
-import com.pshchwy.enex.datagen.EXRecipeProvider;
+import com.pshchwy.enex.datagen.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
+/// Data Generator entrypoint. When Data Generation is executed in Gradle, executes all providers in the pack.
 public class EnchantmentsEXDataGenerator implements DataGeneratorEntrypoint {
 
     @Override
@@ -16,5 +14,6 @@ public class EnchantmentsEXDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(EXMobTagProvider::new);
         pack.addProvider(EXItemTagProvider::new);
         pack.addProvider(EXRecipeProvider::new);
+        pack.addProvider(EXEnchantmentTagProvider::new);
     }
 }

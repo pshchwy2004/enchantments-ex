@@ -16,6 +16,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Bane of Arthropods EX effect. Renders the weapon's holder immune to poison, and causes all cobwebs the holder touches to break as if with a sword.
+ * @param amount
+ */
 public record BaneOfArthropodsEXEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
     public static final MapCodec<BaneOfArthropodsEXEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(

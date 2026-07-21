@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/// This class declares the entity for the Stamping Table block. This is necessary due to the need for a GUI and container system.
 public class StampingTableBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos> {
     public StampingTableBlockEntity(BlockPos pos, BlockState state) {
         super(EXBlockEntities.STAMPING_TABLE_BLOCK_ENTITY, pos, state);
@@ -26,7 +27,7 @@ public class StampingTableBlockEntity extends BlockEntity implements ExtendedScr
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable("block.enchantments-ex.stamping_table");
+        return Component.translatable("block.enchantments-ex.stamping_table_function");
     }
 
     @Override

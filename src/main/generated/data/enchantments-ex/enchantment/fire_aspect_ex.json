@@ -114,6 +114,7 @@
       }
     ]
   },
+  "exclusive_set": "#enchantments-ex:exclusive_set/fire_aspect_exclusive",
   "max_cost": {
     "base": 60,
     "per_level_above_first": 20

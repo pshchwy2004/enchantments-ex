@@ -3,8 +3,11 @@
   "package": "com.pshchwy.enex.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "ExampleMixin",
+    "AbstractContainerMenuAccessor",
+    "AnvilMenuAccessor",
+    "AnvilMenuMixin",
     "FishingHookAccessor",
+    "ItemCombinerMenuAccessor",
     "TridentItemMixin"
   ],
   "injectors": {

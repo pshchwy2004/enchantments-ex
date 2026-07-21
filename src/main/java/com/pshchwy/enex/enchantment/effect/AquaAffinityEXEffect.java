@@ -12,6 +12,10 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Aqua Affinity EX effect. This effect causes the enchanted item's holder to be immune to Mining Fatigue, though does not dissuade Elder Guardians from attempting to inflict Mining Fatigue on the player.
+ * @param amount
+ */
 public record AquaAffinityEXEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
     public static final MapCodec<AquaAffinityEXEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(

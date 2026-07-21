@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:quick_charge",
+    {
+      "id": "enchantments-ex:quick_charge_ex",
+      "required": false
+    }
+  ]
+}

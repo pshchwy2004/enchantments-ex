@@ -1,7 +1,6 @@
 package com.pshchwy.enex.item.custom;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -12,14 +11,15 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
 
+/**
+ * Molten Ink item. It is declared as a PotionItem due to the need for it to be brewed with Nether Crystal Fragments, though it poses no positive effect on any user.
+ */
 public class MoltenInkItem extends PotionItem {
     private static final int DRINK_DURATION = 40;
     public MoltenInkItem(Properties properties) {
@@ -38,6 +38,13 @@ public class MoltenInkItem extends PotionItem {
         return SoundEvents.HONEY_DRINK;
     }
 
+    /**
+     * Kills the player when they drink it.
+     * @param itemStack The ItemStack, namely, the instance of Molten Ink being used.
+     * @param level The world.
+     * @param livingEntity The entity using the item.
+     * @return An ItemStack.
+     */
     public @NotNull ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
         Player player = livingEntity instanceof Player ? (Player)livingEntity : null;
         if (player instanceof ServerPlayer) {

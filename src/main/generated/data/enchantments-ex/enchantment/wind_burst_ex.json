@@ -115,6 +115,7 @@
       }
     ]
   },
+  "exclusive_set": "#enchantments-ex:exclusive_set/wind_burst_exclusive",
   "max_cost": {
     "base": 65,
     "per_level_above_first": 9

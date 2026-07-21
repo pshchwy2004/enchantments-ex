@@ -13,6 +13,10 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Respiration EX effect. When a player has an effect includes water breathing, gains Regeneration.
+ * @param amount
+ */
 public record RespirationEXEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
     public static final MapCodec<RespirationEXEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(

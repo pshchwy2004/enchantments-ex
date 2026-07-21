@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:loyalty",
+    {
+      "id": "enchantments-ex:loyalty_ex",
+      "required": false
+    }
+  ]
+}

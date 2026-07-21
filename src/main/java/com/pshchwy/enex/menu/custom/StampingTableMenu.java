@@ -10,7 +10,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -28,6 +27,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+* This class is the server-side logic that applies to the stamping table. Complementary with StampingTableScreen, it handles all critical, backend logic.
+ */
 public class StampingTableMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
     private final Container stampSlots = new SimpleContainer(2) {
@@ -64,6 +66,9 @@ public class StampingTableMenu extends AbstractContainerMenu {
         this(id, inventory, ContainerLevelAccess.create(inventory.player.level(), pos));
     }
 
+    /**
+     * Logic for shift clicking out of the inventory/container.
+     */
     @Override
     public @NotNull ItemStack quickMoveStack(Player player, int invSlot) {
         ItemStack itemStack = ItemStack.EMPTY;
@@ -126,12 +131,18 @@ public class StampingTableMenu extends AbstractContainerMenu {
         return itemStack;
     }
 
+    /**
+     * Boolean to check if the menu is still valid; i.e. if the block still exists within range of the player. Closes the menu when this is false.
+     */
     @Override
     public boolean stillValid(Player player) { // canUse
         return stillValid(this.access, player, EXBlocks.STAMPING_TABLE)
             && this.stampSlots.stillValid(player);
     }
 
+    /**
+     * Helper function to add functional slots from the player inventory.
+     */
     private void addPlayerInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
@@ -140,6 +151,9 @@ public class StampingTableMenu extends AbstractContainerMenu {
         }
     }
 
+    /**
+     * Helper function to add the player's hotbar to the GUI.
+     */
     private void addPlayerHotbar(Inventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
@@ -178,9 +192,7 @@ public class StampingTableMenu extends AbstractContainerMenu {
         return filteredList;
     }
 
-    /**
-     * Automatically updates whenever an item is inserted, extracted, or modified.
-     */
+    /// Automatically updates whenever an item is inserted, extracted, or modified.
     @Override
     public void slotsChanged(Container container) {
         super.slotsChanged(container);
@@ -210,6 +222,9 @@ public class StampingTableMenu extends AbstractContainerMenu {
         return this.selectedEnchantmentIndex;
     }
 
+    /**
+     * Function that executes the function of clicking one of the available enchantments.
+     */
     @Override
     public boolean clickMenuButton(Player player, int id) {
         List<Holder<Enchantment>> available = this.getAvailableEnchantments();
@@ -229,8 +244,8 @@ public class StampingTableMenu extends AbstractContainerMenu {
 
         Holder<Enchantment> targetEnchant = available.get(id); // gets enchantment
 
-        // 4. Update the book's data components
-        // We create a copy of the book to safely mutate its components
+        // update the book's data components
+        // create a copy of the book to safely mutate its components
         ItemStack upgradedBook = bookStack.copy();
         ItemEnchantments currentEnchants = upgradedBook.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY);
         ItemEnchantments.Mutable builder = new ItemEnchantments.Mutable(currentEnchants);
@@ -282,6 +297,9 @@ public class StampingTableMenu extends AbstractContainerMenu {
         return true;
     }
 
+    /**
+     * Void function that executes when the block is destroyed or the menu is otherwise exited by the player.
+     */
     @Override
     public void removed(Player player) {
         super.removed(player);

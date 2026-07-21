@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:knockback",
+    {
+      "id": "enchantments-ex:knockback_ex",
+      "required": false
+    }
+  ]
+}

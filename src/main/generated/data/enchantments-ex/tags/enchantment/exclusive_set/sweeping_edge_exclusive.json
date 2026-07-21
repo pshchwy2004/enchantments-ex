@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:sweeping_edge",
+    {
+      "id": "enchantments-ex:sweeping_edge_ex",
+      "required": false
+    }
+  ]
+}

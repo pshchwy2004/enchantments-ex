@@ -8,7 +8,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MaceItem;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
@@ -16,6 +15,10 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Density EX effect. Causes the attacked entity to gain slowdown, nausea, and weakness, and the attacker to gain damage resistance.
+ * @param amount
+ */
 public record DensityEXEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
     public static final MapCodec<DensityEXEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
             instance.group(

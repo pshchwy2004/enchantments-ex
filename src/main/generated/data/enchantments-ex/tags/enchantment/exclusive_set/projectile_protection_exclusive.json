@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:projectile_protection",
+    {
+      "id": "enchantments-ex:projectile_protection_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/armor",
+      "required": false
+    }
+  ]
+}
