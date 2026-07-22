@@ -6,6 +6,10 @@ Enchantments EX is a Minecraft Fabric mod that aims to "enchant" the enchantment
 
 Each EX enchantment will add additional buffs that complement your Minecraft experience and make you stronger.
 
+![preview gif](img/whenuwalking.gif)
+![preview gif](img/whenufalling.gif)
+![preview gif](img/whenumining.gif)
+
 ## Enchantment Function Documentation
 
 | Enchantment              | New Function                                                                                                                                                                               |
@@ -50,6 +54,12 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Thorns EX                | Increases the chance of activating per level, decreases less durability per use, and deals additional damage per level.                                                                    |
 | Unbreaking EX            | Attacking or being attacked will have a scaled chance of giving experience.                                                                                                                |
 | Wind Burst EX            | Performing an appropriate smash attack will now also grant Resistance and Strength. Additionally, reduces fall damage when held in hand.                                                   |
+
+## Using this mod
+
+Accessing the EX enchantments revolves around a Stamping Table, which consumes Molten Ink to upgrade 1 enchantment from an Enchanted Book.
+
+TODO add images
 
 ## Setup
 
