@@ -14,6 +14,8 @@ public class EnchantmentsEXDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(EXMobTagProvider::new);
         pack.addProvider(EXItemTagProvider::new);
         pack.addProvider(EXRecipeProvider::new);
+        pack.addProvider(EXLootTableGenerator::new);
+        pack.addProvider(EXBlockTagProvider::new);
         pack.addProvider(EXEnchantmentTagProvider::new);
     }
 }
