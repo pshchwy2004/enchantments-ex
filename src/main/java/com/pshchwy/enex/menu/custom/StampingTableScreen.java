@@ -255,6 +255,6 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
      * Returns the maximum scroll row length.
      */
     private int getScrollRowLength() {
-        return this.menu.getAvailableEnchantments().size() - VISIBLE_ROWS;
+        return Math.max(0, this.menu.getAvailableEnchantments().size() - VISIBLE_ROWS);
     }
 }
