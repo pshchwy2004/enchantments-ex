@@ -25,13 +25,13 @@
           "type": "minecraft:levels_squared",
           "added": 1.0
         },
-        "attribute": "minecraft:player.mining_efficiency",
+        "attribute": "minecraft:mining_efficiency",
         "id": "minecraft:enchantment.efficiency_ex",
         "operation": "add_value"
       },
       {
         "amount": 2.25,
-        "attribute": "minecraft:player.block_interaction_range",
+        "attribute": "minecraft:block_interaction_range",
         "id": "minecraft:enchantment.efficiency_ex",
         "operation": "add_value"
       }

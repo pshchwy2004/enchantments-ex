@@ -13,6 +13,9 @@ public interface AnvilMenuAccessor extends ItemCombinerMenuAccessor {
     @Accessor("itemName")
     String enex$getItemName();
 
+    @Accessor("onlyRenaming")
+    void enex$setOnlyRenaming(boolean value);
+
 
 
     @Accessor("repairItemCountCost")

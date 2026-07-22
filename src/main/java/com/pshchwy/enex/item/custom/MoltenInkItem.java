@@ -3,8 +3,6 @@ package com.pshchwy.enex.item.custom;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -30,13 +28,6 @@ public class MoltenInkItem extends PotionItem {
         return DRINK_DURATION;
     }
 
-    public @NotNull SoundEvent getDrinkingSound() {
-        return SoundEvents.HONEY_DRINK;
-    }
-
-    public @NotNull SoundEvent getEatingSound() {
-        return SoundEvents.HONEY_DRINK;
-    }
 
     /**
      * Kills the player when they drink it.
@@ -79,10 +70,6 @@ public class MoltenInkItem extends PotionItem {
         return itemStack;
     }
 
-    @Override
-    public @NotNull String getDescriptionId(ItemStack itemStack) {
-        return this.getDescriptionId();
-    }
 
     @Override
     public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {

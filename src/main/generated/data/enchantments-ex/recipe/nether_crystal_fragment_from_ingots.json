@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:nether_star"
-    },
-    {
-      "item": "minecraft:netherite_ingot"
-    },
-    {
-      "item": "minecraft:netherite_ingot"
-    }
+    "minecraft:nether_star",
+    "minecraft:netherite_ingot",
+    "minecraft:netherite_ingot"
   ],
   "result": {
     "count": 8,

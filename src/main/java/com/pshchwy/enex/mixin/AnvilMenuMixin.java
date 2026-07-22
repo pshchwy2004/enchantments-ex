@@ -32,6 +32,7 @@ public abstract class AnvilMenuMixin {
     @Inject(method = "createResult", at = @At("HEAD"), cancellable = true)
     private void overrideCreateResult(CallbackInfo ci) {
         ItemStack itemStack = ((AnvilMenuAccessor) this).enex$getInputSlots().getItem(0); // input left
+        ((AnvilMenuAccessor) this).enex$setOnlyRenaming(false);
         ((AnvilMenuAccessor) this).enex$getCost().set(1);
         int i = 0;
         long l = 0L;
@@ -45,7 +46,7 @@ public abstract class AnvilMenuMixin {
             ((AnvilMenuAccessor) this).enex$setRepairItemCountCost(0);
             if (!itemStack3.isEmpty()) {
                 boolean bl = itemStack3.has(DataComponents.STORED_ENCHANTMENTS);
-                if (itemStack2.isDamageableItem() && itemStack2.getItem().isValidRepairItem(itemStack, itemStack3)) {
+                if (itemStack2.isDamageableItem() && itemStack.isValidRepairItem(itemStack3)) {
                     int k = Math.min(itemStack2.getDamageValue(), itemStack2.getMaxDamage() / 4);
                     if (k <= 0) {
                         ((AnvilMenuAccessor) this).enex$getResultSlots().setItem(0, ItemStack.EMPTY);

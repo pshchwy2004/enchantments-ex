@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "i": {
-      "item": "minecraft:iron_ingot"
-    },
-    "p": {
-      "tag": "enchantments-ex:stamping_cloths"
-    },
-    "w": {
-      "tag": "minecraft:planks"
-    }
+    "i": "minecraft:iron_ingot",
+    "p": "#enchantments-ex:stamping_cloths",
+    "w": "#minecraft:planks"
   },
   "pattern": [
     "pi",

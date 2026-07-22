@@ -257,7 +257,7 @@ public class StampingTableMenu extends AbstractContainerMenu {
             ResourceKey<Enchantment> exKey = com.pshchwy.enex.enchantment.EXEnchantmentMap.getUpgrade(originalKey);
 
             // get holder
-            player.level().registryAccess().registry(Registries.ENCHANTMENT).flatMap(registry -> registry.getHolder(exKey)).ifPresent(exHolder -> {
+            player.level().registryAccess().lookup(Registries.ENCHANTMENT).flatMap(registry -> registry.get(exKey)).ifPresent(exHolder -> {
                 // remove the old enchantment from the book
                 builder.set(targetEnchant, 0);
                 // set new EX enchantment level

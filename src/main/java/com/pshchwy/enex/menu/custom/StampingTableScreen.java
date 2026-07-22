@@ -7,7 +7,7 @@ import com.pshchwy.enex.item.EXItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -18,7 +18,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This class is the client-side logic of the Stamping Table GUI, handling the frontend, visual elements of the GUI.
@@ -70,14 +69,13 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
      */
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         int x = this.leftPos;
         int y = this.topPos;
 
         // main GUI plate layout
-        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
+        guiGraphics.blit(RenderType::guiTextured, GUI_TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
 
         // scrollbar
         int scrollbarX = x + SCROLL_X;
@@ -87,7 +85,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         int thumbY = scrollbarYTop + (int)(this.scrollOffs * (float)scrollTrackLength);
 
         ResourceLocation scrollSprite = this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
-        guiGraphics.blitSprite(scrollSprite, scrollbarX, thumbY, 12, 15);
+        guiGraphics.blitSprite(RenderType::guiTextured, scrollSprite, scrollbarX, thumbY, 12, 15);
 
         // render text entries
         List<Holder<Enchantment>> available = this.menu.getAvailableEnchantments();
@@ -125,7 +123,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             }
 
             // draw the button
-            guiGraphics.blitSprite(buttonSprite, renderX, itemY, BUTTON_WIDTH, BUTTON_HEIGHT);
+            guiGraphics.blitSprite(RenderType::guiTextured, buttonSprite, renderX, itemY, BUTTON_WIDTH, BUTTON_HEIGHT);
 
             // gather and format the text name
             Holder<Enchantment> currentEnchant = available.get(i);
@@ -146,17 +144,19 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
                 var optKey = currentEnchant.unwrapKey();
                 if (optKey.isPresent()) {
                     ResourceKey<Enchantment> exKey = EXEnchantmentMap.getUpgrade(optKey.get());
-                    var registry = this.minecraft.level.registryAccess().registry(Registries.ENCHANTMENT);
-                    if (registry.isPresent() && registry.get().get(exKey) != null) {
-                        var exEnchant = registry.get().get(exKey);
-                        Component exDesc = Objects.requireNonNull(exEnchant).description();
+                    var lookup = this.minecraft.level.registryAccess().lookup(Registries.ENCHANTMENT);
+                    if (lookup.isPresent()) {
+                        var exHolderOpt = lookup.get().get(exKey);
+                        if (exHolderOpt.isPresent()) {
+                            Enchantment exEnchant = exHolderOpt.get().value();
+                            Component exDesc = exEnchant.description();
 
-                        Component levelComponent = (exEnchant.getMaxLevel() > 1 && currentLevel != 0)
-                                ? Component.literal(" ").append(Component.translatable("enchantment.level." + currentLevel))
-                                : Component.empty();
+                            Component levelComponent = (exEnchant.getMaxLevel() > 1 && currentLevel != 0)
+                                    ? Component.literal(" ").append(Component.translatable("enchantment.level." + currentLevel))
+                                    : Component.empty();
 
-                        // Prefix with a clean arrow to indicate upgrade direction
-                        exLine = Component.literal("➔ ").append(exDesc).append(levelComponent);
+                            exLine = Component.literal("➔ ").append(exDesc).append(levelComponent);
+                        }
                     }
                 }
             }
