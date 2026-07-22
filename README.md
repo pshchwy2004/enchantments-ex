@@ -59,7 +59,23 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 
 Accessing the EX enchantments revolves around a Stamping Table, which consumes Molten Ink to upgrade 1 enchantment from an Enchanted Book.
 
-TODO add images
+![img.png](img/img.png)
+![img_1.png](img/img_1.png)
+
+The Nether Crystal Fragment is a brewing ingredient used to make Molten Ink, the ingredient required to use the Stamping Table. Two different recipes are provided, however both involving nether stars and netherite.
+
+![img3.png](img/img3.png)
+
+![img_2.png](img/img_2.png)
+
+The Stamping Table only accepts enchanted books. Selecting one enchantment consumes the Molten Ink and upgrades that enchantment.
+
+### Anvil Mechanics
+
+![img_3.png](img/img_3.png)
+
+In an anvil, an EX enchantment can override the vanilla enchantment. The higher enchantment's level is always inherited. 
+
 
 ## Setup
 
