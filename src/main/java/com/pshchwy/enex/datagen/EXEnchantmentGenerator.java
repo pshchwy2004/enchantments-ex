@@ -251,7 +251,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
                         new ApplyMobEffect(
-                                HolderSet.direct(MobEffects.MOVEMENT_SLOWDOWN),
+                                HolderSet.direct(MobEffects.SLOWNESS),
                                 LevelBasedValue.constant(1.5F),
                                 LevelBasedValue.perLevel(1.5F, 0.5F),
                                 LevelBasedValue.constant(3.0F),
@@ -1832,14 +1832,14 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         SoundEvents.WIND_CHARGE_BURST
                                 ),
                                 new ApplyMobEffect(
-                                        HolderSet.direct(MobEffects.DAMAGE_BOOST),
+                                        HolderSet.direct(MobEffects.STRENGTH),
                                         LevelBasedValue.constant(10.0F),
                                         LevelBasedValue.constant(10.0F),
                                         LevelBasedValue.perLevel(1.0F),
                                         LevelBasedValue.perLevel(1.0F)
                                 ),
                                 new ApplyMobEffect(
-                                        HolderSet.direct(MobEffects.DAMAGE_RESISTANCE),
+                                        HolderSet.direct(MobEffects.RESISTANCE),
                                         LevelBasedValue.constant(10.0F),
                                         LevelBasedValue.constant(10.0F),
                                         LevelBasedValue.perLevel(1.0F),

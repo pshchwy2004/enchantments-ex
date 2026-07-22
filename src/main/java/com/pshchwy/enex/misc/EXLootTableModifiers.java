@@ -4,6 +4,8 @@ import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.predicates.DataComponentPredicates;
+import net.minecraft.core.component.predicates.EnchantmentsPredicate;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -39,21 +41,17 @@ public class EXLootTableModifiers {
     public static void modifyLootTables() {
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
             HolderLookup.RegistryLookup<Enchantment> registryLookup = registries.lookupOrThrow(Registries.ENCHANTMENT);
+
+            // simplified builder
+            var fortuneEXCondition = MatchTool.toolMatches(ItemPredicate.Builder.item().withComponents(net.minecraft.advancements.critereon.DataComponentMatchers.Builder.components().partial(DataComponentPredicates.ENCHANTMENTS, EnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))).build()));
+            var luckOfTheSeaEXCondition = MatchTool.toolMatches(ItemPredicate.Builder.item().withComponents(net.minecraft.advancements.critereon.DataComponentMatchers.Builder.components().partial(DataComponentPredicates.ENCHANTMENTS, EnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX), MinMaxBounds.Ints.atLeast(1))))).build()));
             // Let's only modify built-in loot tables and leave data pack loot tables untouched by checking the source.
             // We also check that the loot table ID is equal to the ID we want.
             if (source.isBuiltin() && (key.location().equals(DIAMOND_ORE_ID) || key.location().equals(DEEPSLATE_DIAMOND_ORE_ID))) {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.DIAMOND_BLOCK))
-                        .when(
-                                MatchTool.toolMatches(
-                                        ItemPredicate.Builder.item()
-                                                .withSubPredicate(
-                                                        ItemSubPredicates.ENCHANTMENTS,
-                                                        ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                                )
-                                )
-                        )
+                        .when(fortuneEXCondition)
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
@@ -61,15 +59,7 @@ public class EXLootTableModifiers {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.COAL_BLOCK))
-                        .when(
-                                MatchTool.toolMatches(
-                                        ItemPredicate.Builder.item()
-                                                .withSubPredicate(
-                                                        ItemSubPredicates.ENCHANTMENTS,
-                                                        ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                                )
-                                )
-                        )
+                        .when(fortuneEXCondition)
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
@@ -77,15 +67,7 @@ public class EXLootTableModifiers {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.RAW_COPPER_BLOCK))
-                        .when(
-                                MatchTool.toolMatches(
-                                        ItemPredicate.Builder.item()
-                                                .withSubPredicate(
-                                                        ItemSubPredicates.ENCHANTMENTS,
-                                                        ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                                )
-                                )
-                        )
+                        .when(fortuneEXCondition)
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
@@ -93,15 +75,7 @@ public class EXLootTableModifiers {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.RAW_IRON_BLOCK))
-                        .when(
-                                MatchTool.toolMatches(
-                                        ItemPredicate.Builder.item()
-                                                .withSubPredicate(
-                                                        ItemSubPredicates.ENCHANTMENTS,
-                                                        ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                                )
-                                )
-                        )
+                        .when(fortuneEXCondition)
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
@@ -109,15 +83,7 @@ public class EXLootTableModifiers {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.RAW_GOLD_BLOCK))
-                        .when(
-                                MatchTool.toolMatches(
-                                        ItemPredicate.Builder.item()
-                                                .withSubPredicate(
-                                                        ItemSubPredicates.ENCHANTMENTS,
-                                                        ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                                )
-                                )
-                        )
+                        .when(fortuneEXCondition)
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
@@ -125,15 +91,7 @@ public class EXLootTableModifiers {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.EMERALD_BLOCK))
-                        .when(
-                                MatchTool.toolMatches(
-                                        ItemPredicate.Builder.item()
-                                                .withSubPredicate(
-                                                        ItemSubPredicates.ENCHANTMENTS,
-                                                        ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                                )
-                                )
-                        )
+                        .when(fortuneEXCondition)
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
@@ -141,15 +99,7 @@ public class EXLootTableModifiers {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.LAPIS_BLOCK))
-                        .when(
-                                MatchTool.toolMatches(
-                                        ItemPredicate.Builder.item()
-                                                .withSubPredicate(
-                                                        ItemSubPredicates.ENCHANTMENTS,
-                                                        ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                                )
-                                )
-                        )
+                        .when(fortuneEXCondition)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(4.0F, 9.0F)))
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
@@ -158,15 +108,7 @@ public class EXLootTableModifiers {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.REDSTONE_BLOCK))
-                        .when(
-                                MatchTool.toolMatches(
-                                        ItemPredicate.Builder.item()
-                                                .withSubPredicate(
-                                                        ItemSubPredicates.ENCHANTMENTS,
-                                                        ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                                )
-                                )
-                        )
+                        .when(fortuneEXCondition)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(4.0F, 5.0F)))
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
@@ -175,15 +117,7 @@ public class EXLootTableModifiers {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.GOLD_INGOT))
-                        .when(
-                                MatchTool.toolMatches(
-                                        ItemPredicate.Builder.item()
-                                                .withSubPredicate(
-                                                        ItemSubPredicates.ENCHANTMENTS,
-                                                        ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                                )
-                                )
-                        )
+                        .when(fortuneEXCondition)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 6.0F)))
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
@@ -192,15 +126,7 @@ public class EXLootTableModifiers {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.NETHERITE_INGOT))
-                        .when(
-                                MatchTool.toolMatches(
-                                        ItemPredicate.Builder.item()
-                                                .withSubPredicate(
-                                                        ItemSubPredicates.ENCHANTMENTS,
-                                                        ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                                )
-                                )
-                        )
+                        .when(fortuneEXCondition)
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
@@ -220,15 +146,7 @@ public class EXLootTableModifiers {
                         .add(LootItem.lootTableItem(Items.ENCHANTED_GOLDEN_APPLE).setWeight(5))
                         .add(LootItem.lootTableItem(Items.SPONGE).setWeight(20))
                         .add(LootItem.lootTableItem(Items.ECHO_SHARD).setWeight(10))
-                        .when(
-                                MatchTool.toolMatches(
-                                        ItemPredicate.Builder.item()
-                                                .withSubPredicate(
-                                                        ItemSubPredicates.ENCHANTMENTS,
-                                                        ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX), MinMaxBounds.Ints.atLeast(1))))
-                                                )
-                                )
-                        );
+                        .when(luckOfTheSeaEXCondition);
                 tableBuilder.withPool(poolBuilder);
             }
         });

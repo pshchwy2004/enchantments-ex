@@ -48,7 +48,7 @@ public class MoltenInkItem extends PotionItem {
             }
             livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER, 500, 2));
             livingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 500, 2));
-            livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 500, 2));
+            livingEntity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 500, 2));
         }
 
         if (player != null) {
@@ -70,8 +70,6 @@ public class MoltenInkItem extends PotionItem {
         return itemStack;
     }
 
-
-    @Override
     public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
 
     }

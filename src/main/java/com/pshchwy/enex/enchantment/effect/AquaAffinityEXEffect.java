@@ -28,8 +28,8 @@ public record AquaAffinityEXEffect(LevelBasedValue amount) implements Enchantmen
         // executes per tick
         // If the player has Mining Fatigue (any level), remove it
         if (target instanceof Player player) {
-            if (player.hasEffect(MobEffects.DIG_SLOWDOWN)) {
-                player.removeEffect(MobEffects.DIG_SLOWDOWN);
+            if (player.hasEffect(MobEffects.MINING_FATIGUE)) {
+                player.removeEffect(MobEffects.MINING_FATIGUE);
             }
         }
     }

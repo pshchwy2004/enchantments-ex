@@ -31,10 +31,10 @@ public record DensityEXEffect(LevelBasedValue amount) implements EnchantmentEnti
         // executes post-attack
         // target gets slowness, nausea, and weakness, attacker gets resistance
         if (context.owner() instanceof Player p && target instanceof LivingEntity le && MaceItem.canSmashAttack(p)) {
-            le.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2000, level - 1));
-            le.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 2000, level - 1));
+            le.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 2000, level - 1));
+            le.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 2000, level - 1));
             le.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 2000, level - 1));
-            p.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, level - 1));
+            p.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 100, level - 1));
         }
     }
 

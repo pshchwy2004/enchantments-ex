@@ -39,9 +39,9 @@ public record DepthStriderEXEffect(LevelBasedValue amount) implements Enchantmen
                     area
             );
             for (Dolphin dolphin : dolphins) {
-                dolphin.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 10, level - 1));
-                dolphin.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 10, level - 1));
-                dolphin.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 10, level - 1));
+                dolphin.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 10, level - 1));
+                dolphin.addEffect(new MobEffectInstance(MobEffects.SPEED, 10, level - 1));
+                dolphin.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 10, level - 1));
             }
         }
     }
