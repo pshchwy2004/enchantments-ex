@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentMap;
 import com.pshchwy.enex.item.EXItems;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -40,9 +41,9 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             EnchantmentsEX.MOD_ID,
             "container/stamping_table/enchantment_slot"
     );
-    private static final int LIST_X = 59;
+    private static final int LIST_X = 60;
     private static final int LIST_Y = 14;
-    private static final int BUTTON_WIDTH = 96;
+    private static final int BUTTON_WIDTH = 95;
     private static final int BUTTON_HEIGHT = 19;
     private static final int VISIBLE_ROWS = 3;
     private static final int SCROLL_X = 158;
@@ -99,7 +100,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         // check for ink
         boolean hasInk = !this.menu.getSlot(1).getItem().isEmpty() && this.menu.getSlot(1).getItem().is(EXItems.MOLTEN_INK);
 
-        for (int i = this.startIndex; i < maxIndexToRender && i < available.size(); i++) {
+        for (int i = this.startIndex; i < maxIndexToRender && i < available.size(); i++) { // render buttons
             int currentRenderRow = i - this.startIndex;
             int itemY = renderY + currentRenderRow * BUTTON_HEIGHT;
 
@@ -116,65 +117,73 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             } else if (isHovered) {
                 // highlighted sprite
                 buttonSprite = ENCHANTMENT_SLOT_HIGHLIGHTED_SPRITE;
-                textColor = 0xFFFF55; // Yellow text
+                textColor = 0xe7d05e; // yellow
             } else {
                 // standard sprite
                 buttonSprite = ENCHANTMENT_SLOT_SPRITE;
-                textColor = 0xFFFFFF; // White text
+                textColor = 0xb6b6b6; // grey-ish
             }
 
             // draw the button
             guiGraphics.blitSprite(buttonSprite, renderX, itemY, BUTTON_WIDTH, BUTTON_HEIGHT);
 
-            // 3. Gather and format the text name
+            // gather and format the text name
             Holder<Enchantment> currentEnchant = available.get(i);
             var storedEnchants = this.menu.getSlot(0).getItem().getOrDefault(net.minecraft.core.component.DataComponents.STORED_ENCHANTMENTS, net.minecraft.world.item.enchantment.ItemEnchantments.EMPTY);
             int currentLevel = storedEnchants.getLevel(currentEnchant);
 
-            Component displayName = currentEnchant.value().description();
+            // --- LINE 1: Original Enchantment + Level ---
+            Component ogLine = (currentLevel != 0 && currentEnchant.value().getMaxLevel() > 1)
+                    ? currentEnchant.value().description().copy()
+                    .append(" ")
+                    .append(Component.translatable("enchantment.level." + currentLevel))
+                    .withStyle(ChatFormatting.ITALIC)
+                    : currentEnchant.value().description().copy().withStyle(ChatFormatting.ITALIC);
+
+            // --- LINE 2: EX Target Upgrade Name + Level ---
+            Component exLine = Component.empty();
             if (this.minecraft != null && this.minecraft.level != null) {
                 var optKey = currentEnchant.unwrapKey();
                 if (optKey.isPresent()) {
                     ResourceKey<Enchantment> exKey = EXEnchantmentMap.getUpgrade(optKey.get());
                     var registry = this.minecraft.level.registryAccess().registry(Registries.ENCHANTMENT);
                     if (registry.isPresent() && registry.get().get(exKey) != null) {
-                        displayName = Objects.requireNonNull(registry.get().get(exKey)).description();
+                        var exEnchant = registry.get().get(exKey);
+                        Component exDesc = Objects.requireNonNull(exEnchant).description();
+
+                        Component levelComponent = (exEnchant.getMaxLevel() > 1 && currentLevel != 0)
+                                ? Component.literal(" ").append(Component.translatable("enchantment.level." + currentLevel))
+                                : Component.empty();
+
+                        // Prefix with a clean arrow to indicate upgrade direction
+                        exLine = Component.literal("➔ ").append(exDesc).append(levelComponent);
                     }
                 }
             }
+            // --- TWO-LINE CENTERING MATH ---
+            float lineScale = 0.70F; // Scaled so two lines fit vertically within 19px button height
+            float lineSpacing = 1.0F;
+            float fontHeight = this.font.lineHeight; // Standard font height is 9px
+            float totalBlockHeight = (fontHeight * 2 + lineSpacing) * lineScale; // ~13.3px
 
-            // Correctly format the Roman numerals dynamically using vanilla's localization system
-            Component finalRenderText;
+            // Vertical starting position centered on the button
+            float startY = itemY + (BUTTON_HEIGHT - totalBlockHeight) / 2.0F;
+            float line2Y = startY + (fontHeight + lineSpacing) * lineScale;
 
-            // A cleaner, foolproof way if currentLevel is guaranteed to be >= 1:
-            if (currentLevel > 0 || currentEnchant.value().getMaxLevel() > 1) {
-                finalRenderText = Component.translatable("enchantment.level." + currentLevel, displayName);
+            // Render both lines centered horizontally
+            renderCenteredTextLine(guiGraphics, ogLine, renderX, startY, BUTTON_WIDTH, lineScale, textColor);
+            int exTextColor;
+            if (!hasInk) {
+                // disabled sprite
+                exTextColor = 0xA0A0A0; // Grayed-out text
+            } else if (isHovered) {
+                // highlighted sprite
+                exTextColor = 0xFFFF55; // Yellow text
             } else {
-                // max level 1 enchants do not render roman numerals
-                finalRenderText = Component.empty();
+                // standard sprite
+                exTextColor = 0xFFFFFF; // White text
             }
-
-            Component actualFinalRenderText = displayName.copy().append(" ").append(finalRenderText);
-
-            // draw text
-            float maxTextWidth = BUTTON_WIDTH - 10; // Leaves 5px padding on left and right
-            float textWidth = this.font.width(actualFinalRenderText);
-            float scale = 1.0F;
-
-            if (textWidth > maxTextWidth) {
-                scale = maxTextWidth / textWidth;
-            }
-
-            guiGraphics.pose().pushPose();
-            // Translate to the starting position of the text
-            guiGraphics.pose().translate(renderX + 5, itemY + 5, 0);
-            // Apply the scale factor uniformly to X and Y
-            guiGraphics.pose().scale(scale, scale, 1.0F);
-
-            // Draw at (0, 0) because we handled positioning via translate
-            guiGraphics.drawString(this.font, actualFinalRenderText, 0, 0, textColor, true);
-
-            guiGraphics.pose().popPose();
+            renderCenteredTextLine(guiGraphics, exLine, renderX, line2Y, BUTTON_WIDTH, lineScale, exTextColor);
         }
     }
 
@@ -256,5 +265,39 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
      */
     private int getScrollRowLength() {
         return Math.max(0, this.menu.getAvailableEnchantments().size() - VISIBLE_ROWS);
+    }
+
+    /**
+     * automatically calculates center offsets and scale down any long enchantment names so they never overflow the button borders.
+     * @param guiGraphics the graphics environment
+     * @param text the text component
+     * @param x the x-location
+     * @param y the y-location
+     * @param width the width of the text
+     * @param maxScale the maximum scale of the text
+     * @param color the color of the text
+     */
+    private void renderCenteredTextLine(GuiGraphics guiGraphics, Component text, float x, float y, int width, float maxScale, int color) {
+        if (text.getString().isEmpty()) return;
+
+        float textWidth = this.font.width(text);
+        float padding = 6.0F; // 3px margin on each side
+        float maxAllowedWidth = width - padding;
+
+        // Apply scaling if the text is too wide for the button
+        float finalScale = maxScale;
+        if (textWidth * maxScale > maxAllowedWidth) {
+            finalScale = maxAllowedWidth / textWidth;
+        }
+
+        // Calculate centered starting X position
+        float scaledWidth = textWidth * finalScale;
+        float startX = x + (width - scaledWidth) / 2.0F;
+
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(startX, y, 0.0F);
+        guiGraphics.pose().scale(finalScale, finalScale, 1.0F);
+        guiGraphics.drawString(this.font, text, 0, 0, color, true);
+        guiGraphics.pose().popPose();
     }
 }
