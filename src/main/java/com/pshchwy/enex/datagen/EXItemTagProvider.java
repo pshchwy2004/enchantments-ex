@@ -14,7 +14,7 @@ import net.minecraft.world.item.Items;
 import java.util.concurrent.CompletableFuture;
 
 /// This class declares item tags.
-public class EXItemTagProvider extends FabricTagProvider<Item> {
+public class EXItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
     public static final TagKey<Item> STAMPING_CLOTHS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "stamping_cloths"));
 
@@ -27,12 +27,12 @@ public class EXItemTagProvider extends FabricTagProvider<Item> {
      * @param registriesFuture the backing registry for the tag type
      */
     public EXItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(output, Registries.ITEM, registriesFuture);
+        super(output, registriesFuture);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider wrapperLookup) {
-        getOrCreateTagBuilder(STAMPING_CLOTHS)
+        valueLookupBuilder(STAMPING_CLOTHS)
                 .addOptionalTag(ItemTags.WOOL_CARPETS)
                 .add(Items.PAPER)
                 .add(Items.LEATHER)

@@ -12,7 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import java.util.concurrent.CompletableFuture;
 
 /// This class declares mob tags.
-public class EXMobTagProvider extends FabricTagProvider<EntityType<?>> {
+public class EXMobTagProvider extends FabricTagProvider.EntityTypeTagProvider {
 
     public static final TagKey<EntityType<?>> BREACH_EX_VULNERABLE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "boss_mobs"));
     public static final TagKey<EntityType<?>> FIRE_IMMUNE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "immune_to_fire"));
@@ -27,12 +27,12 @@ public class EXMobTagProvider extends FabricTagProvider<EntityType<?>> {
      * @param registriesFuture the backing registry for the tag type
      */
     public EXMobTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(output, Registries.ENTITY_TYPE, registriesFuture);
+        super(output, registriesFuture);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider wrapperLookup) {
-        getOrCreateTagBuilder(BREACH_EX_VULNERABLE)
+        valueLookupBuilder(BREACH_EX_VULNERABLE)
                 .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.IRON_GOLEM)
                 .add(EntityType.WARDEN)
@@ -40,7 +40,7 @@ public class EXMobTagProvider extends FabricTagProvider<EntityType<?>> {
                 .add(EntityType.WITHER)
                 .setReplace(true);
 
-        getOrCreateTagBuilder(FIRE_IMMUNE)
+        valueLookupBuilder(FIRE_IMMUNE)
                 .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.ZOGLIN)
                 .add(EntityType.VEX)
@@ -55,7 +55,7 @@ public class EXMobTagProvider extends FabricTagProvider<EntityType<?>> {
                 .add(EntityType.STRIDER)
                 .setReplace(true);
 
-        getOrCreateTagBuilder(FLYING_MOBS)
+        valueLookupBuilder(FLYING_MOBS)
                 .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.GHAST)
                 .add(EntityType.VEX)

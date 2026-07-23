@@ -66,176 +66,176 @@ public class EXEnchantmentTagProvider extends FabricTagProvider<Enchantment> {
 
     @Override
     protected void addTags(HolderLookup.Provider wrapperLookup) {
-        getOrCreateTagBuilder(AQUA_AFFINITY_EXCLUSIVE)
+        builder(AQUA_AFFINITY_EXCLUSIVE)
                 .add(Enchantments.AQUA_AFFINITY)
-                .addOptional(EXEnchantmentEffects.AQUA_AFFINITY_EX.location())
+                .addOptional(EXEnchantmentEffects.AQUA_AFFINITY_EX)
                 .setReplace(true);
-        getOrCreateTagBuilder(BANE_OF_ARTHROPODS_EXCLUSIVE)
+        builder(BANE_OF_ARTHROPODS_EXCLUSIVE)
                 .add(Enchantments.BANE_OF_ARTHROPODS)
-                .addOptional(EXEnchantmentEffects.BANE_OF_ARTHROPODS_EX.location())
+                .addOptional(EXEnchantmentEffects.BANE_OF_ARTHROPODS_EX)
                 .addOptionalTag(EnchantmentTags.DAMAGE_EXCLUSIVE)
                 .setReplace(true);
-        getOrCreateTagBuilder(BLAST_PROTECTION_EXCLUSIVE)
+        builder(BLAST_PROTECTION_EXCLUSIVE)
                 .add(Enchantments.BLAST_PROTECTION)
-                .addOptional(EXEnchantmentEffects.BLAST_PROTECTION_EX.location())
+                .addOptional(EXEnchantmentEffects.BLAST_PROTECTION_EX)
                 .addOptionalTag(EnchantmentTags.ARMOR_EXCLUSIVE);
 
-        getOrCreateTagBuilder(BREACH_EXCLUSIVE)
+        builder(BREACH_EXCLUSIVE)
                 .add(Enchantments.BREACH)
-                .addOptional(EXEnchantmentEffects.BREACH_EX.location())
+                .addOptional(EXEnchantmentEffects.BREACH_EX)
                 .addOptionalTag(EnchantmentTags.DAMAGE_EXCLUSIVE);
 
-        getOrCreateTagBuilder(CHANNELING_EXCLUSIVE)
+        builder(CHANNELING_EXCLUSIVE)
                 .add(Enchantments.CHANNELING)
-                .addOptional(EXEnchantmentEffects.CHANNELING_EX.location());
+                .addOptional(EXEnchantmentEffects.CHANNELING_EX);
 
-        getOrCreateTagBuilder(DENSITY_EXCLUSIVE)
+        builder(DENSITY_EXCLUSIVE)
                 .add(Enchantments.DENSITY)
-                .addOptional(EXEnchantmentEffects.DENSITY_EX.location())
+                .addOptional(EXEnchantmentEffects.DENSITY_EX)
                 .addOptionalTag(EnchantmentTags.DAMAGE_EXCLUSIVE);
 
-        getOrCreateTagBuilder(DEPTH_STRIDER_EXCLUSIVE)
+        builder(DEPTH_STRIDER_EXCLUSIVE)
                 .add(Enchantments.DEPTH_STRIDER)
-                .addOptional(EXEnchantmentEffects.DEPTH_STRIDER_EX.location())
+                .addOptional(EXEnchantmentEffects.DEPTH_STRIDER_EX)
                 .addOptionalTag(EnchantmentTags.BOOTS_EXCLUSIVE);
 
-        getOrCreateTagBuilder(EFFICIENCY_EXCLUSIVE)
+        builder(EFFICIENCY_EXCLUSIVE)
                 .add(Enchantments.EFFICIENCY)
-                .addOptional(EXEnchantmentEffects.EFFICIENCY_EX.location());
+                .addOptional(EXEnchantmentEffects.EFFICIENCY_EX);
 
-        getOrCreateTagBuilder(FEATHER_FALLING_EXCLUSIVE)
+        builder(FEATHER_FALLING_EXCLUSIVE)
                 .add(Enchantments.FEATHER_FALLING)
-                .addOptional(EXEnchantmentEffects.FEATHER_FALLING_EX.location());
+                .addOptional(EXEnchantmentEffects.FEATHER_FALLING_EX);
 
-        getOrCreateTagBuilder(FIRE_ASPECT_EXCLUSIVE)
+        builder(FIRE_ASPECT_EXCLUSIVE)
                 .add(Enchantments.FIRE_ASPECT)
-                .addOptional(EXEnchantmentEffects.FIRE_ASPECT_EX.location());
+                .addOptional(EXEnchantmentEffects.FIRE_ASPECT_EX);
 
-        getOrCreateTagBuilder(FIRE_PROTECTION_EXCLUSIVE)
+        builder(FIRE_PROTECTION_EXCLUSIVE)
                 .add(Enchantments.FIRE_PROTECTION)
-                .addOptional(EXEnchantmentEffects.FIRE_PROTECTION_EX.location())
+                .addOptional(EXEnchantmentEffects.FIRE_PROTECTION_EX)
                 .addOptionalTag(EnchantmentTags.ARMOR_EXCLUSIVE);
 
-        getOrCreateTagBuilder(FLAME_EXCLUSIVE)
+        builder(FLAME_EXCLUSIVE)
                 .add(Enchantments.FLAME)
-                .addOptional(EXEnchantmentEffects.FLAME_EX.location());
+                .addOptional(EXEnchantmentEffects.FLAME_EX);
 
-        getOrCreateTagBuilder(FORTUNE_EXCLUSIVE)
+        builder(FORTUNE_EXCLUSIVE)
                 .add(Enchantments.FORTUNE)
-                .addOptional(EXEnchantmentEffects.FORTUNE_EX.location())
+                .addOptional(EXEnchantmentEffects.FORTUNE_EX)
                 .addOptionalTag(EnchantmentTags.MINING_EXCLUSIVE);
 
-        getOrCreateTagBuilder(FROST_WALKER_EXCLUSIVE)
+        builder(FROST_WALKER_EXCLUSIVE)
                 .add(Enchantments.FROST_WALKER)
-                .addOptional(EXEnchantmentEffects.FROST_WALKER_EX.location())
+                .addOptional(EXEnchantmentEffects.FROST_WALKER_EX)
                 .addOptionalTag(EnchantmentTags.BOOTS_EXCLUSIVE);
 
-        getOrCreateTagBuilder(IMPALING_EXCLUSIVE)
+        builder(IMPALING_EXCLUSIVE)
                 .add(Enchantments.IMPALING)
-                .addOptional(EXEnchantmentEffects.IMPALING_EX.location())
+                .addOptional(EXEnchantmentEffects.IMPALING_EX)
                 .addOptionalTag(EnchantmentTags.DAMAGE_EXCLUSIVE);
 
-        getOrCreateTagBuilder(INFINITY_EXCLUSIVE)
+        builder(INFINITY_EXCLUSIVE)
                 .add(Enchantments.INFINITY)
-                .addOptional(EXEnchantmentEffects.INFINITY_EX.location())
+                .addOptional(EXEnchantmentEffects.INFINITY_EX)
                 .addOptionalTag(EnchantmentTags.BOW_EXCLUSIVE);
 
-        getOrCreateTagBuilder(KNOCKBACK_EXCLUSIVE)
+        builder(KNOCKBACK_EXCLUSIVE)
                 .add(Enchantments.KNOCKBACK)
-                .addOptional(EXEnchantmentEffects.KNOCKBACK_EX.location());
+                .addOptional(EXEnchantmentEffects.KNOCKBACK_EX);
 
-        getOrCreateTagBuilder(LOOTING_EXCLUSIVE)
+        builder(LOOTING_EXCLUSIVE)
                 .add(Enchantments.LOOTING)
-                .addOptional(EXEnchantmentEffects.LOOTING_EX.location());
+                .addOptional(EXEnchantmentEffects.LOOTING_EX);
 
-        getOrCreateTagBuilder(LOYALTY_EXCLUSIVE)
+        builder(LOYALTY_EXCLUSIVE)
                 .add(Enchantments.LOYALTY)
-                .addOptional(EXEnchantmentEffects.LOYALTY_EX.location());
+                .addOptional(EXEnchantmentEffects.LOYALTY_EX);
 
-        getOrCreateTagBuilder(LUCK_OF_THE_SEA_EXCLUSIVE)
+        builder(LUCK_OF_THE_SEA_EXCLUSIVE)
                 .add(Enchantments.LUCK_OF_THE_SEA)
-                .addOptional(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX.location());
+                .addOptional(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX);
 
-        getOrCreateTagBuilder(LURE_EXCLUSIVE)
+        builder(LURE_EXCLUSIVE)
                 .add(Enchantments.LURE)
-                .addOptional(EXEnchantmentEffects.LURE_EX.location());
+                .addOptional(EXEnchantmentEffects.LURE_EX);
 
-        getOrCreateTagBuilder(MENDING_EXCLUSIVE)
+        builder(MENDING_EXCLUSIVE)
                 .add(Enchantments.MENDING)
-                .addOptional(EXEnchantmentEffects.MENDING_EX.location());
+                .addOptional(EXEnchantmentEffects.MENDING_EX);
 
-        getOrCreateTagBuilder(MULTISHOT_EXCLUSIVE)
+        builder(MULTISHOT_EXCLUSIVE)
                 .add(Enchantments.MULTISHOT)
-                .addOptional(EXEnchantmentEffects.MULTISHOT_EX.location());
+                .addOptional(EXEnchantmentEffects.MULTISHOT_EX);
 
-        getOrCreateTagBuilder(PIERCING_EXCLUSIVE)
+        builder(PIERCING_EXCLUSIVE)
                 .add(Enchantments.PIERCING)
-                .addOptional(EXEnchantmentEffects.PIERCING_EX.location());
+                .addOptional(EXEnchantmentEffects.PIERCING_EX);
 
-        getOrCreateTagBuilder(POWER_EXCLUSIVE)
+        builder(POWER_EXCLUSIVE)
                 .add(Enchantments.POWER)
-                .addOptional(EXEnchantmentEffects.POWER_EX.location());
+                .addOptional(EXEnchantmentEffects.POWER_EX);
 
-        getOrCreateTagBuilder(PROJECTILE_PROTECTION_EXCLUSIVE)
+        builder(PROJECTILE_PROTECTION_EXCLUSIVE)
                 .add(Enchantments.PROJECTILE_PROTECTION)
-                .addOptional(EXEnchantmentEffects.PROJECTILE_PROTECTION_EX.location())
+                .addOptional(EXEnchantmentEffects.PROJECTILE_PROTECTION_EX)
                 .addOptionalTag(EnchantmentTags.ARMOR_EXCLUSIVE);
 
-        getOrCreateTagBuilder(PROTECTION_EXCLUSIVE)
+        builder(PROTECTION_EXCLUSIVE)
                 .add(Enchantments.PROTECTION)
-                .addOptional(EXEnchantmentEffects.PROTECTION_EX.location())
+                .addOptional(EXEnchantmentEffects.PROTECTION_EX)
                 .addOptionalTag(EnchantmentTags.ARMOR_EXCLUSIVE);
 
-        getOrCreateTagBuilder(PUNCH_EXCLUSIVE)
+        builder(PUNCH_EXCLUSIVE)
                 .add(Enchantments.PUNCH)
-                .addOptional(EXEnchantmentEffects.PUNCH_EX.location());
+                .addOptional(EXEnchantmentEffects.PUNCH_EX);
 
-        getOrCreateTagBuilder(QUICK_CHARGE_EXCLUSIVE)
+        builder(QUICK_CHARGE_EXCLUSIVE)
                 .add(Enchantments.QUICK_CHARGE)
-                .addOptional(EXEnchantmentEffects.QUICK_CHARGE_EX.location());
+                .addOptional(EXEnchantmentEffects.QUICK_CHARGE_EX);
 
-        getOrCreateTagBuilder(RESPIRATION_EXCLUSIVE)
+        builder(RESPIRATION_EXCLUSIVE)
                 .add(Enchantments.RESPIRATION)
-                .addOptional(EXEnchantmentEffects.RESPIRATION_EX.location());
+                .addOptional(EXEnchantmentEffects.RESPIRATION_EX);
 
-        getOrCreateTagBuilder(RIPTIDE_EXCLUSIVES)
+        builder(RIPTIDE_EXCLUSIVES)
                 .add(Enchantments.RIPTIDE)
-                .addOptional(EXEnchantmentEffects.RIPTIDE_EX.location())
+                .addOptional(EXEnchantmentEffects.RIPTIDE_EX)
                 .addOptionalTag(EnchantmentTags.RIPTIDE_EXCLUSIVE);
 
-        getOrCreateTagBuilder(SHARPNESS_EXCLUSIVE)
+        builder(SHARPNESS_EXCLUSIVE)
                 .add(Enchantments.SHARPNESS)
-                .addOptional(EXEnchantmentEffects.SHARPNESS_EX.location())
+                .addOptional(EXEnchantmentEffects.SHARPNESS_EX)
                 .addOptionalTag(EnchantmentTags.DAMAGE_EXCLUSIVE);
 
-        getOrCreateTagBuilder(SMITE_EXCLUSIVE)
+        builder(SMITE_EXCLUSIVE)
                 .add(Enchantments.SMITE)
-                .addOptional(EXEnchantmentEffects.SMITE_EX.location())
+                .addOptional(EXEnchantmentEffects.SMITE_EX)
                 .addOptionalTag(EnchantmentTags.DAMAGE_EXCLUSIVE);
 
-        getOrCreateTagBuilder(SOUL_SPEED_EXCLUSIVE)
+        builder(SOUL_SPEED_EXCLUSIVE)
                 .add(Enchantments.SOUL_SPEED)
-                .addOptional(EXEnchantmentEffects.SOUL_SPEED_EX.location());
+                .addOptional(EXEnchantmentEffects.SOUL_SPEED_EX);
 
-        getOrCreateTagBuilder(SWEEPING_EDGE_EXCLUSIVE)
+        builder(SWEEPING_EDGE_EXCLUSIVE)
                 .add(Enchantments.SWEEPING_EDGE)
-                .addOptional(EXEnchantmentEffects.SWEEPING_EDGE_EX.location());
+                .addOptional(EXEnchantmentEffects.SWEEPING_EDGE_EX);
 
-        getOrCreateTagBuilder(SWIFT_SNEAK_EXCLUSIVE)
+        builder(SWIFT_SNEAK_EXCLUSIVE)
                 .add(Enchantments.SWIFT_SNEAK)
-                .addOptional(EXEnchantmentEffects.SWIFT_SNEAK_EX.location());
+                .addOptional(EXEnchantmentEffects.SWIFT_SNEAK_EX);
 
-        getOrCreateTagBuilder(THORNS_EXCLUSIVE)
+        builder(THORNS_EXCLUSIVE)
                 .add(Enchantments.THORNS)
-                .addOptional(EXEnchantmentEffects.THORNS_EX.location());
+                .addOptional(EXEnchantmentEffects.THORNS_EX);
 
-        getOrCreateTagBuilder(UNBREAKING_EXCLUSIVE)
+        builder(UNBREAKING_EXCLUSIVE)
                 .add(Enchantments.UNBREAKING)
-                .addOptional(EXEnchantmentEffects.UNBREAKING_EX.location());
+                .addOptional(EXEnchantmentEffects.UNBREAKING_EX);
 
-        getOrCreateTagBuilder(WIND_BURST_EXCLUSIVE)
+        builder(WIND_BURST_EXCLUSIVE)
                 .add(Enchantments.WIND_BURST)
-                .addOptional(EXEnchantmentEffects.WIND_BURST_EX.location());
+                .addOptional(EXEnchantmentEffects.WIND_BURST_EX);
     }
 
     private static TagKey<Enchantment> create(String string) {

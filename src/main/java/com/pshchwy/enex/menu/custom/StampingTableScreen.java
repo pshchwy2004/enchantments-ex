@@ -1,13 +1,12 @@
 package com.pshchwy.enex.menu.custom;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentMap;
 import com.pshchwy.enex.item.EXItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -69,13 +68,12 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
      */
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         int x = this.leftPos;
         int y = this.topPos;
 
         // main GUI plate layout
-        guiGraphics.blit(RenderType::guiTextured, GUI_TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x, y, 0.0f, 0.0f, this.imageWidth, this.imageHeight, 256, 256);
 
         // scrollbar
         int scrollbarX = x + SCROLL_X;
@@ -85,7 +83,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         int thumbY = scrollbarYTop + (int)(this.scrollOffs * (float)scrollTrackLength);
 
         ResourceLocation scrollSprite = this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
-        guiGraphics.blitSprite(RenderType::guiTextured, scrollSprite, scrollbarX, thumbY, 12, 15);
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, scrollSprite, scrollbarX, thumbY, 12, 15);
 
         // render text entries
         List<Holder<Enchantment>> available = this.menu.getAvailableEnchantments();
@@ -123,7 +121,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             }
 
             // draw the button
-            guiGraphics.blitSprite(RenderType::guiTextured, buttonSprite, renderX, itemY, BUTTON_WIDTH, BUTTON_HEIGHT);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, buttonSprite, renderX, itemY, BUTTON_WIDTH, BUTTON_HEIGHT);
 
             // gather and format the text name
             Holder<Enchantment> currentEnchant = available.get(i);
@@ -294,10 +292,12 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         float scaledWidth = textWidth * finalScale;
         float startX = x + (width - scaledWidth) / 2.0F;
 
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(startX, y, 0.0F);
-        guiGraphics.pose().scale(finalScale, finalScale, 1.0F);
-        guiGraphics.drawString(this.font, text, 0, 0, color, true);
-        guiGraphics.pose().popPose();
+        int argbColor = (color & 0xFF000000) == 0 ? (color | 0xFF000000) : color;
+
+        guiGraphics.pose().pushMatrix();
+        guiGraphics.pose().translate(startX, y);
+        guiGraphics.pose().scale(finalScale, finalScale);
+        guiGraphics.drawString(this.font, text, 0, 0, argbColor, true);
+        guiGraphics.pose().popMatrix();
     }
 }
