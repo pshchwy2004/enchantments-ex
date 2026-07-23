@@ -2,7 +2,7 @@ package com.pshchwy.enex.menu;
 
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.menu.custom.StampingTableMenu;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,7 +17,7 @@ public class EXMenus {
             Registry.register(
                     BuiltInRegistries.MENU,
                     Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "stamping_table_menu"),
-                    new ExtendedScreenHandlerType<>(StampingTableMenu::new, BlockPos.STREAM_CODEC)
+                    new ExtendedMenuType<>(StampingTableMenu::new, BlockPos.STREAM_CODEC)
             );
     @SuppressWarnings("unused")
     public static <T extends AbstractContainerMenu> MenuType<T> register(

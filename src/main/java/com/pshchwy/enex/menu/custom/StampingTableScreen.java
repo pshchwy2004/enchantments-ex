@@ -4,7 +4,7 @@ import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentMap;
 import com.pshchwy.enex.item.EXItems;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -59,16 +59,15 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        super.render(guiGraphics, mouseX, mouseY, delta);
-        this.renderTooltip(guiGraphics, mouseX, mouseY);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(guiGraphics, mouseX, mouseY, delta);
     }
 
     /**
      * Rendering the background, all buttons, etc.
      */
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
+    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float delta) {
 
         int x = this.leftPos;
         int y = this.topPos;
@@ -282,14 +281,14 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
      * @param maxScale the maximum scale of the text
      * @param color the color of the text
      */
-    private void renderCenteredTextLine(GuiGraphics guiGraphics, Component text, float x, float y, int width, float maxScale, int color) {
+    private void renderCenteredTextLine(GuiGraphicsExtractor guiGraphics, Component text, float x, float y, int width, float maxScale, int color) {
         if (text.getString().isEmpty()) return;
 
         float textWidth = this.font.width(text);
         float padding = 6.0F; // 3px margin on each side
         float maxAllowedWidth = width - padding;
 
-        // Apply scaling if the text is too wide for the button
+        // Scale down if the text exceeds the button's printable area
         float finalScale = maxScale;
         if (textWidth * maxScale > maxAllowedWidth) {
             finalScale = maxAllowedWidth / textWidth;
@@ -299,12 +298,17 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         float scaledWidth = textWidth * finalScale;
         float startX = x + (width - scaledWidth) / 2.0F;
 
+        // Ensure full alpha coverage (ARGB) for 26.1 text rendering
         int argbColor = (color & 0xFF000000) == 0 ? (color | 0xFF000000) : color;
 
+        // 26.1 Matrix3x2fStack (2D matrix translation & scaling)
         guiGraphics.pose().pushMatrix();
         guiGraphics.pose().translate(startX, y);
         guiGraphics.pose().scale(finalScale, finalScale);
-        guiGraphics.drawString(this.font, text, 0, 0, argbColor, true);
+
+        // Draw text using the updated 26.1 text pipeline
+        guiGraphics.text(this.font, text, 0, 0, argbColor, true);
+
         guiGraphics.pose().popMatrix();
     }
 }

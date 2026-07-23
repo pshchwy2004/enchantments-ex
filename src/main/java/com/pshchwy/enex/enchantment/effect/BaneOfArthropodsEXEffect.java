@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Bane of Arthropods EX effect. Renders the weapon's holder immune to poison, and causes all cobwebs the holder touches to break as if with a sword.
@@ -28,7 +29,7 @@ public record BaneOfArthropodsEXEffect(LevelBasedValue amount) implements Enchan
     );
 
     @Override
-    public void apply(ServerLevel world, int level, EnchantedItemInUse context, Entity target, Vec3 pos) {
+    public void apply(@NonNull ServerLevel world, int level, @NonNull EnchantedItemInUse context, @NonNull Entity target, @NonNull Vec3 pos) {
         // executes per tick
         // If the player has Poison (any level), remove it
         if (target instanceof Player player) {

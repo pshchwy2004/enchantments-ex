@@ -12,6 +12,7 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public record TridentItemRetrievalEffect(LevelBasedValue amount) implements Ench
     );
 
     @Override
-    public void apply(ServerLevel world, int level, EnchantedItemInUse context, Entity target, Vec3 pos) {
+    public void apply(@NonNull ServerLevel world, int level, EnchantedItemInUse context, @NonNull Entity target, @NonNull Vec3 pos) {
         // executes when the trident hits a block
         // any item within 3 blocks is instantly teleported to the player
         if (context.owner() instanceof Player player) {

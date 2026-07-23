@@ -2,7 +2,7 @@ package com.pshchwy.enex.block;
 
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.block.custom.StampingTableBlock;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -52,7 +52,7 @@ public class EXBlocks {
     }
 
     public static void initialize() {
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register((itemGroup) -> {
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register((itemGroup) -> {
             itemGroup.accept(EXBlocks.STAMPING_TABLE.asItem());
         });
         EnchantmentsEX.LOGGER.info("Registering blocks for " + EnchantmentsEX.MOD_ID);

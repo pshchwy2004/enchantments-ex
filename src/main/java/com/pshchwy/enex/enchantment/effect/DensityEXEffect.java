@@ -14,6 +14,7 @@ import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Density EX effect. Causes the attacked entity to gain slowdown, nausea, and weakness, and the attacker to gain damage resistance.
@@ -27,7 +28,7 @@ public record DensityEXEffect(LevelBasedValue amount) implements EnchantmentEnti
     );
 
     @Override
-    public void apply(ServerLevel world, int level, EnchantedItemInUse context, Entity target, Vec3 pos) {
+    public void apply(@NonNull ServerLevel world, int level, EnchantedItemInUse context, @NonNull Entity target, @NonNull Vec3 pos) {
         // executes post-attack
         // target gets slowness, nausea, and weakness, attacker gets resistance
         if (context.owner() instanceof Player p && target instanceof LivingEntity le && MaceItem.canSmashAttack(p)) {

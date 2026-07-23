@@ -14,6 +14,7 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public record BlastProtectionEXEffect(LevelBasedValue amount) implements Enchant
     );
 
     @Override
-    public void apply(ServerLevel world, int level, EnchantedItemInUse context, Entity target, Vec3 pos) {
+    public void apply(@NonNull ServerLevel world, int level, @NonNull EnchantedItemInUse context, @NonNull Entity target, @NonNull Vec3 pos) {
         // executes per tick
         if (target instanceof Player player) { // players only: creepers get Slowness (amplifier depending on level)
             double radius = 5.0; // var declared for future balance convenience

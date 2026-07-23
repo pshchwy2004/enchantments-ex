@@ -2,7 +2,7 @@ package com.pshchwy.enex.block.entity.custom;
 
 import com.pshchwy.enex.block.entity.EXBlockEntities;
 import com.pshchwy.enex.menu.custom.StampingTableMenu;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,15 +13,16 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 /// This class declares the entity for the Stamping Table block. This is necessary due to the need for a GUI and container system.
-public class StampingTableBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos> {
+public class StampingTableBlockEntity extends BlockEntity implements ExtendedMenuProvider<BlockPos> {
     public StampingTableBlockEntity(BlockPos pos, BlockState state) {
         super(EXBlockEntities.STAMPING_TABLE_BLOCK_ENTITY, pos, state);
     }
 
     @Override
-    public BlockPos getScreenOpeningData(ServerPlayer player) {
+    public @NonNull BlockPos getScreenOpeningData(@NonNull ServerPlayer player) {
         return this.worldPosition;
     }
 

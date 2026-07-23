@@ -11,6 +11,7 @@ import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Aqua Affinity EX effect. This effect causes the enchanted item's holder to be immune to Mining Fatigue, though does not dissuade Elder Guardians from attempting to inflict Mining Fatigue on the player.
@@ -24,7 +25,7 @@ public record AquaAffinityEXEffect(LevelBasedValue amount) implements Enchantmen
     );
 
     @Override
-    public void apply(ServerLevel world, int level, EnchantedItemInUse context, Entity target, Vec3 pos) {
+    public void apply(@NonNull ServerLevel world, int level, @NonNull EnchantedItemInUse context, @NonNull Entity target, @NonNull Vec3 pos) {
         // executes per tick
         // If the player has Mining Fatigue (any level), remove it
         if (target instanceof Player player) {

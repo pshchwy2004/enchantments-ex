@@ -1,8 +1,8 @@
 package com.pshchwy.enex.datagen;
 
 import com.pshchwy.enex.EnchantmentsEX;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -12,21 +12,21 @@ import net.minecraft.world.entity.EntityType;
 import java.util.concurrent.CompletableFuture;
 
 /// This class declares mob tags.
-public class EXMobTagProvider extends FabricTagProvider.EntityTypeTagProvider {
+public class EXMobTagProvider extends FabricTagsProvider.EntityTypeTagsProvider {
 
     public static final TagKey<EntityType<?>> BREACH_EX_VULNERABLE = TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "boss_mobs"));
     public static final TagKey<EntityType<?>> FIRE_IMMUNE = TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "immune_to_fire"));
     public static final TagKey<EntityType<?>> FLYING_MOBS = TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "flying_mobs"));
 
     /**
-     * Constructs a new {@link FabricTagProvider} with the default computed path.
+     * Constructs a new {@link FabricTagsProvider} with the default computed path.
      *
      * <p>Common implementations of this class are provided.
      *
-     * @param output           the {@link FabricDataOutput} instance
+     * @param output           the {@link FabricPackOutput} instance
      * @param registriesFuture the backing registry for the tag type
      */
-    public EXMobTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public EXMobTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 

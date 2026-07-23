@@ -2,7 +2,7 @@ package com.pshchwy.enex.datagen;
 
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import com.pshchwy.enex.enchantment.effect.*;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.minecraft.advancements.criterion.*;
@@ -57,7 +57,7 @@ import java.util.function.Function;
 
 /// This class is a Provider that handles the registration of all new EX enchantments. Mapping their original variants happens in EXEnchantmentMap.java.
 public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
-    public EXEnchantmentGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public EXEnchantmentGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
         System.out.println("registering enchant generator...");
     }

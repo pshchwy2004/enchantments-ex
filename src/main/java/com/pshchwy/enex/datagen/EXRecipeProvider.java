@@ -3,7 +3,7 @@ package com.pshchwy.enex.datagen;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.block.EXBlocks;
 import com.pshchwy.enex.item.EXItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -19,7 +19,7 @@ import java.util.concurrent.CompletableFuture;
 /// This datagen class builds the recipe JSONs for the new items.
 public class EXRecipeProvider extends FabricRecipeProvider {
 
-    public EXRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public EXRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 

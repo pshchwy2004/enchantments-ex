@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 /// This declares the Stamping Table Block.
 public class StampingTableBlock extends BaseEntityBlock {
@@ -26,17 +27,17 @@ public class StampingTableBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected @NotNull RenderShape getRenderShape(BlockState state) {
+    protected @NotNull RenderShape getRenderShape(@NonNull BlockState state) {
         return RenderShape.MODEL;
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public @Nullable BlockEntity newBlockEntity(@NonNull BlockPos blockPos, @NonNull BlockState blockState) {
         return new StampingTableBlockEntity(blockPos, blockState);
     }
-/// Handles right clicking to bring up the Stamping Table menu.
+/// Handles right-clicking to bring up the Stamping Table menu.
     @Override
-    protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+    protected @NotNull InteractionResult useWithoutItem(@NonNull BlockState blockState, Level level, @NonNull BlockPos blockPos, @NonNull Player player, @NonNull BlockHitResult blockHitResult) {
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         } else {

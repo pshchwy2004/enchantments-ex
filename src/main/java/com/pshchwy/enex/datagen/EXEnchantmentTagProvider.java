@@ -2,8 +2,8 @@ package com.pshchwy.enex.datagen;
 
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -11,13 +11,14 @@ import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
 /// EX enchantment Tag provider in order to prevent EX enchantments and original enchantments from coexisting in a weapon (although it could hypothetically still be possible with commands)
-public class EXEnchantmentTagProvider extends FabricTagProvider<Enchantment> {
+public class EXEnchantmentTagProvider extends FabricTagsProvider<Enchantment> {
     /**
-     * Constructs a new {@link FabricTagProvider} with the default computed path.
+     * Constructs a new {@link FabricTagsProvider} with the default computed path.
      *
      */
     public static final TagKey<Enchantment> AQUA_AFFINITY_EXCLUSIVE = create("aqua_affinity_exclusive");
@@ -60,12 +61,12 @@ public class EXEnchantmentTagProvider extends FabricTagProvider<Enchantment> {
     public static final TagKey<Enchantment> THORNS_EXCLUSIVE = create("thorns_exclusive");
     public static final TagKey<Enchantment> UNBREAKING_EXCLUSIVE = create("unbreaking_exclusive");
     public static final TagKey<Enchantment> WIND_BURST_EXCLUSIVE = create("wind_burst_exclusive");
-    public EXEnchantmentTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public EXEnchantmentTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, Registries.ENCHANTMENT, registriesFuture);
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider wrapperLookup) {
+    protected void addTags(HolderLookup.@NonNull Provider wrapperLookup) {
         builder(AQUA_AFFINITY_EXCLUSIVE)
                 .add(Enchantments.AQUA_AFFINITY)
                 .addOptional(EXEnchantmentEffects.AQUA_AFFINITY_EX)

@@ -10,6 +10,7 @@ import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Knockback EX effect. Causes the victim to gain a guaranteed vertical velocity.
@@ -23,7 +24,7 @@ public record KnockbackEXEffect(LevelBasedValue amount) implements EnchantmentEn
     );
 
     @Override
-    public void apply(ServerLevel world, int level, EnchantedItemInUse context, Entity target, Vec3 pos) {
+    public void apply(@NonNull ServerLevel world, int level, @NonNull EnchantedItemInUse context, @NonNull Entity target, @NonNull Vec3 pos) {
 
         if (target instanceof LivingEntity victim) {
             // Give target vertical knockback corresponding to the weapon's enchantment level

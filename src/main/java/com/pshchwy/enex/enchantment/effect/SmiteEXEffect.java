@@ -14,6 +14,7 @@ import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Smite EX effect. Gives the victim Weakness, which scales to Weakness V when the victim is either sensitive to Smite or is a Warden.
@@ -27,13 +28,13 @@ public record SmiteEXEffect(LevelBasedValue amount) implements EnchantmentEntity
     );
 
     @Override
-    public void apply(ServerLevel world, int level, EnchantedItemInUse context, Entity target, Vec3 pos) {
+    public void apply(@NonNull ServerLevel world, int level, @NonNull EnchantedItemInUse context, @NonNull Entity target, @NonNull Vec3 pos) {
         // apply Weakness V to all undead mobs + warden, apply Weakness I to all other living mobs
         if (target instanceof LivingEntity victim) {
             if (!victim.canBeAffected(new MobEffectInstance(MobEffects.WEAKNESS, 1, 0))) {
                 return;
             }
-            boolean strong = victim.getType().is(EntityTypeTags.SENSITIVE_TO_SMITE) || victim.getType() == EntityType.WARDEN;
+            boolean strong = victim.is(EntityTypeTags.SENSITIVE_TO_SMITE) || victim.getType() == EntityType.WARDEN;
             int amplifier = strong ? 4 : 0;
             victim.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 3000, amplifier));
         }
