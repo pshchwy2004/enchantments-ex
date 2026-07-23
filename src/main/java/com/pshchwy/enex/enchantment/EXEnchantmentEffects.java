@@ -7,7 +7,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 
@@ -121,12 +121,12 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> WIND_BURST_EX = of("wind_burst_ex");
 
     private static ResourceKey<Enchantment> of(String path) {
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path);
+        Identifier id = Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path);
         return ResourceKey.create(Registries.ENCHANTMENT, id);
     }
 
     private static <T extends EnchantmentEntityEffect> MapCodec<T> register(String id, MapCodec<T> codec) {
-        return Registry.register(BuiltInRegistries.ENCHANTMENT_ENTITY_EFFECT_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, id), codec);
+        return Registry.register(BuiltInRegistries.ENCHANTMENT_ENTITY_EFFECT_TYPE, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, id), codec);
     }
 
     public static void registerEnchantmentEffects() {

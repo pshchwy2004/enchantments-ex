@@ -12,7 +12,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -24,19 +24,19 @@ import java.util.List;
  * Here, GUI elements, such as menu buttons, slots, the background, and text are drafted.
  */
 public class StampingTableScreen extends AbstractContainerScreen<StampingTableMenu> {
-    public static final ResourceLocation GUI_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "textures/gui/container/stamping_table/stamping_table.png");
-    private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/scroller");
-    private static final ResourceLocation SCROLLER_DISABLED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/scroller_disabled");
-    private static final ResourceLocation ENCHANTMENT_SLOT_DISABLED_SPRITE = ResourceLocation.fromNamespaceAndPath(
+    public static final Identifier GUI_TEXTURE =
+            Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "textures/gui/container/stamping_table/stamping_table.png");
+    private static final Identifier SCROLLER_SPRITE = Identifier.withDefaultNamespace("container/stonecutter/scroller");
+    private static final Identifier SCROLLER_DISABLED_SPRITE = Identifier.withDefaultNamespace("container/stonecutter/scroller_disabled");
+    private static final Identifier ENCHANTMENT_SLOT_DISABLED_SPRITE = Identifier.fromNamespaceAndPath(
             EnchantmentsEX.MOD_ID,
             "container/stamping_table/enchantment_slot_disabled"
     );
-    private static final ResourceLocation ENCHANTMENT_SLOT_HIGHLIGHTED_SPRITE = ResourceLocation.fromNamespaceAndPath(
+    private static final Identifier ENCHANTMENT_SLOT_HIGHLIGHTED_SPRITE = Identifier.fromNamespaceAndPath(
             EnchantmentsEX.MOD_ID,
             "container/stamping_table/enchantment_slot_highlighted"
     );
-    private static final ResourceLocation ENCHANTMENT_SLOT_SPRITE = ResourceLocation.fromNamespaceAndPath(
+    private static final Identifier ENCHANTMENT_SLOT_SPRITE = Identifier.fromNamespaceAndPath(
             EnchantmentsEX.MOD_ID,
             "container/stamping_table/enchantment_slot"
     );
@@ -83,7 +83,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         int scrollTrackLength = scrollbarHeight - 15;
         int thumbY = scrollbarYTop + (int)(this.scrollOffs * (float)scrollTrackLength);
 
-        ResourceLocation scrollSprite = this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
+        Identifier scrollSprite = this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
         guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, scrollSprite, scrollbarX, thumbY, 12, 15);
 
         // render text entries
@@ -104,7 +104,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             boolean isHovered = mouseX >= renderX && mouseX < renderX + BUTTON_WIDTH && mouseY >= itemY && mouseY < itemY + BUTTON_HEIGHT;
 
             // button sprite
-            ResourceLocation buttonSprite;
+            Identifier buttonSprite;
             int textColor;
 
             if (!hasInk) {

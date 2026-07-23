@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.Dolphin;
+import net.minecraft.world.entity.animal.dolphin.Dolphin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.LevelBasedValue;

@@ -8,7 +8,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -44,7 +44,7 @@ public class EXItems {
     );
 
     private static Item register(String id, java.util.function.Function<ResourceKey<Item>, Item> factory) {
-        ResourceLocation location = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, id);
+        Identifier location = Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, id);
         ResourceKey<Item> key = ResourceKey.create(net.minecraft.core.registries.Registries.ITEM, location);
         Item item = factory.apply(key);
         return Registry.register(BuiltInRegistries.ITEM, key, item);

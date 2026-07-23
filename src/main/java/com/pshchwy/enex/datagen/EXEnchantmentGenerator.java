@@ -5,7 +5,7 @@ import com.pshchwy.enex.enchantment.effect.*;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.criterion.*;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
@@ -13,7 +13,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
@@ -76,7 +76,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         // register Knockback EX
         register(entries, EXEnchantmentEffects.KNOCKBACK_EX, Enchantment.enchantment(
                 Enchantment.definition(
-                        items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                        items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                         // weight of showing up in enchantment table
                         1,
                         // enchantment max level
@@ -104,7 +104,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         // register Sharpness EX
         register(entries, EXEnchantmentEffects.SHARPNESS_EX, Enchantment.enchantment(
                         Enchantment.definition(
-                                items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -140,7 +140,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, EXEnchantmentEffects.SMITE_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
-                                items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -198,7 +198,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
                                 // id
-                                ResourceLocation.withDefaultNamespace("enchantment.aqua_affinity_ex"),
+                                Identifier.withDefaultNamespace("enchantment.aqua_affinity_ex"),
                                 // attribute
                                 Attributes.SUBMERGED_MINING_SPEED,
                                 // Multiplier
@@ -217,7 +217,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         Enchantment.definition(
                                 // which items can be enchanted
                                 items.getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
-                                items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -260,7 +260,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         ),
                         LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS,
-                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                        EntityPredicate.Builder.entity()
                                                 .entityType(
                                                         EntityTypePredicate.of(
                                                                 entityTypes,
@@ -305,7 +305,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.blast_protection_ex"),
+                                Identifier.withDefaultNamespace("enchantment.blast_protection_ex"),
                                 Attributes.EXPLOSION_KNOCKBACK_RESISTANCE,
                                 LevelBasedValue.perLevel(0.15F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -376,16 +376,16 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentTarget.VICTIM,
                         AllOf.entityEffects(
                                 new SummonEntityEffect(HolderSet.direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder()), false),
-                                new PlaySoundEffect(SoundEvents.TRIDENT_THUNDER, ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
+                                new PlaySoundEffect(List.of(SoundEvents.TRIDENT_THUNDER), ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
                         ),
                         AllOfCondition.allOf(
                                 LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS,
-                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
-                                                .located(net.minecraft.advancements.critereon.LocationPredicate.Builder.location().setCanSeeSky(true))
+                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                .located(net.minecraft.advancements.criterion.LocationPredicate.Builder.location().setCanSeeSky(true))
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(entityTypes, EntityType.TRIDENT)
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().of(entityTypes, EntityType.TRIDENT)
                                 )
                         )
                 )
@@ -393,13 +393,13 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.HIT_BLOCK,
                         AllOf.entityEffects(
                                 new SummonEntityEffect(HolderSet.direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder()), false),
-                                new PlaySoundEffect(SoundEvents.TRIDENT_THUNDER, ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
+                                new PlaySoundEffect(List.of(SoundEvents.TRIDENT_THUNDER), ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
                         ),
                         AllOfCondition.allOf(
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.THIS, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(entityTypes, EntityType.TRIDENT)
+                                        LootContext.EntityTarget.THIS, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().of(entityTypes, EntityType.TRIDENT)
                                 ),
-                                LocationCheck.checkLocation(net.minecraft.advancements.critereon.LocationPredicate.Builder.location().setCanSeeSky(true))
+                                LocationCheck.checkLocation(net.minecraft.advancements.criterion.LocationPredicate.Builder.location().setCanSeeSky(true))
                         )
             )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.CHANNELING_EXCLUSIVE))
@@ -457,7 +457,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.depth_strider_ex"),
+                                Identifier.withDefaultNamespace("enchantment.depth_strider_ex"),
                                 Attributes.WATER_MOVEMENT_EFFICIENCY,
                                 LevelBasedValue.perLevel(0.33333334F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -466,7 +466,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.depth_strider_ex"),
+                                Identifier.withDefaultNamespace("enchantment.depth_strider_ex"),
                                 Attributes.ATTACK_SPEED,
                                 LevelBasedValue.perLevel(0.25F, 0.25F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -474,18 +474,18 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         AnyOfCondition.anyOf(
                                 LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS,
-                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                                                 .movementAffectedBy(
-                                                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                                                .setFluid(net.minecraft.advancements.critereon.FluidPredicate.Builder.fluid().of(Fluids.WATER))
+                                                        net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                                                .setFluid(net.minecraft.advancements.criterion.FluidPredicate.Builder.fluid().of(Fluids.WATER))
                                                 )
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS,
-                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                                                 .movementAffectedBy(
-                                                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                                                .setFluid(net.minecraft.advancements.critereon.FluidPredicate.Builder.fluid().of(Fluids.FLOWING_WATER))
+                                                        net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                                                .setFluid(net.minecraft.advancements.criterion.FluidPredicate.Builder.fluid().of(Fluids.FLOWING_WATER))
                                                 )
                                 )
                         )
@@ -519,13 +519,13 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect( // vanilla efficiency
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.efficiency_ex"), Attributes.MINING_EFFICIENCY, new LevelBasedValue.LevelsSquared(1.0F), AttributeModifier.Operation.ADD_VALUE
+                                Identifier.withDefaultNamespace("enchantment.efficiency_ex"), Attributes.MINING_EFFICIENCY, new LevelBasedValue.LevelsSquared(1.0F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .withEffect( // more block interaction range
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.efficiency_ex"), Attributes.BLOCK_INTERACTION_RANGE, LevelBasedValue.constant(2.25F), AttributeModifier.Operation.ADD_VALUE
+                                Identifier.withDefaultNamespace("enchantment.efficiency_ex"), Attributes.BLOCK_INTERACTION_RANGE, LevelBasedValue.constant(2.25F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .withEffect( // extra damage to shulkers
@@ -587,7 +587,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect( // increase blocks needed to start taking FD
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.feather_falling_ex"), Attributes.SAFE_FALL_DISTANCE, LevelBasedValue.constant(7.0F), AttributeModifier.Operation.ADD_VALUE
+                                Identifier.withDefaultNamespace("enchantment.feather_falling_ex"), Attributes.SAFE_FALL_DISTANCE, LevelBasedValue.constant(7.0F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FEATHER_FALLING_EXCLUSIVE))
@@ -598,7 +598,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.FIRE_ASPECT_ENCHANTABLE),
-                                        items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
@@ -632,7 +632,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS,
-                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                                                 .entityType(EntityTypePredicate.of(entityTypes, EXMobTagProvider.FIRE_IMMUNE))
                                                 .build()
                                 )
@@ -703,7 +703,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect( // vanilla burning time reduction
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.fire_protection_ex"),
+                                Identifier.withDefaultNamespace("enchantment.fire_protection_ex"),
                                 Attributes.BURNING_TIME,
                                 LevelBasedValue.perLevel(-0.15F),
                                 AttributeModifier.Operation.ADD_MULTIPLIED_BASE
@@ -754,13 +754,13 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         ),
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
-                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypes, EXMobTagProvider.FIRE_IMMUNE))
                                                         .build()
                                         )
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                                 )
                         )
 
@@ -838,14 +838,14 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         ),
                         LootItemEntityPropertyCondition.hasProperties(
                                 LootContext.EntityTarget.THIS,
-                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
-                                        .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setOnGround(true))
+                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                        .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setOnGround(true))
                         )
                 )
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.frost_walker_ex"),
+                                Identifier.withDefaultNamespace("enchantment.frost_walker_ex"),
                                 Attributes.MOVEMENT_SPEED,
                                 LevelBasedValue.perLevel(0.0405F, 0.0105F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -854,8 +854,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 InvertedLootItemCondition.invert(
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
-                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
-                                                        .vehicle(net.minecraft.advancements.critereon.EntityPredicate.Builder.entity())
+                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                        .vehicle(net.minecraft.advancements.criterion.EntityPredicate.Builder.entity())
                                         )
                                 ),
                                 AnyOfCondition.anyOf(
@@ -863,22 +863,22 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                                 EnchantmentActiveCheck.enchantmentActiveCheck(),
                                                 LootItemEntityPropertyCondition.hasProperties(
                                                         LootContext.EntityTarget.THIS,
-                                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
-                                                                .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
+                                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                                .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
                                                 ),
                                                 AnyOfCondition.anyOf(
                                                         LootItemEntityPropertyCondition.hasProperties(
                                                                 LootContext.EntityTarget.THIS,
-                                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                                                                         .movementAffectedBy(
-                                                                                net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                                                                        .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(blocks, BlockTags.ICE))
+                                                                                net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                                                                        .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.ICE))
                                                                         )
                                                         ),
                                                         LootItemEntityPropertyCondition.hasProperties(
                                                                 LootContext.EntityTarget.THIS,
-                                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
-                                                                        .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setOnGround(false))
+                                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                                        .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setOnGround(false))
                                                                         .build()
                                                         )
                                                 )
@@ -887,12 +887,12 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                                 EnchantmentActiveCheck.enchantmentInactiveCheck(),
                                                 LootItemEntityPropertyCondition.hasProperties(
                                                         LootContext.EntityTarget.THIS,
-                                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                                                                 .movementAffectedBy(
-                                                                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                                                                .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(blocks, BlockTags.ICE))
+                                                                        net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                                                                .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.ICE))
                                                                 )
-                                                                .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
+                                                                .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
                                                 )
                                         )
                                 )
@@ -935,13 +935,13 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         AnyOfCondition.anyOf(
                                 LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS,
-                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                                                 .entityType(EntityTypePredicate.of(entityTypes, EntityTypeTags.SENSITIVE_TO_IMPALING))
                                                 .build()
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS,
-                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                                                 .located(
                                                         LocationPredicate.Builder.location()
                                                                 .setFluid(
@@ -956,7 +956,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         ),
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
-                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                                                         .located(
                                                                 LocationPredicate.Builder.location()
                                                                         .setCanSeeSky(true)
@@ -999,10 +999,10 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.AMMO_USE,
                         new SetValue(LevelBasedValue.constant(0.0F)),
                         AnyOfCondition.anyOf(
-                                MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(items, Items.ARROW)),
-                                MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(items, Items.SPECTRAL_ARROW)),
-                                MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(items, Items.TIPPED_ARROW)),
-                                MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(items, Items.FIREWORK_ROCKET))
+                                MatchTool.toolMatches(net.minecraft.advancements.criterion.ItemPredicate.Builder.item().of(items, Items.ARROW)),
+                                MatchTool.toolMatches(net.minecraft.advancements.criterion.ItemPredicate.Builder.item().of(items, Items.SPECTRAL_ARROW)),
+                                MatchTool.toolMatches(net.minecraft.advancements.criterion.ItemPredicate.Builder.item().of(items, Items.TIPPED_ARROW)),
+                                MatchTool.toolMatches(net.minecraft.advancements.criterion.ItemPredicate.Builder.item().of(items, Items.FIREWORK_ROCKET))
                         )
 
                 )
@@ -1012,7 +1012,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, EXEnchantmentEffects.LOOTING_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
-                                        items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
@@ -1035,7 +1035,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         new AddValue(LevelBasedValue.perLevel(0.01F)),
                         LootItemEntityPropertyCondition.hasProperties(
                                 LootContext.EntityTarget.ATTACKER,
-                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER))
+                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER))
                         )
                 )
                 .withEffect(EnchantmentEffectComponents.MOB_EXPERIENCE, new MultiplyValue(LevelBasedValue.perLevel(2.5f, 1.0f)))
@@ -1196,7 +1196,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         AnyOfCondition.anyOf(
                                 AllOfCondition.allOf(
                                         LootItemEntityPropertyCondition.hasProperties(
-                                                LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
+                                                LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                                         ),
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
@@ -1210,7 +1210,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         )
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(entityTypes, EntityType.FIREWORK_ROCKET).build()
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().of(entityTypes, EntityType.FIREWORK_ROCKET).build()
                                 )
                         )
 
@@ -1241,7 +1241,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(0.5F)),
                         LootItemEntityPropertyCondition.hasProperties(
-                                LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
+                                LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                         )
                 )
                 .withEffect(
@@ -1257,7 +1257,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         ),
                         AllOfCondition.allOf(
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                                 ),
                                 LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))
                         )
@@ -1302,7 +1302,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect( // reduces generic knockback
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.projectile_protection_ex"),
+                                Identifier.withDefaultNamespace("enchantment.projectile_protection_ex"),
                                 Attributes.KNOCKBACK_RESISTANCE,
                                 LevelBasedValue.perLevel(0.15F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1375,7 +1375,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.KNOCKBACK,
                         new AddValue(LevelBasedValue.perLevel(1.0F)),
                         LootItemEntityPropertyCondition.hasProperties(
-                                LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
+                                LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.PUNCH_EXCLUSIVE))
@@ -1385,7 +1385,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentTarget.VICTIM,
                         new KnockbackEXEffect(LevelBasedValue.perLevel(0.4f, 0.2f)),
                         LootItemEntityPropertyCondition.hasProperties(
-                                LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
+                                LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                         )
                 )
         );
@@ -1449,7 +1449,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.respiration_ex"),
+                                Identifier.withDefaultNamespace("enchantment.respiration_ex"),
                                 Attributes.OXYGEN_BONUS,
                                 LevelBasedValue.perLevel(1.0F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1483,7 +1483,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         .withEffect(
                                 EnchantmentEffectComponents.ATTRIBUTES,
                                 new EnchantmentAttributeEffect(
-                                        ResourceLocation.withDefaultNamespace("enchantment.riptide_ex"),
+                                        Identifier.withDefaultNamespace("enchantment.riptide_ex"),
                                         Attributes.OXYGEN_BONUS,
                                         LevelBasedValue.perLevel(1.0F),
                                         AttributeModifier.Operation.ADD_VALUE
@@ -1498,13 +1498,13 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
 
         // register Soul Speed EX
         // builder def
-        net.minecraft.advancements.critereon.EntityPredicate.Builder soulSpeedBuilder = net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+        net.minecraft.advancements.criterion.EntityPredicate.Builder soulSpeedBuilder = net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                 .periodicTick(5)
-                .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setIsFlying(false).setOnGround(true))
+                .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsFlying(false).setOnGround(true))
                 .moving(MovementPredicate.horizontalSpeed(MinMaxBounds.Doubles.atLeast(1.0E-5F)))
                 .movementAffectedBy(
-                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
+                        net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
                 );
         register(entries, EXEnchantmentEffects.SOUL_SPEED_EX, Enchantment.enchantment(
                                 Enchantment.definition(
@@ -1528,7 +1528,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.soul_speed"),
+                                Identifier.withDefaultNamespace("enchantment.soul_speed"),
                                 Attributes.MOVEMENT_SPEED,
                                 LevelBasedValue.perLevel(0.0405F, 0.0105F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1537,8 +1537,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 InvertedLootItemCondition.invert(
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
-                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
-                                                        .vehicle(net.minecraft.advancements.critereon.EntityPredicate.Builder.entity())
+                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                        .vehicle(net.minecraft.advancements.criterion.EntityPredicate.Builder.entity())
                                         )
                                 ),
                                 AnyOfCondition.anyOf(
@@ -1546,22 +1546,22 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                                 EnchantmentActiveCheck.enchantmentActiveCheck(),
                                                 LootItemEntityPropertyCondition.hasProperties(
                                                         LootContext.EntityTarget.THIS,
-                                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
-                                                                .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
+                                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                                .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
                                                 ),
                                                 AnyOfCondition.anyOf(
                                                         LootItemEntityPropertyCondition.hasProperties(
                                                                 LootContext.EntityTarget.THIS,
-                                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                                                                         .movementAffectedBy(
-                                                                                net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                                                                        .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
+                                                                                net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                                                                        .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
                                                                         )
                                                         ),
                                                         LootItemEntityPropertyCondition.hasProperties(
                                                                 LootContext.EntityTarget.THIS,
-                                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
-                                                                        .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setOnGround(false))
+                                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                                        .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setOnGround(false))
                                                                         .build()
                                                         )
                                                 )
@@ -1570,12 +1570,12 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                                 EnchantmentActiveCheck.enchantmentInactiveCheck(),
                                                 LootItemEntityPropertyCondition.hasProperties(
                                                         LootContext.EntityTarget.THIS,
-                                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                                                                 .movementAffectedBy(
-                                                                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                                                                .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
+                                                                        net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                                                                .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
                                                                 )
-                                                                .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
+                                                                .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
                                                 )
                                         )
                                 )
@@ -1584,17 +1584,17 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.soul_speed"),
+                                Identifier.withDefaultNamespace("enchantment.soul_speed"),
                                 Attributes.MOVEMENT_EFFICIENCY,
                                 LevelBasedValue.constant(1.0F),
                                 AttributeModifier.Operation.ADD_VALUE
                         ),
                         LootItemEntityPropertyCondition.hasProperties(
                                 LootContext.EntityTarget.THIS,
-                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
+                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
                                         .movementAffectedBy(
-                                                net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                                        .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
+                                                net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                                        .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
                                         )
                         )
                 )
@@ -1612,7 +1612,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 )
                 .withEffect(
                         EnchantmentEffectComponents.TICK,
-                        new PlaySoundEffect(SoundEvents.SOUL_ESCAPE, ConstantFloat.of(0.6F), UniformFloat.of(0.6F, 1.0F)),
+                        new PlaySoundEffect(List.of(SoundEvents.SOUL_ESCAPE), ConstantFloat.of(0.6F), UniformFloat.of(0.6F, 1.0F)),
                         AllOfCondition.allOf(
                                 LootItemRandomChanceCondition.randomChance(0.35F), LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, soulSpeedBuilder)
                         )
@@ -1623,7 +1623,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
         register(entries, EXEnchantmentEffects.SWEEPING_EDGE_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
-                                        items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.SWEEPING_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
@@ -1641,7 +1641,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.sweeping_edge_ex"),
+                                Identifier.withDefaultNamespace("enchantment.sweeping_edge_ex"),
                                 Attributes.SWEEPING_DAMAGE_RATIO,
                                 new LevelBasedValue.Fraction(LevelBasedValue.perLevel(1.0F), LevelBasedValue.perLevel(2.0F, 1.0F)),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1686,7 +1686,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.swift_sneak_ex"),
+                                Identifier.withDefaultNamespace("enchantment.swift_sneak_ex"),
                                 Attributes.SNEAKING_SPEED,
                                 LevelBasedValue.perLevel(0.15F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1696,7 +1696,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.withDefaultNamespace("enchantment.swift_sneak_ex"),
+                                Identifier.withDefaultNamespace("enchantment.swift_sneak_ex"),
                                 Attributes.STEP_HEIGHT,
                                 LevelBasedValue.constant(0.5F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1758,14 +1758,14 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ITEM_DAMAGE,
                         new RemoveBinomial(new LevelBasedValue.Fraction(LevelBasedValue.perLevel(2.0F), LevelBasedValue.perLevel(10.0F, 2.5F))),
-                        MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(items, ItemTags.ARMOR_ENCHANTABLE))
+                        MatchTool.toolMatches(net.minecraft.advancements.criterion.ItemPredicate.Builder.item().of(items, ItemTags.ARMOR_ENCHANTABLE))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.UNBREAKING_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.ITEM_DAMAGE,
                         new RemoveBinomial(new LevelBasedValue.Fraction(LevelBasedValue.perLevel(1.0F), LevelBasedValue.perLevel(2.0F, 1.0F))),
                         InvertedLootItemCondition.invert(
-                                MatchTool.toolMatches(net.minecraft.advancements.critereon.ItemPredicate.Builder.item().of(items, ItemTags.ARMOR_ENCHANTABLE))
+                                MatchTool.toolMatches(net.minecraft.advancements.criterion.ItemPredicate.Builder.item().of(items, ItemTags.ARMOR_ENCHANTABLE))
                         )
                 )
                 .withEffect(
@@ -1850,8 +1850,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         ),
                         LootItemEntityPropertyCondition.hasProperties(
                                 LootContext.EntityTarget.DIRECT_ATTACKER,
-                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
-                                        .flags(net.minecraft.advancements.critereon.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
+                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                        .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsFlying(false))
                                         .moving(MovementPredicate.fallDistance(MinMaxBounds.Doubles.atLeast(1.5)))
                         )
                 )
@@ -1867,7 +1867,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
 
     /// Register function.
     private void register(Entries entries, ResourceKey<Enchantment> key, Enchantment.Builder builder, ResourceCondition... resourceConditions) {
-        entries.add(key, builder.build(key.location()), resourceConditions);
+        entries.add(key, builder.build(key.identifier()), resourceConditions);
     }
 
     @Override

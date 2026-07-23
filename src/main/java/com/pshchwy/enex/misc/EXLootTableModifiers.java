@@ -2,12 +2,13 @@ package com.pshchwy.enex.misc;
 
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.criterion.*;
+import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.predicates.DataComponentPredicates;
 import net.minecraft.core.component.predicates.EnchantmentsPredicate;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -20,34 +21,34 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import java.util.List;
 
 public class EXLootTableModifiers {
-    private static final ResourceLocation DIAMOND_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/diamond_ore");
-    private static final ResourceLocation DEEPSLATE_DIAMOND_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/deepslate_diamond_ore");
-    private static final ResourceLocation COAL_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/coal_ore");
-    private static final ResourceLocation DEEPSLATE_COAL_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/deepslate_coal_ore");
-    private static final ResourceLocation COPPER_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/copper_ore");
-    private static final ResourceLocation DEEPSLATE_COPPER_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/deepslate_copper_ore");
-    private static final ResourceLocation IRON_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/iron_ore");
-    private static final ResourceLocation DEEPSLATE_IRON_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/deepslate_iron_ore");
-    private static final ResourceLocation GOLD_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/gold_ore");
-    private static final ResourceLocation DEEPSLATE_GOLD_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/deepslate_gold_ore");
-    private static final ResourceLocation EMERALD_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/emerald_ore");
-    private static final ResourceLocation DEEPSLATE_EMERALD_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/deepslate_emerald_ore");
-    private static final ResourceLocation LAPIS_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/lapis_ore");
-    private static final ResourceLocation DEEPSLATE_LAPIS_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/deepslate_lapis_ore");
-    private static final ResourceLocation REDSTONE_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/redstone_ore");
-    private static final ResourceLocation DEEPSLATE_REDSTONE_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/deepslate_redstone_ore");
-    private static final ResourceLocation NETHER_GOLD_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/nether_gold_ore");
-    private static final ResourceLocation ANCIENT_DEBRIS_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/ancient_debris");
+    private static final Identifier DIAMOND_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/diamond_ore");
+    private static final Identifier DEEPSLATE_DIAMOND_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/deepslate_diamond_ore");
+    private static final Identifier COAL_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/coal_ore");
+    private static final Identifier DEEPSLATE_COAL_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/deepslate_coal_ore");
+    private static final Identifier COPPER_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/copper_ore");
+    private static final Identifier DEEPSLATE_COPPER_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/deepslate_copper_ore");
+    private static final Identifier IRON_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/iron_ore");
+    private static final Identifier DEEPSLATE_IRON_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/deepslate_iron_ore");
+    private static final Identifier GOLD_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/gold_ore");
+    private static final Identifier DEEPSLATE_GOLD_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/deepslate_gold_ore");
+    private static final Identifier EMERALD_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/emerald_ore");
+    private static final Identifier DEEPSLATE_EMERALD_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/deepslate_emerald_ore");
+    private static final Identifier LAPIS_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/lapis_ore");
+    private static final Identifier DEEPSLATE_LAPIS_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/deepslate_lapis_ore");
+    private static final Identifier REDSTONE_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/redstone_ore");
+    private static final Identifier DEEPSLATE_REDSTONE_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/deepslate_redstone_ore");
+    private static final Identifier NETHER_GOLD_ORE_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/nether_gold_ore");
+    private static final Identifier ANCIENT_DEBRIS_ID = Identifier.fromNamespaceAndPath("minecraft", "blocks/ancient_debris");
     public static void modifyLootTables() {
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
             HolderLookup.RegistryLookup<Enchantment> registryLookup = registries.lookupOrThrow(Registries.ENCHANTMENT);
 
             // simplified builder
-            var fortuneEXCondition = MatchTool.toolMatches(ItemPredicate.Builder.item().withComponents(net.minecraft.advancements.critereon.DataComponentMatchers.Builder.components().partial(DataComponentPredicates.ENCHANTMENTS, EnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))).build()));
-            var luckOfTheSeaEXCondition = MatchTool.toolMatches(ItemPredicate.Builder.item().withComponents(net.minecraft.advancements.critereon.DataComponentMatchers.Builder.components().partial(DataComponentPredicates.ENCHANTMENTS, EnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX), MinMaxBounds.Ints.atLeast(1))))).build()));
+            var fortuneEXCondition = MatchTool.toolMatches(ItemPredicate.Builder.item().withComponents(DataComponentMatchers.Builder.components().partial(DataComponentPredicates.ENCHANTMENTS, EnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))).build()));
+            var luckOfTheSeaEXCondition = MatchTool.toolMatches(ItemPredicate.Builder.item().withComponents(DataComponentMatchers.Builder.components().partial(DataComponentPredicates.ENCHANTMENTS, EnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX), MinMaxBounds.Ints.atLeast(1))))).build()));
             // Let's only modify built-in loot tables and leave data pack loot tables untouched by checking the source.
             // We also check that the loot table ID is equal to the ID we want.
-            if (source.isBuiltin() && (key.location().equals(DIAMOND_ORE_ID) || key.location().equals(DEEPSLATE_DIAMOND_ORE_ID))) {
+            if (source.isBuiltin() && (key.identifier().equals(DIAMOND_ORE_ID) || key.identifier().equals(DEEPSLATE_DIAMOND_ORE_ID))) {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.DIAMOND_BLOCK))
@@ -55,7 +56,7 @@ public class EXLootTableModifiers {
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
-            else if (source.isBuiltin() && (key.location().equals(COAL_ORE_ID) || key.location().equals(DEEPSLATE_COAL_ORE_ID))) {
+            else if (source.isBuiltin() && (key.identifier().equals(COAL_ORE_ID) || key.identifier().equals(DEEPSLATE_COAL_ORE_ID))) {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.COAL_BLOCK))
@@ -63,7 +64,7 @@ public class EXLootTableModifiers {
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
-            else if (source.isBuiltin() && (key.location().equals(COPPER_ORE_ID) || key.location().equals(DEEPSLATE_COPPER_ORE_ID))) {
+            else if (source.isBuiltin() && (key.identifier().equals(COPPER_ORE_ID) || key.identifier().equals(DEEPSLATE_COPPER_ORE_ID))) {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.RAW_COPPER_BLOCK))
@@ -71,7 +72,7 @@ public class EXLootTableModifiers {
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
-            else if (source.isBuiltin() && (key.location().equals(IRON_ORE_ID) || key.location().equals(DEEPSLATE_IRON_ORE_ID))) {
+            else if (source.isBuiltin() && (key.identifier().equals(IRON_ORE_ID) || key.identifier().equals(DEEPSLATE_IRON_ORE_ID))) {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.RAW_IRON_BLOCK))
@@ -79,7 +80,7 @@ public class EXLootTableModifiers {
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
-            else if (source.isBuiltin() && (key.location().equals(GOLD_ORE_ID) || key.location().equals(DEEPSLATE_GOLD_ORE_ID))) {
+            else if (source.isBuiltin() && (key.identifier().equals(GOLD_ORE_ID) || key.identifier().equals(DEEPSLATE_GOLD_ORE_ID))) {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.RAW_GOLD_BLOCK))
@@ -87,7 +88,7 @@ public class EXLootTableModifiers {
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
-            else if (source.isBuiltin() && (key.location().equals(EMERALD_ORE_ID) || key.location().equals(DEEPSLATE_EMERALD_ORE_ID))) {
+            else if (source.isBuiltin() && (key.identifier().equals(EMERALD_ORE_ID) || key.identifier().equals(DEEPSLATE_EMERALD_ORE_ID))) {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.EMERALD_BLOCK))
@@ -95,7 +96,7 @@ public class EXLootTableModifiers {
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
-            else if (source.isBuiltin() && (key.location().equals(LAPIS_ORE_ID) || key.location().equals(DEEPSLATE_LAPIS_ORE_ID))) {
+            else if (source.isBuiltin() && (key.identifier().equals(LAPIS_ORE_ID) || key.identifier().equals(DEEPSLATE_LAPIS_ORE_ID))) {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.LAPIS_BLOCK))
@@ -104,7 +105,7 @@ public class EXLootTableModifiers {
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
-            else if (source.isBuiltin() && (key.location().equals(REDSTONE_ORE_ID) || key.location().equals(DEEPSLATE_REDSTONE_ORE_ID))) {
+            else if (source.isBuiltin() && (key.identifier().equals(REDSTONE_ORE_ID) || key.identifier().equals(DEEPSLATE_REDSTONE_ORE_ID))) {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.REDSTONE_BLOCK))
@@ -113,7 +114,7 @@ public class EXLootTableModifiers {
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
-            else if (source.isBuiltin() && (key.location().equals(NETHER_GOLD_ORE_ID))) {
+            else if (source.isBuiltin() && (key.identifier().equals(NETHER_GOLD_ORE_ID))) {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.GOLD_INGOT))
@@ -122,7 +123,7 @@ public class EXLootTableModifiers {
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
-            else if (source.isBuiltin() && (key.location().equals(ANCIENT_DEBRIS_ID))) {
+            else if (source.isBuiltin() && (key.identifier().equals(ANCIENT_DEBRIS_ID))) {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.NETHERITE_INGOT))
@@ -132,7 +133,7 @@ public class EXLootTableModifiers {
             }
 
             // luck of the sea fishing shenanigans
-            if (source.isBuiltin() && key.location().equals(ResourceLocation.fromNamespaceAndPath("minecraft", "gameplay/fishing/treasure"))) {
+            if (source.isBuiltin() && key.identifier().equals(Identifier.fromNamespaceAndPath("minecraft", "gameplay/fishing/treasure"))) {
                 LootPool.Builder poolBuilder = LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.IRON_INGOT).setWeight(20))
                         .add(LootItem.lootTableItem(Items.EMERALD).setWeight(20))

@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -239,6 +239,6 @@ public class EXEnchantmentTagProvider extends FabricTagProvider<Enchantment> {
     }
 
     private static TagKey<Enchantment> create(String string) {
-        return TagKey.create(Registries.ENCHANTMENT, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "exclusive_set/" + string));
+        return TagKey.create(Registries.ENCHANTMENT, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "exclusive_set/" + string));
     }
 }

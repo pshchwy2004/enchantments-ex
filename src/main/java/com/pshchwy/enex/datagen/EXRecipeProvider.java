@@ -9,7 +9,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +36,7 @@ public class EXRecipeProvider extends FabricRecipeProvider {
                                 exporter,
                                 ResourceKey.create(
                                         Registries.RECIPE,
-                                        ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "nether_crystal_fragment_from_ingots")
+                                        Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "nether_crystal_fragment_from_ingots")
                                 )
                         );
 
@@ -48,7 +48,7 @@ public class EXRecipeProvider extends FabricRecipeProvider {
                                 exporter,
                                 ResourceKey.create(
                                         Registries.RECIPE,
-                                        ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "nether_crystal_fragment_from_scraps")
+                                        Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "nether_crystal_fragment_from_scraps")
                                 )
                         );
 

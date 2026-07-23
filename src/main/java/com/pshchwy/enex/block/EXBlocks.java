@@ -6,8 +6,8 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -35,7 +35,7 @@ public class EXBlocks {
     );
 
     public static Block register(String name, Function<ResourceKey<Block>, Block> blockFactory, boolean shouldRegisterItem) {
-        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, name);
+        Identifier id = Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, name);
         ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, id);
 
         // Instantiate block with its bound ResourceKey
