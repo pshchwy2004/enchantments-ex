@@ -66,6 +66,8 @@ The Nether Crystal Fragment is a brewing ingredient used to make Molten Ink, the
 
 ![img3.png](img/img3.png)
 
+![img_4.png](img/img_4.png)
+
 ![img_2.png](img/img_2.png)
 
 The Stamping Table only accepts enchanted books. Selecting one enchantment consumes the Molten Ink and upgrades that enchantment.
