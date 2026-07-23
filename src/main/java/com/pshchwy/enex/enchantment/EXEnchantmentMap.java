@@ -93,6 +93,10 @@ public class EXEnchantmentMap {
                 Enchantments.LUCK_OF_THE_SEA,
                 EXEnchantmentEffects.LUCK_OF_THE_SEA_EX
         );
+        registerUpgrade(
+                Enchantments.LUNGE,
+                EXEnchantmentEffects.LUNGE_EX
+        );
         // Lunge goes here when implemented in further MC versions
         registerUpgrade(
                 Enchantments.LURE,

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:lunge",
+    {
+      "id": "enchantments-ex:lunge_ex",
+      "required": false
+    }
+  ]
+}

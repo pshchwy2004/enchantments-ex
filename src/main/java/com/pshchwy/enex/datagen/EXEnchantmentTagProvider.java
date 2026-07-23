@@ -40,7 +40,7 @@ public class EXEnchantmentTagProvider extends FabricTagProvider<Enchantment> {
     public static final TagKey<Enchantment> LOOTING_EXCLUSIVE = create("looting_exclusive");
     public static final TagKey<Enchantment> LOYALTY_EXCLUSIVE = create("loyalty_exclusive");
     public static final TagKey<Enchantment> LUCK_OF_THE_SEA_EXCLUSIVE = create("luck_of_the_sea_exclusive");
-    // public static final TagKey<Enchantment> LUNGE_EXCLUSIVE = create("lunge_exclusive");
+    public static final TagKey<Enchantment> LUNGE_EXCLUSIVE = create("lunge_exclusive");
     public static final TagKey<Enchantment> LURE_EXCLUSIVE = create("lure_exclusive");
     public static final TagKey<Enchantment> MENDING_EXCLUSIVE = create("mending_exclusive");
     public static final TagKey<Enchantment> MULTISHOT_EXCLUSIVE = create("multishot_exclusive");
@@ -155,6 +155,10 @@ public class EXEnchantmentTagProvider extends FabricTagProvider<Enchantment> {
         builder(LUCK_OF_THE_SEA_EXCLUSIVE)
                 .add(Enchantments.LUCK_OF_THE_SEA)
                 .addOptional(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX);
+
+        builder(LUNGE_EXCLUSIVE)
+                .add(Enchantments.LUNGE)
+                .addOptional(EXEnchantmentEffects.LUNGE_EX);
 
         builder(LURE_EXCLUSIVE)
                 .add(Enchantments.LURE)

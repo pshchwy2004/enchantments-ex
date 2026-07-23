@@ -1092,6 +1092,54 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.LUCK_OF_THE_SEA_EXCLUSIVE))
         );
 
+        // register Lunge EX
+        register(entries, EXEnchantmentEffects.LUNGE_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.LUNGE_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(5, 8),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(25, 8),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.HAND
+                                )
+                        )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_PIERCING_ATTACK,
+                        AllOf.entityEffects(
+                                new ChangeItemDamage(new LevelBasedValue.Constant(1.0F)),
+                                new ApplyEntityImpulse(new Vec3(0.0, 0.0, 1.0), new Vec3(1.0, 0.0, 1.0), LevelBasedValue.perLevel(0.458F)),
+                                new PlaySoundEffect(List.of(SoundEvents.LUNGE_1, SoundEvents.LUNGE_2, SoundEvents.LUNGE_3), ConstantFloat.of(1.0F), ConstantFloat.of(1.0F))
+                        ),
+                        AllOfCondition.allOf(
+                                InvertedLootItemCondition.invert(
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.THIS,
+                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                        .vehicle(net.minecraft.advancements.criterion.EntityPredicate.Builder.entity())
+                                        )
+                                ),
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsFallFlying(false))
+                                ),
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsInWater(false))
+                                )
+                        )
+                )
+        );
+
         // register Lure EX
         register(entries, EXEnchantmentEffects.LURE_EX, Enchantment.enchantment(
                                 Enchantment.definition(
