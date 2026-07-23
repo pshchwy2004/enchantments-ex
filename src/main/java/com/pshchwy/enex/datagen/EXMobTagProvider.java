@@ -66,6 +66,7 @@ public class EXMobTagProvider extends FabricTagProvider.EntityTypeTagProvider {
                 .add(EntityType.PARROT)
                 .add(EntityType.BEE)
                 .add(EntityType.PHANTOM)
+                .add(EntityType.HAPPY_GHAST)
                 .setReplace(true);
     }
 }
