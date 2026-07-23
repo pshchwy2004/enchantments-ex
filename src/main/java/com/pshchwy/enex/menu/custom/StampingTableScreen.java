@@ -6,6 +6,7 @@ import com.pshchwy.enex.item.EXItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -189,7 +190,10 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
      * Executes when the mouse is clicked while the screen is open. Handles mouse scrolling.
      */
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(MouseButtonEvent mouseButtonEvent, boolean bl) {
+        double mouseX = mouseButtonEvent.x();
+        double mouseY = mouseButtonEvent.y();
+        int button = mouseButtonEvent.button();
         this.scrolling = false;
         int x = this.leftPos;
         int y = this.topPos;
@@ -218,14 +222,17 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             }
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(mouseButtonEvent, bl);
     }
 
     /**
      * Executes when the mouse is dragged.
      */
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+    public boolean mouseDragged(MouseButtonEvent mouseButtonEvent, double dragX, double dragY) {
+        double mouseX = mouseButtonEvent.x();
+        double mouseY = mouseButtonEvent.y();
+        int button = mouseButtonEvent.button();
         if (this.scrolling && this.isScrollBarActive()) {
             int trackTop = this.topPos + SCROLL_Y;
             int trackBottom = trackTop + 57;
@@ -234,7 +241,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 1.0F);
             return true;
         }
-        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        return super.mouseDragged(mouseButtonEvent, dragX, dragY);
     }
 
     /**

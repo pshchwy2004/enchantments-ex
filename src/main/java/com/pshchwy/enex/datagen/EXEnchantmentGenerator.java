@@ -19,6 +19,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.damagesource.DamageType;
@@ -1829,6 +1830,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         Level.ExplosionInteraction.TRIGGER,
                                         ParticleTypes.GUST_EMITTER_SMALL,
                                         ParticleTypes.GUST_EMITTER_LARGE,
+                                        WeightedList.of(),
                                         SoundEvents.WIND_CHARGE_BURST
                                 ),
                                 new ApplyMobEffect(

@@ -42,7 +42,7 @@ public class MoltenInkItem extends PotionItem {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, itemStack);
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             if (!livingEntity.fireImmune()) {
                 livingEntity.igniteForTicks(500);
             }
