@@ -16,7 +16,7 @@ public class EXBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
     }
     @Override
     protected void addTags(HolderLookup.@NonNull Provider wrapperLookup) {
-        valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE)
-                .add(EXBlocks.STAMPING_TABLE);
+        tag(BlockTags.MINEABLE_WITH_AXE)
+                .add(EXBlocks.getRK(EXBlocks.STAMPING_TABLE));
     }
 }

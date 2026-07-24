@@ -38,7 +38,7 @@
           "condition": "minecraft:entity_properties",
           "entity": "this",
           "predicate": {
-            "type": "#enchantments-ex:flying_mobs"
+            "minecraft:entity_type": "#enchantments-ex:flying_mobs"
           }
         }
       }

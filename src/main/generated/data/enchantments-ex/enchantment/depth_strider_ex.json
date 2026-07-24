@@ -36,7 +36,7 @@
               "condition": "minecraft:entity_properties",
               "entity": "this",
               "predicate": {
-                "movement_affected_by": {
+                "minecraft:movement_affected_by": {
                   "fluid": {
                     "fluids": "minecraft:water"
                   }
@@ -47,7 +47,7 @@
               "condition": "minecraft:entity_properties",
               "entity": "this",
               "predicate": {
-                "movement_affected_by": {
+                "minecraft:movement_affected_by": {
                   "fluid": {
                     "fluids": "minecraft:flowing_water"
                   }

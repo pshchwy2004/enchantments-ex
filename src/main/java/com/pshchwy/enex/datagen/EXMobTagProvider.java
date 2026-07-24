@@ -4,10 +4,13 @@ import com.pshchwy.enex.EnchantmentsEX;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -32,41 +35,45 @@ public class EXMobTagProvider extends FabricTagsProvider.EntityTypeTagsProvider 
 
     @Override
     protected void addTags(HolderLookup.Provider wrapperLookup) {
-        valueLookupBuilder(BREACH_EX_VULNERABLE)
-                .add(EntityType.ENDER_DRAGON)
-                .add(EntityType.IRON_GOLEM)
-                .add(EntityType.WARDEN)
-                .add(EntityType.RAVAGER)
-                .add(EntityType.WITHER)
+        tag(BREACH_EX_VULNERABLE)
+                .add(getRK(EntityTypes.ENDER_DRAGON))
+                .add(getRK(EntityTypes.IRON_GOLEM))
+                .add(getRK(EntityTypes.WARDEN))
+                .add(getRK(EntityTypes.RAVAGER))
+                .add(getRK(EntityTypes.WITHER))
                 .setReplace(true);
 
-        valueLookupBuilder(FIRE_IMMUNE)
-                .add(EntityType.ENDER_DRAGON)
-                .add(EntityType.ZOGLIN)
-                .add(EntityType.VEX)
-                .add(EntityType.WARDEN)
-                .add(EntityType.ENDER_DRAGON)
-                .add(EntityType.WITHER)
-                .add(EntityType.BLAZE)
-                .add(EntityType.WITHER_SKELETON)
-                .add(EntityType.GHAST)
-                .add(EntityType.MAGMA_CUBE)
-                .add(EntityType.ZOMBIFIED_PIGLIN)
-                .add(EntityType.STRIDER)
+        tag(FIRE_IMMUNE)
+                .add(getRK(EntityTypes.ENDER_DRAGON))
+                .add(getRK(EntityTypes.ZOGLIN))
+                .add(getRK(EntityTypes.VEX))
+                .add(getRK(EntityTypes.WARDEN))
+                .add(getRK(EntityTypes.ENDER_DRAGON))
+                .add(getRK(EntityTypes.WITHER))
+                .add(getRK(EntityTypes.BLAZE))
+                .add(getRK(EntityTypes.WITHER_SKELETON))
+                .add(getRK(EntityTypes.GHAST))
+                .add(getRK(EntityTypes.MAGMA_CUBE))
+                .add(getRK(EntityTypes.ZOMBIFIED_PIGLIN))
+                .add(getRK(EntityTypes.STRIDER))
                 .setReplace(true);
 
-        valueLookupBuilder(FLYING_MOBS)
-                .add(EntityType.ENDER_DRAGON)
-                .add(EntityType.GHAST)
-                .add(EntityType.VEX)
-                .add(EntityType.ALLAY)
-                .add(EntityType.BLAZE)
-                .add(EntityType.WITHER)
-                .add(EntityType.BAT)
-                .add(EntityType.PARROT)
-                .add(EntityType.BEE)
-                .add(EntityType.PHANTOM)
-                .add(EntityType.HAPPY_GHAST)
+        tag(FLYING_MOBS)
+                .add(getRK(EntityTypes.ENDER_DRAGON))
+                .add(getRK(EntityTypes.GHAST))
+                .add(getRK(EntityTypes.VEX))
+                .add(getRK(EntityTypes.ALLAY))
+                .add(getRK(EntityTypes.BLAZE))
+                .add(getRK(EntityTypes.WITHER))
+                .add(getRK(EntityTypes.BAT))
+                .add(getRK(EntityTypes.PARROT))
+                .add(getRK(EntityTypes.BEE))
+                .add(getRK(EntityTypes.PHANTOM))
+                .add(getRK(EntityTypes.HAPPY_GHAST))
                 .setReplace(true);
+    }
+
+    private static ResourceKey<EntityType<?>> getRK (EntityType<?> entityType) {
+        return BuiltInRegistries.ENTITY_TYPE.getResourceKey(entityType).get();
     }
 }

@@ -21,7 +21,7 @@
               "condition": "minecraft:entity_properties",
               "entity": "this",
               "predicate": {
-                "flags": {
+                "minecraft:flags": {
                   "is_on_fire": true
                 }
               }
@@ -30,7 +30,7 @@
               "condition": "minecraft:entity_properties",
               "entity": "this",
               "predicate": {
-                "type": "#enchantments-ex:immune_to_fire"
+                "minecraft:entity_type": "#enchantments-ex:immune_to_fire"
               }
             }
           ]
@@ -95,7 +95,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "flags": {
+                    "minecraft:flags": {
                       "is_on_fire": true
                     }
                   }
@@ -104,7 +104,7 @@
                   "condition": "minecraft:entity_properties",
                   "entity": "this",
                   "predicate": {
-                    "type": "#enchantments-ex:immune_to_fire"
+                    "minecraft:entity_type": "#enchantments-ex:immune_to_fire"
                   }
                 }
               ]

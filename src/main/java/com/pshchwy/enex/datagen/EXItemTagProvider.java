@@ -1,6 +1,7 @@
 package com.pshchwy.enex.datagen;
 
 import com.pshchwy.enex.EnchantmentsEX;
+import com.pshchwy.enex.item.EXItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
@@ -33,11 +34,11 @@ public class EXItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.@NonNull Provider wrapperLookup) {
-        valueLookupBuilder(STAMPING_CLOTHS)
+        tag(STAMPING_CLOTHS)
                 .addOptionalTag(ItemTags.WOOL_CARPETS)
-                .add(Items.PAPER)
-                .add(Items.LEATHER)
-                .add(Items.RABBIT_HIDE)
+                .add(EXItems.getRK(Items.PAPER))
+                .add(EXItems.getRK(Items.LEATHER))
+                .add(EXItems.getRK(Items.RABBIT_HIDE))
                 .setReplace(true);
     }
 }

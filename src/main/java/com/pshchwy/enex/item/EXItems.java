@@ -50,6 +50,10 @@ public class EXItems {
         return Registry.register(BuiltInRegistries.ITEM, key, item);
     }
 
+    public static ResourceKey<Item> getRK(Item item) {
+        return BuiltInRegistries.ITEM.getResourceKey(item).get();
+    }
+
     public static void initialize() {
         EnchantmentsEX.LOGGER.info("Registering items for " + EnchantmentsEX.MOD_ID);
 
