@@ -41,42 +41,17 @@
       {
         "affected": "victim",
         "effect": {
-          "type": "minecraft:ignite",
-          "duration": {
-            "type": "minecraft:linear",
-            "base": 4.0,
-            "per_level_above_first": 4.0
-          }
-        },
-        "enchanted": "attacker",
-        "requirements": {
-          "condition": "minecraft:damage_source_properties",
-          "predicate": {
-            "is_direct": true
-          }
-        }
-      },
-      {
-        "affected": "victim",
-        "effect": {
-          "type": "minecraft:spawn_particles",
-          "horizontal_position": {
-            "type": "in_bounding_box"
-          },
-          "horizontal_velocity": {
-            "movement_scale": 0.2
-          },
-          "particle": {
-            "type": "minecraft:lava"
-          },
-          "speed": 15.0,
-          "vertical_position": {
-            "type": "entity_position",
-            "offset": 0.5
-          },
-          "vertical_velocity": {
-            "base": 0.1
-          }
+          "type": "minecraft:all_of",
+          "effects": [
+            {
+              "type": "enchantments-ex:spark_effect",
+              "amount": {
+                "type": "minecraft:linear",
+                "base": 10.0,
+                "per_level_above_first": 5.0
+              }
+            }
+          ]
         },
         "enchanted": "attacker",
         "requirements": {
@@ -110,6 +85,24 @@
               ]
             }
           ]
+        }
+      },
+      {
+        "affected": "victim",
+        "effect": {
+          "type": "minecraft:ignite",
+          "duration": {
+            "type": "minecraft:linear",
+            "base": 4.0,
+            "per_level_above_first": 4.0
+          }
+        },
+        "enchanted": "attacker",
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "is_direct": true
+          }
         }
       }
     ]

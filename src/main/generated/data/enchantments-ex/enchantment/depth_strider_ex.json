@@ -11,8 +11,8 @@
           "base": 0.33333334,
           "per_level_above_first": 0.33333334
         },
-        "attribute": "minecraft:generic.water_movement_efficiency",
-        "id": "minecraft:enchantment.depth_strider_ex",
+        "attribute": "minecraft:water_movement_efficiency",
+        "id": "enchantments-ex:enchantment.depth_strider_ex_water_movement_efficiency",
         "operation": "add_value"
       }
     ],
@@ -25,8 +25,8 @@
             "base": 0.25,
             "per_level_above_first": 0.25
           },
-          "attribute": "minecraft:generic.attack_speed",
-          "id": "minecraft:enchantment.depth_strider_ex",
+          "attribute": "minecraft:attack_speed",
+          "id": "enchantments-ex:enchantment.depth_strider_ex_attack_speed",
           "operation": "add_value"
         },
         "requirements": {
@@ -36,7 +36,7 @@
               "condition": "minecraft:entity_properties",
               "entity": "this",
               "predicate": {
-                "movement_affected_by": {
+                "minecraft:movement_affected_by": {
                   "fluid": {
                     "fluids": "minecraft:water"
                   }
@@ -47,7 +47,7 @@
               "condition": "minecraft:entity_properties",
               "entity": "this",
               "predicate": {
-                "movement_affected_by": {
+                "minecraft:movement_affected_by": {
                   "fluid": {
                     "fluids": "minecraft:flowing_water"
                   }

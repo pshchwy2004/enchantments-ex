@@ -11,8 +11,8 @@
           "base": 4.0,
           "per_level_above_first": 4.0
         },
-        "attribute": "minecraft:player.submerged_mining_speed",
-        "id": "minecraft:enchantment.aqua_affinity_ex",
+        "attribute": "minecraft:submerged_mining_speed",
+        "id": "enchantments-ex:enchantment.aqua_affinity_ex",
         "operation": "add_multiplied_total"
       }
     ],

@@ -11,8 +11,8 @@
           "base": 0.15,
           "per_level_above_first": 0.15
         },
-        "attribute": "minecraft:generic.knockback_resistance",
-        "id": "minecraft:enchantment.projectile_protection_ex",
+        "attribute": "minecraft:knockback_resistance",
+        "id": "enchantments-ex:enchantment.projectile_protection_ex",
         "operation": "add_value"
       }
     ],

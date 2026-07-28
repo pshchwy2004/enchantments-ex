@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
@@ -38,6 +39,14 @@ public record TridentItemRetrievalEffect(LevelBasedValue amount) implements Ench
             );
             for (ItemEntity item : items) { // teleport
                 item.setPos(player.getX(), player.getY(), player.getZ());
+            }
+
+            List<ExperienceOrb> xpOrbs = world.getEntitiesOfClass(
+                    ExperienceOrb.class,
+                    box
+            );
+            for (ExperienceOrb orb : xpOrbs) { // teleport
+                orb.setPos(player.getX(), player.getY(), player.getZ());
             }
         }
 

@@ -11,8 +11,8 @@
           "base": -0.15,
           "per_level_above_first": -0.15
         },
-        "attribute": "minecraft:generic.burning_time",
-        "id": "minecraft:enchantment.fire_protection_ex",
+        "attribute": "minecraft:burning_time",
+        "id": "enchantments-ex:enchantment.fire_protection_ex",
         "operation": "add_multiplied_base"
       }
     ],
@@ -60,7 +60,7 @@
           "condition": "minecraft:entity_properties",
           "entity": "this",
           "predicate": {
-            "location": {
+            "minecraft:location": {
               "dimension": "minecraft:the_nether"
             }
           }
