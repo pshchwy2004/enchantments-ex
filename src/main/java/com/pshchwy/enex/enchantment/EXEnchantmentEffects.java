@@ -43,6 +43,8 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> FEATHER_FALLING_EX = of("feather_falling_ex");
 
     public static final ResourceKey<Enchantment> FIRE_ASPECT_EX = of("fire_aspect_ex");
+    @SuppressWarnings("unused")
+    public static MapCodec<SparkEffect> SPARK_EFFECT = register("spark_effect", SparkEffect.CODEC);
 
     public static final ResourceKey<Enchantment> FIRE_PROTECTION_EX = of("fire_protection_ex");
 
@@ -106,16 +108,22 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> SMITE_EX = of("smite_ex");
     @SuppressWarnings("unused")
     public static MapCodec<SmiteEXEffect> SMITE_EX_EFFECT = register("smite_ex_effect", SmiteEXEffect.CODEC);
+    @SuppressWarnings("unused")
+    public static MapCodec<CureZombieVillagerEffect> CURE_VILLAGER_EFFECT = register("cure_villager_effect", CureZombieVillagerEffect.CODEC);
 
     public static final ResourceKey<Enchantment> SOUL_SPEED_EX = of("soul_speed_ex");
 
     public static final ResourceKey<Enchantment> SWEEPING_EDGE_EX = of("sweeping_edge_ex");
+    @SuppressWarnings("unused")
+    public static MapCodec<BaneOfPhantomsEffect> BANE_OF_PHANTOMS_EFFECT = register("bane_of_phantoms_effect", BaneOfPhantomsEffect.CODEC);
 
     public static final ResourceKey<Enchantment> SWIFT_SNEAK_EX = of("swift_sneak_ex");
 
     public static final ResourceKey<Enchantment> THORNS_EX = of("thorns_ex");
 
     public static final ResourceKey<Enchantment> UNBREAKING_EX = of("unbreaking_ex");
+    @SuppressWarnings("unused")
+    public static MapCodec<LastStandEffect> LAST_STAND_EFFECT = register("last_stand_effect", LastStandEffect.CODEC);
 
     public static final ResourceKey<Enchantment> WIND_BURST_EX = of("wind_burst_ex");
 

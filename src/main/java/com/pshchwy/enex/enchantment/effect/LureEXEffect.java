@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.pshchwy.enex.mixin.FishingHookAccessor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
@@ -38,7 +39,7 @@ public record LureEXEffect(LevelBasedValue amount) implements EnchantmentEntityE
             fishingHook.retrieve(context.itemStack());
         }
 
-        // any item within 2 blocks of the fishing hook is automatically teleported to the player
+        // any item or XP orb within 2 blocks of the fishing hook is automatically teleported to the player
 
         if (target instanceof Player player && player.fishing != null) {
             FishingHook fishingHook = player.fishing;
@@ -50,6 +51,13 @@ public record LureEXEffect(LevelBasedValue amount) implements EnchantmentEntityE
             );
             for (ItemEntity item : items) { // teleport
                 item.setPos(player.getX(), player.getY(), player.getZ());
+            }
+            List<ExperienceOrb> xpOrbs = world.getEntitiesOfClass(
+                    ExperienceOrb.class,
+                    box
+            );
+            for (ExperienceOrb orb : xpOrbs) { // teleport
+                orb.setPos(player.getX(), player.getY(), player.getZ());
             }
 
         }
