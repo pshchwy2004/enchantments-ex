@@ -12,7 +12,7 @@
           "per_level_above_first": 0.15
         },
         "attribute": "minecraft:explosion_knockback_resistance",
-        "id": "minecraft:enchantment.blast_protection_ex",
+        "id": "enchantments-ex:enchantment.blast_protection_ex",
         "operation": "add_value"
       }
     ],
@@ -49,8 +49,8 @@
           "type": "enchantments-ex:blast_protection_ex_effect",
           "amount": {
             "type": "minecraft:linear",
-            "base": 1.0,
-            "per_level_above_first": 1.0
+            "base": 5.0,
+            "per_level_above_first": 5.0
           }
         }
       }

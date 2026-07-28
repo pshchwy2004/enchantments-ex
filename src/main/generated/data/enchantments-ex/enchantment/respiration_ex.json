@@ -12,7 +12,7 @@
           "per_level_above_first": 1.0
         },
         "attribute": "minecraft:oxygen_bonus",
-        "id": "minecraft:enchantment.respiration_ex",
+        "id": "enchantments-ex:enchantment.respiration_ex",
         "operation": "add_value"
       }
     ],
