@@ -1,15 +1,13 @@
 package com.pshchwy.enex.datagen;
 
+import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import com.pshchwy.enex.enchantment.effect.*;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.minecraft.advancements.predicates.*;
-import net.minecraft.advancements.predicates.entity.EntityFlagsPredicate;
-import net.minecraft.advancements.predicates.entity.EntityPredicate;
-import net.minecraft.advancements.predicates.entity.EntityTypePredicate;
-import net.minecraft.advancements.predicates.entity.MovementPredicate;
+import net.minecraft.advancements.predicates.entity.*;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
@@ -30,6 +28,7 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypeIds;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -54,6 +53,7 @@ import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelProvider;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -64,13 +64,12 @@ import java.util.function.Function;
 public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
     public EXEnchantmentGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
-        System.out.println("registering enchant generator...");
     }
     /**
      * Registers all EX enchantments.
      */
     @Override
-    protected void configure(HolderLookup.Provider registries, Entries entries) {
+    protected void configure(HolderLookup.Provider registries, @NonNull Entries entries) {
         // easy variables for access
         HolderGetter<DamageType> damageTypes = registries.lookupOrThrow(Registries.DAMAGE_TYPE);
         HolderGetter<Enchantment> enchantments = registries.lookupOrThrow(Registries.ENCHANTMENT);
@@ -159,7 +158,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 // valid slots
                                 EquipmentSlotGroup.MAINHAND
                         )
-                ).withEffect( // lightning effect
+                ).withEffect(
                         EnchantmentEffectComponents.POST_ATTACK,
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
@@ -177,6 +176,25 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         )
                                 )
                 )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        new CureZombieVillagerEffect(LevelBasedValue.perLevel(0.4f, 0.2f)),
+                        AllOfCondition.allOf(
+                                LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.25F))),
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        EntityPredicate.Builder.entity()
+                                                .entityType(
+                                                        EntityTypePredicate.of(
+                                                                entityTypes,
+                                                                EntityTypes.ZOMBIE_VILLAGER
+                                                        )
+                                                )
+                                )
+                        )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SMITE_EXCLUSIVE))
         );
@@ -203,7 +221,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
                                 // id
-                                Identifier.withDefaultNamespace("enchantment.aqua_affinity_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.aqua_affinity_ex"),
                                 // attribute
                                 Attributes.SUBMERGED_MINING_SPEED,
                                 // Multiplier
@@ -298,7 +316,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
                 ).withEffect(
                         EnchantmentEffectComponents.TICK,
-                        new BlastProtectionEXEffect(LevelBasedValue.perLevel(1.0f))
+                        new BlastProtectionEXEffect(LevelBasedValue.perLevel(5.0f, 5.0f))
                 )
                 .withEffect(
                         EnchantmentEffectComponents.DAMAGE_PROTECTION,
@@ -310,7 +328,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.blast_protection_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.blast_protection_ex"),
                                 Attributes.EXPLOSION_KNOCKBACK_RESISTANCE,
                                 LevelBasedValue.perLevel(0.15F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -380,7 +398,12 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
                         AllOf.entityEffects(
-                                new SummonEntityEffect(HolderSet.direct(EntityTypes.LIGHTNING_BOLT.builtInRegistryHolder()), false),
+                                new SummonEntityEffect(
+                                       HolderSet.direct(
+                                               entityTypes.getOrThrow(EntityTypeIds.LIGHTNING_BOLT)
+                                       ),
+                                        false
+                                ),
                                 new PlaySoundEffect(List.of(SoundEvents.TRIDENT_THUNDER), ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
                         ),
                         AllOfCondition.allOf(
@@ -397,7 +420,12 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.HIT_BLOCK,
                         AllOf.entityEffects(
-                                new SummonEntityEffect(HolderSet.direct(EntityTypes.LIGHTNING_BOLT.builtInRegistryHolder()), false),
+                                new SummonEntityEffect(
+                                        HolderSet.direct(
+                                                entityTypes.getOrThrow(EntityTypeIds.LIGHTNING_BOLT)
+                                        ),
+                                        false
+                                ),
                                 new PlaySoundEffect(List.of(SoundEvents.TRIDENT_THUNDER), ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
                         ),
                         AllOfCondition.allOf(
@@ -462,7 +490,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.depth_strider_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.depth_strider_ex_water_movement_efficiency"),
                                 Attributes.WATER_MOVEMENT_EFFICIENCY,
                                 LevelBasedValue.perLevel(0.33333334F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -471,7 +499,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.depth_strider_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID,"enchantment.depth_strider_ex_attack_speed"),
                                 Attributes.ATTACK_SPEED,
                                 LevelBasedValue.perLevel(0.25F, 0.25F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -524,13 +552,13 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect( // vanilla efficiency
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.efficiency_ex"), Attributes.MINING_EFFICIENCY, new LevelBasedValue.LevelsSquared(1.0F), AttributeModifier.Operation.ADD_VALUE
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.efficiency_ex"), Attributes.MINING_EFFICIENCY, new LevelBasedValue.LevelsSquared(1.0F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .withEffect( // more block interaction range
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.efficiency_ex"), Attributes.BLOCK_INTERACTION_RANGE, LevelBasedValue.constant(2.25F), AttributeModifier.Operation.ADD_VALUE
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.efficiency_ex"), Attributes.BLOCK_INTERACTION_RANGE, LevelBasedValue.constant(2.25F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .withEffect( // extra damage to shulkers
@@ -592,7 +620,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect( // increase blocks needed to start taking FD
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.feather_falling_ex"), Attributes.SAFE_FALL_DISTANCE, LevelBasedValue.constant(7.0F), AttributeModifier.Operation.ADD_VALUE
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.feather_falling_ex"), Attributes.SAFE_FALL_DISTANCE, LevelBasedValue.constant(7.0F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FEATHER_FALLING_EXCLUSIVE))
@@ -618,13 +646,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         EquipmentSlotGroup.MAINHAND
                                 )
                         )
-                .withEffect(
-                        EnchantmentEffectComponents.POST_ATTACK,
-                        EnchantmentTarget.ATTACKER,
-                        EnchantmentTarget.VICTIM,
-                        new Ignite(LevelBasedValue.perLevel(4.0F)),
-                        DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true))
-                )
+
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FIRE_ASPECT_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.DAMAGE,
@@ -648,13 +670,9 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
                         // Spawn particle burst at the target location
-                        new SpawnParticlesEffect(
-                                ParticleTypes.LAVA, // Particle type (e.g., LAVA, SMALL_FLAME, FLAME, LAVA, SWEEP_ATTACK, etc.)
-                                SpawnParticlesEffect.inBoundingBox(), // Spawns at victim position
-                                SpawnParticlesEffect.offsetFromEntityPosition(0.5F), // Box offset around victim
-                                SpawnParticlesEffect.movementScaled(0.2F), // Particle spread speed
-                                SpawnParticlesEffect.fixedVelocity(ConstantFloat.of(0.1F)),
-                                ConstantFloat.of(15.0F) // Number of particles to spawn
+                        // and play a cool sound
+                        AllOf.entityEffects(
+                                new SparkEffect(LevelBasedValue.perLevel(10.0F, 5.0F))
                         ),
                         // Matching condition: Must be direct attack AND target is on fire OR immune to fire
                         AllOfCondition.allOf(
@@ -673,6 +691,13 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         )
                                 )
                         )
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        new Ignite(LevelBasedValue.perLevel(4.0F)),
+                        DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true))
                 )
         );
 
@@ -708,7 +733,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect( // vanilla burning time reduction
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.fire_protection_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.fire_protection_ex"),
                                 Attributes.BURNING_TIME,
                                 LevelBasedValue.perLevel(-0.15F),
                                 AttributeModifier.Operation.ADD_MULTIPLIED_BASE
@@ -769,6 +794,33 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 )
                         )
 
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.POST_ATTACK,
+                        EnchantmentTarget.ATTACKER,
+                        EnchantmentTarget.VICTIM,
+                        // Spawn particle burst at the target location
+                        // and play a cool sound
+                        AllOf.entityEffects(
+                                new SparkEffect(LevelBasedValue.perLevel(10.0F, 5.0F))
+                        ),
+                        // Matching condition: Must be direct attack AND target is on fire OR immune to fire
+                        AllOfCondition.allOf(
+                                DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)),
+                                AnyOfCondition.anyOf(
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.THIS,
+                                                EntityPredicate.Builder.entity()
+                                                        .flags(new EntityFlagsPredicate.Builder().setOnFire(true))
+                                        ),
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.THIS,
+                                                EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypes, EXMobTagProvider.FIRE_IMMUNE))
+                                                        .build()
+                                        )
+                                )
+                        )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FLAME_EXCLUSIVE))
 
@@ -850,7 +902,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.frost_walker_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.frost_walker_ex"),
                                 Attributes.MOVEMENT_SPEED,
                                 LevelBasedValue.perLevel(0.0405F, 0.0105F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1355,7 +1407,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect( // reduces generic knockback
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.projectile_protection_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.projectile_protection_ex"),
                                 Attributes.KNOCKBACK_RESISTANCE,
                                 LevelBasedValue.perLevel(0.15F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1502,7 +1554,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.respiration_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.respiration_ex"),
                                 Attributes.OXYGEN_BONUS,
                                 LevelBasedValue.perLevel(1.0F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1536,7 +1588,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         .withEffect(
                                 EnchantmentEffectComponents.ATTRIBUTES,
                                 new EnchantmentAttributeEffect(
-                                        Identifier.withDefaultNamespace("enchantment.riptide_ex"),
+                                        Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.riptide_ex"),
                                         Attributes.OXYGEN_BONUS,
                                         LevelBasedValue.perLevel(1.0F),
                                         AttributeModifier.Operation.ADD_VALUE
@@ -1581,7 +1633,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.soul_speed"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.soul_speed"),
                                 Attributes.MOVEMENT_SPEED,
                                 LevelBasedValue.perLevel(0.0405F, 0.0105F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1637,7 +1689,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.soul_speed_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.soul_speed_ex"),
                                 Attributes.MOVEMENT_EFFICIENCY,
                                 LevelBasedValue.constant(1.0F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1694,27 +1746,26 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.sweeping_edge_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "sweeping_edge_ex_ratio"),
                                 Attributes.SWEEPING_DAMAGE_RATIO,
                                 new LevelBasedValue.Fraction(LevelBasedValue.perLevel(1.0F), LevelBasedValue.perLevel(2.0F, 1.0F)),
                                 AttributeModifier.Operation.ADD_VALUE
                         )
                 )
-                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SWEEPING_EDGE_EXCLUSIVE))
                 .withEffect(
-                        EnchantmentEffectComponents.DAMAGE,
-                        new AddValue(LevelBasedValue.perLevel(1.5f, 1.5f)),
-                        LootItemEntityPropertyCondition.hasProperties(
-                                LootContext.EntityTarget.THIS,
-                                EntityPredicate.Builder.entity()
-                                        .entityType(
-                                                EntityTypePredicate.of(
-                                                        entityTypes,
-                                                        EXMobTagProvider.FLYING_MOBS
-                                                )
-                                        )
+                        EnchantmentEffectComponents.ATTRIBUTES,
+                        new EnchantmentAttributeEffect(
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "sweeping_edge_ex_drag"),
+                                Attributes.AIR_DRAG_MODIFIER,
+                                LevelBasedValue.perLevel(-0.10F, -0.10F),
+                                AttributeModifier.Operation.ADD_MULTIPLIED_BASE
                         )
                 )
+                .withEffect(
+                        EnchantmentEffectComponents.TICK,
+                        new BaneOfPhantomsEffect(LevelBasedValue.constant(0.0f))
+                )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SWEEPING_EDGE_EXCLUSIVE))
         );
 
         // register Swift Sneak EX
@@ -1739,7 +1790,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.swift_sneak_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.swift_sneak_ex_sneak_speed"),
                                 Attributes.SNEAKING_SPEED,
                                 LevelBasedValue.perLevel(0.15F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1749,7 +1800,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                Identifier.withDefaultNamespace("enchantment.swift_sneak_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.swift_sneak_ex_step_height"),
                                 Attributes.STEP_HEIGHT,
                                 LevelBasedValue.constant(0.5F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1822,28 +1873,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
                 )
                 .withEffect(
-                        EnchantmentEffectComponents.POST_ATTACK,
-                        EnchantmentTarget.ATTACKER,
-                        EnchantmentTarget.ATTACKER,
-                        new SummonEntityEffect(
-                                HolderSet.direct(EntityTypes.EXPERIENCE_ORB.builtInRegistryHolder()),
-                                false
-                        ),
-                        AllOfCondition.allOf(
-                                LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))
-                        )
-                )
-                .withEffect(
-                        EnchantmentEffectComponents.POST_ATTACK,
-                        EnchantmentTarget.VICTIM,
-                        EnchantmentTarget.VICTIM,
-                        new SummonEntityEffect(
-                                HolderSet.direct(EntityTypes.EXPERIENCE_ORB.builtInRegistryHolder()),
-                                false
-                        ),
-                        AllOfCondition.allOf(
-                                LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))
-                        )
+                        EnchantmentEffectComponents.TICK,
+                        new LastStandEffect(LevelBasedValue.constant(0.0f))
                 )
         );
 

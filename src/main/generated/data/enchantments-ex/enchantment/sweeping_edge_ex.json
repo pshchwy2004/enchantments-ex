@@ -20,26 +20,25 @@
           }
         },
         "attribute": "minecraft:sweeping_damage_ratio",
-        "id": "minecraft:enchantment.sweeping_edge_ex",
+        "id": "enchantments-ex:sweeping_edge_ex_ratio",
         "operation": "add_value"
+      },
+      {
+        "amount": {
+          "type": "minecraft:linear",
+          "base": -0.1,
+          "per_level_above_first": -0.1
+        },
+        "attribute": "minecraft:air_drag_modifier",
+        "id": "enchantments-ex:sweeping_edge_ex_drag",
+        "operation": "add_multiplied_base"
       }
     ],
-    "minecraft:damage": [
+    "minecraft:tick": [
       {
         "effect": {
-          "type": "minecraft:add",
-          "value": {
-            "type": "minecraft:linear",
-            "base": 1.5,
-            "per_level_above_first": 1.5
-          }
-        },
-        "requirements": {
-          "condition": "minecraft:entity_properties",
-          "entity": "this",
-          "predicate": {
-            "minecraft:entity_type": "#enchantments-ex:flying_mobs"
-          }
+          "type": "enchantments-ex:bane_of_phantoms_effect",
+          "amount": 0.0
         }
       }
     ]

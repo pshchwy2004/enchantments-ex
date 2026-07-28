@@ -33,7 +33,7 @@ public record BlastProtectionEXEffect(LevelBasedValue amount) implements Enchant
     public void apply(@NonNull ServerLevel world, int level, @NonNull EnchantedItemInUse context, @NonNull Entity target, @NonNull Vec3 pos) {
         // executes per tick
         if (target instanceof Player player) { // players only: creepers get Slowness (amplifier depending on level)
-            double radius = 5.0; // var declared for future balance convenience
+            double radius = amount.calculate(level); // var declared for future balance convenience
             AABB box = player.getBoundingBox().inflate(radius); // player bounding box inflated
             List<Creeper> creepers = world.getEntitiesOfClass( // all creepers in area
                     Creeper.class,
@@ -41,6 +41,7 @@ public record BlastProtectionEXEffect(LevelBasedValue amount) implements Enchant
             );
             for (Creeper creeper : creepers) {
                 creeper.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 10, level - 1));
+                creeper.addEffect(new MobEffectInstance(MobEffects.GLOWING, 10, 0));
             }
         }
     }

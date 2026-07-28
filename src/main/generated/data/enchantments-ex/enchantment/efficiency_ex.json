@@ -26,13 +26,13 @@
           "added": 1.0
         },
         "attribute": "minecraft:mining_efficiency",
-        "id": "minecraft:enchantment.efficiency_ex",
+        "id": "enchantments-ex:enchantment.efficiency_ex",
         "operation": "add_value"
       },
       {
         "amount": 2.25,
         "attribute": "minecraft:block_interaction_range",
-        "id": "minecraft:enchantment.efficiency_ex",
+        "id": "enchantments-ex:enchantment.efficiency_ex",
         "operation": "add_value"
       }
     ],

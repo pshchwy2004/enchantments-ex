@@ -57,53 +57,11 @@
         }
       }
     ],
-    "minecraft:post_attack": [
+    "minecraft:tick": [
       {
-        "affected": "attacker",
         "effect": {
-          "type": "minecraft:summon_entity",
-          "entity": "minecraft:experience_orb"
-        },
-        "enchanted": "attacker",
-        "requirements": {
-          "condition": "minecraft:all_of",
-          "terms": [
-            {
-              "chance": {
-                "type": "minecraft:enchantment_level",
-                "amount": {
-                  "type": "minecraft:linear",
-                  "base": 0.15,
-                  "per_level_above_first": 0.15
-                }
-              },
-              "condition": "minecraft:random_chance"
-            }
-          ]
-        }
-      },
-      {
-        "affected": "victim",
-        "effect": {
-          "type": "minecraft:summon_entity",
-          "entity": "minecraft:experience_orb"
-        },
-        "enchanted": "victim",
-        "requirements": {
-          "condition": "minecraft:all_of",
-          "terms": [
-            {
-              "chance": {
-                "type": "minecraft:enchantment_level",
-                "amount": {
-                  "type": "minecraft:linear",
-                  "base": 0.15,
-                  "per_level_above_first": 0.15
-                }
-              },
-              "condition": "minecraft:random_chance"
-            }
-          ]
+          "type": "enchantments-ex:last_stand_effect",
+          "amount": 0.0
         }
       }
     ]
