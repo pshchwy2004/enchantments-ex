@@ -3,7 +3,7 @@ package com.pshchwy.enex.datagen;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import com.pshchwy.enex.enchantment.effect.*;
-import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.minecraft.advancements.criterion.*;
@@ -59,7 +59,7 @@ import java.util.function.Function;
 
 /// This class is a Provider that handles the registration of all new EX enchantments. Mapping their original variants happens in EXEnchantmentMap.java.
 public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
-    public EXEnchantmentGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public EXEnchantmentGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
     /**
@@ -187,7 +187,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                                 .entityType(
                                                         EntityTypePredicate.of(
                                                                 entityTypes,
-                                                                EntityTypes.ZOMBIE_VILLAGER
+                                                                EntityType.ZOMBIE_VILLAGER
                                                         )
                                                 )
                                 )
@@ -571,7 +571,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 EntityPredicate.Builder.entity()
                                         .entityType(
                                                 EntityTypePredicate.of(
-                                                        entityTypes, EntityTypes.SHULKER
+                                                        entityTypes, EntityType.SHULKER
                                                 )
                                         )
                         )
@@ -1079,7 +1079,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         new AddValue(LevelBasedValue.perLevel(0.01F)),
                         LootItemEntityPropertyCondition.hasProperties(
                                 LootContext.EntityTarget.ATTACKER,
-                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityTypes.PLAYER))
+                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER))
                         )
                 )
                 .withEffect(EnchantmentEffectComponents.MOB_EXPERIENCE, new MultiplyValue(LevelBasedValue.perLevel(2.5f, 1.0f)))
