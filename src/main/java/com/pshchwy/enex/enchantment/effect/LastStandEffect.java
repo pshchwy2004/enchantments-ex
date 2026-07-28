@@ -14,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
-import org.jspecify.annotations.NonNull;
 
 public record LastStandEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
     public static final MapCodec<LastStandEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
@@ -23,7 +22,7 @@ public record LastStandEffect(LevelBasedValue amount) implements EnchantmentEnti
             ).apply(instance, LastStandEffect::new)
     );
     @Override
-    public void apply(@NonNull ServerLevel serverLevel, int enchantmentLevel, @NonNull EnchantedItemInUse item, @NonNull Entity entity, @NonNull Vec3 position) {
+    public void apply(ServerLevel serverLevel, int enchantmentLevel, EnchantedItemInUse item, Entity entity, Vec3 position) {
         // executes per tick
         // if the item is at or below 25% durability, give the following effects:
         // armor: Resistance 0
@@ -35,11 +34,11 @@ public record LastStandEffect(LevelBasedValue amount) implements EnchantmentEnti
             ItemStack itemStack = item.itemStack();
             ItemEnchantments enchants = itemStack.getEnchantments();
             if (itemStack.is(ItemTags.ARMOR_ENCHANTABLE)) {
-                player.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 100, 0, true, false));
+                player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 0, true, false));
             } else if (itemStack.is(ItemTags.WEAPON_ENCHANTABLE)) {
-                player.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 100, 0, true, false));
+                player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 0, true, false));
             } else { // tool
-                player.addEffect(new MobEffectInstance(MobEffects.HASTE, 100, 0, true, false));
+                player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 100, 0, true, false));
             }
             if (hasEnchantment(enchants, Enchantments.FIRE_PROTECTION) || hasEnchantment(enchants, EXEnchantmentEffects.FIRE_PROTECTION_EX)) {
                 player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
@@ -52,11 +51,11 @@ public record LastStandEffect(LevelBasedValue amount) implements EnchantmentEnti
     }
 
     @Override
-    public @NonNull MapCodec<? extends EnchantmentEntityEffect> codec() {
+    public MapCodec<? extends EnchantmentEntityEffect> codec() {
         return CODEC;
     }
 
     boolean hasEnchantment(ItemEnchantments itemEnchantments, ResourceKey<Enchantment> enchantment) {
-        return itemEnchantments.toString().contains(enchantment.identifier().getPath());
+        return itemEnchantments.toString().contains(enchantment.location().getPath());
     }
 }

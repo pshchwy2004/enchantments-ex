@@ -19,7 +19,7 @@
             "per_level_above_first": 1.0
           }
         },
-        "attribute": "minecraft:sweeping_damage_ratio",
+        "attribute": "minecraft:player.sweeping_damage_ratio",
         "id": "enchantments-ex:sweeping_edge_ex_ratio",
         "operation": "add_value"
       },
@@ -29,7 +29,7 @@
           "base": -0.1,
           "per_level_above_first": -0.1
         },
-        "attribute": "minecraft:air_drag_modifier",
+        "attribute": "minecraft:generic.flying_speed",
         "id": "enchantments-ex:sweeping_edge_ex_drag",
         "operation": "add_multiplied_base"
       }
@@ -56,6 +56,6 @@
   "slots": [
     "mainhand"
   ],
-  "supported_items": "#minecraft:enchantable/sweeping",
+  "supported_items": "#minecraft:enchantable/sword",
   "weight": 1
 }

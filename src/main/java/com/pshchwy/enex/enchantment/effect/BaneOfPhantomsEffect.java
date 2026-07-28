@@ -14,7 +14,6 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public record BaneOfPhantomsEffect(LevelBasedValue amount) implements Enchantmen
     );
 
     @Override
-    public void apply(@NonNull ServerLevel world, int level, @NonNull EnchantedItemInUse context, @NonNull Entity target, @NonNull Vec3 pos) {
+    public void apply(ServerLevel world, int level, EnchantedItemInUse context, Entity target, Vec3 pos) {
         // executes per tick
         if (target instanceof Player player) { // players only: phantoms
             double radius = 15.0; // var declared for future balance convenience

@@ -10,7 +10,6 @@ import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
 
 public record SparkEffect(LevelBasedValue amount) implements EnchantmentEntityEffect {
     public static final MapCodec<SparkEffect> CODEC = RecordCodecBuilder.mapCodec(instance ->
@@ -20,7 +19,7 @@ public record SparkEffect(LevelBasedValue amount) implements EnchantmentEntityEf
     );
 
     @Override
-    public void apply(@NonNull ServerLevel world, int level, @NonNull EnchantedItemInUse context, @NonNull Entity target, @NonNull Vec3 pos) {
+    public void apply(ServerLevel world, int level, EnchantedItemInUse context, Entity target, Vec3 pos) {
         // executes after hitting
         // spawns a lot of lava particles
         // Evaluate particle count based on the enchantment level

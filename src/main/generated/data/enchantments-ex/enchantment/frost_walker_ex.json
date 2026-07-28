@@ -116,7 +116,7 @@
           "condition": "minecraft:entity_properties",
           "entity": "this",
           "predicate": {
-            "minecraft:flags": {
+            "flags": {
               "is_on_ground": true
             }
           }
@@ -130,7 +130,7 @@
             "base": 0.0405,
             "per_level_above_first": 0.0105
           },
-          "attribute": "minecraft:movement_speed",
+          "attribute": "minecraft:generic.movement_speed",
           "id": "enchantments-ex:enchantment.frost_walker_ex",
           "operation": "add_value"
         },
@@ -143,7 +143,7 @@
                 "condition": "minecraft:entity_properties",
                 "entity": "this",
                 "predicate": {
-                  "minecraft:vehicle": {}
+                  "vehicle": {}
                 }
               }
             },
@@ -161,7 +161,7 @@
                       "condition": "minecraft:entity_properties",
                       "entity": "this",
                       "predicate": {
-                        "minecraft:flags": {
+                        "flags": {
                           "is_flying": false
                         }
                       }
@@ -173,7 +173,7 @@
                           "condition": "minecraft:entity_properties",
                           "entity": "this",
                           "predicate": {
-                            "minecraft:movement_affected_by": {
+                            "movement_affected_by": {
                               "block": {
                                 "blocks": "#minecraft:ice"
                               }
@@ -184,7 +184,7 @@
                           "condition": "minecraft:entity_properties",
                           "entity": "this",
                           "predicate": {
-                            "minecraft:flags": {
+                            "flags": {
                               "is_on_ground": false
                             }
                           }
@@ -204,10 +204,10 @@
                       "condition": "minecraft:entity_properties",
                       "entity": "this",
                       "predicate": {
-                        "minecraft:flags": {
+                        "flags": {
                           "is_flying": false
                         },
-                        "minecraft:movement_affected_by": {
+                        "movement_affected_by": {
                           "block": {
                             "blocks": "#minecraft:ice"
                           }
