@@ -1,9 +1,0 @@
-{
-  "values": [
-    "minecraft:respiration",
-    {
-      "id": "enchantments-ex:respiration_ex",
-      "required": false
-    }
-  ]
-}

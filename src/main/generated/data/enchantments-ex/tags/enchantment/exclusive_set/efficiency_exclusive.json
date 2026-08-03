@@ -1,9 +1,0 @@
-{
-  "values": [
-    "minecraft:efficiency",
-    {
-      "id": "enchantments-ex:efficiency_ex",
-      "required": false
-    }
-  ]
-}

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:mending",
+    {
+      "id": "enchantmentsex:mending_ex",
+      "required": false
+    }
+  ]
+}

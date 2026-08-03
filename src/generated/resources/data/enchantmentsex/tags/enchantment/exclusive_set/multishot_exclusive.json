@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:multishot",
+    {
+      "id": "enchantmentsex:multishot_ex",
+      "required": false
+    }
+  ]
+}

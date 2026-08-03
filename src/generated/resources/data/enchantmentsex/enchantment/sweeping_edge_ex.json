@@ -1,0 +1,61 @@
+{
+  "anvil_cost": 5,
+  "description": {
+    "translate": "enchantment.enchantmentsex.sweeping_edge_ex"
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": {
+          "type": "minecraft:fraction",
+          "denominator": {
+            "type": "minecraft:linear",
+            "base": 2.0,
+            "per_level_above_first": 1.0
+          },
+          "numerator": {
+            "type": "minecraft:linear",
+            "base": 1.0,
+            "per_level_above_first": 1.0
+          }
+        },
+        "attribute": "minecraft:player.sweeping_damage_ratio",
+        "id": "enchantmentsex:sweeping_edge_ex_ratio",
+        "operation": "add_value"
+      },
+      {
+        "amount": {
+          "type": "minecraft:linear",
+          "base": -0.1,
+          "per_level_above_first": -0.1
+        },
+        "attribute": "minecraft:generic.flying_speed",
+        "id": "enchantmentsex:sweeping_edge_ex_drag",
+        "operation": "add_multiplied_base"
+      }
+    ],
+    "minecraft:tick": [
+      {
+        "effect": {
+          "type": "enchantmentsex:bane_of_phantoms_effect",
+          "amount": 0.0
+        }
+      }
+    ]
+  },
+  "exclusive_set": "#enchantmentsex:exclusive_set/sweeping_edge_exclusive",
+  "max_cost": {
+    "base": 20,
+    "per_level_above_first": 9
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 5,
+    "per_level_above_first": 9
+  },
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/sword",
+  "weight": 1
+}

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:luck_of_the_sea",
+    {
+      "id": "enchantmentsex:luck_of_the_sea_ex",
+      "required": false
+    }
+  ]
+}

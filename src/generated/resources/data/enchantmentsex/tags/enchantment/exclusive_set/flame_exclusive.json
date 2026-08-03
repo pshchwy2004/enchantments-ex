@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:flame",
+    {
+      "id": "enchantmentsex:flame_ex",
+      "required": false
+    }
+  ]
+}

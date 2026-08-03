@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:breach",
+    {
+      "id": "enchantmentsex:breach_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/damage",
+      "required": false
+    }
+  ]
+}

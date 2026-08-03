@@ -2,31 +2,28 @@ package com.pshchwy.enex.menu;
 
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.menu.custom.StampingTableMenu;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.flag.FeatureFlagSet;
-import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 /// Initializes all menus.
 public class EXMenus {
-    public static final MenuType<StampingTableMenu> STAMPING_TABLE_MENU =
-            Registry.register(
-                    BuiltInRegistries.MENU,
-                    ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "stamping_table_menu"),
-                    new ExtendedScreenHandlerType<>(StampingTableMenu::new, BlockPos.STREAM_CODEC)
+    public static final DeferredRegister<MenuType<?>> MENUS =
+            DeferredRegister.create(Registries.MENU, EnchantmentsEX.MOD_ID);
+    public static final DeferredHolder<MenuType<?>, MenuType<StampingTableMenu>> STAMPING_TABLE_MENU =
+            MENUS.register("stamping_table_menu", () ->
+                    IMenuTypeExtension.create((windowId, inv, data) -> {
+                        // Decodes the BlockPos sent from the server upon opening the menu
+                        BlockPos pos = BlockPos.STREAM_CODEC.decode(data);
+                        return new StampingTableMenu(windowId, inv, pos);
+                    })
             );
-    @SuppressWarnings("unused")
-    public static <T extends AbstractContainerMenu> MenuType<T> register(
-            String name,
-            MenuType.MenuSupplier<T> constructor
-    ) {
-        return Registry.register(BuiltInRegistries.MENU, name, new MenuType<>(constructor, FeatureFlagSet.of()));
-    }
-    public static void initialize() {
+    public static void initialize(IEventBus eventBus) {
         EnchantmentsEX.LOGGER.info("Registering menus for " + EnchantmentsEX.MOD_ID);
+        MENUS.register(eventBus);
     }
 }

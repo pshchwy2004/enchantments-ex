@@ -1,19 +1,28 @@
 package com.pshchwy.enex.datagen;
 
 import com.pshchwy.enex.block.EXBlocks;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.CompletableFuture;
+import java.util.Collections;
+import java.util.Set;
 
-public class EXLootTableGenerator extends FabricBlockLootTableProvider {
-    public EXLootTableGenerator(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
-        super(dataOutput, registryLookup);
+public class EXLootTableGenerator extends BlockLootSubProvider {
+
+    public EXLootTableGenerator(HolderLookup.Provider registries) {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
     }
 
     @Override
-    public void generate() {
-        dropSelf(EXBlocks.STAMPING_TABLE);
+    protected void generate() {
+        this.dropSelf(EXBlocks.STAMPING_TABLE.get());
+    }
+
+    @Override
+    protected @NotNull Iterable<Block> getKnownBlocks() {
+        return Collections.singleton(EXBlocks.STAMPING_TABLE.get());
     }
 }

@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:riptide",
+    {
+      "id": "enchantmentsex:riptide_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/riptide",
+      "required": false
+    }
+  ]
+}

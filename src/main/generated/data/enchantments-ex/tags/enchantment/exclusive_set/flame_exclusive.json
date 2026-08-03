@@ -1,9 +1,0 @@
-{
-  "values": [
-    "minecraft:flame",
-    {
-      "id": "enchantments-ex:flame_ex",
-      "required": false
-    }
-  ]
-}

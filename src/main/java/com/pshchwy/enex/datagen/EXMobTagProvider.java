@@ -1,46 +1,49 @@
 package com.pshchwy.enex.datagen;
 
 import com.pshchwy.enex.EnchantmentsEX;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 /// This class declares mob tags.
-public class EXMobTagProvider extends FabricTagProvider<EntityType<?>> {
+public class EXMobTagProvider extends EntityTypeTagsProvider {
 
     public static final TagKey<EntityType<?>> BREACH_EX_VULNERABLE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "boss_mobs"));
     public static final TagKey<EntityType<?>> FIRE_IMMUNE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "immune_to_fire"));
     public static final TagKey<EntityType<?>> FLYING_MOBS = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "flying_mobs"));
 
     /**
-     * Constructs a new {@link FabricTagProvider} with the default computed path.
+     * Constructs a new {@link EntityTypeTagsProvider} with the default computed path.
      *
      * <p>Common implementations of this class are provided.
      *
-     * @param output           the {@link FabricDataOutput} instance
+     * @param output           the {@link PackOutput} instance
      * @param registriesFuture the backing registry for the tag type
      */
-    public EXMobTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(output, Registries.ENTITY_TYPE, registriesFuture);
+    public EXMobTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture, @Nullable ExistingFileHelper existingFileHelper) {
+        super(output, registriesFuture, EnchantmentsEX.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider wrapperLookup) {
-        getOrCreateTagBuilder(BREACH_EX_VULNERABLE)
+    protected void addTags(HolderLookup.@NotNull Provider wrapperLookup) {
+        this.tag(BREACH_EX_VULNERABLE)
                 .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.IRON_GOLEM)
                 .add(EntityType.WARDEN)
                 .add(EntityType.RAVAGER)
                 .add(EntityType.WITHER)
-                .setReplace(true);
+                .replace(true);
 
-        getOrCreateTagBuilder(FIRE_IMMUNE)
+        this.tag(FIRE_IMMUNE)
                 .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.ZOGLIN)
                 .add(EntityType.VEX)
@@ -53,9 +56,9 @@ public class EXMobTagProvider extends FabricTagProvider<EntityType<?>> {
                 .add(EntityType.MAGMA_CUBE)
                 .add(EntityType.ZOMBIFIED_PIGLIN)
                 .add(EntityType.STRIDER)
-                .setReplace(true);
+                .replace(true);
 
-        getOrCreateTagBuilder(FLYING_MOBS)
+        this.tag(FLYING_MOBS)
                 .add(EntityType.ENDER_DRAGON)
                 .add(EntityType.GHAST)
                 .add(EntityType.VEX)
@@ -66,6 +69,6 @@ public class EXMobTagProvider extends FabricTagProvider<EntityType<?>> {
                 .add(EntityType.PARROT)
                 .add(EntityType.BEE)
                 .add(EntityType.PHANTOM)
-                .setReplace(true);
+                .replace(true);
     }
 }

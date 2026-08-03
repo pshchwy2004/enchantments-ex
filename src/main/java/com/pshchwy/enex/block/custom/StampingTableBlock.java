@@ -26,23 +26,23 @@ public class StampingTableBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected @NotNull RenderShape getRenderShape(BlockState state) {
+    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
         return RenderShape.MODEL;
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
         return new StampingTableBlockEntity(blockPos, blockState);
     }
 /// Handles right clicking to bring up the Stamping Table menu.
     @Override
-    protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof StampingTableBlockEntity) {
-                player.openMenu((StampingTableBlockEntity)blockEntity);
+            if (blockEntity instanceof StampingTableBlockEntity stampingTable) {
+                player.openMenu(stampingTable, buf -> buf.writeBlockPos(blockPos));
             }
 
             return InteractionResult.CONSUME;

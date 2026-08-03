@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:lure",
+    {
+      "id": "enchantmentsex:lure_ex",
+      "required": false
+    }
+  ]
+}

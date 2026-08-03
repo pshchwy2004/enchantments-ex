@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:loyalty",
+    {
+      "id": "enchantmentsex:loyalty_ex",
+      "required": false
+    }
+  ]
+}

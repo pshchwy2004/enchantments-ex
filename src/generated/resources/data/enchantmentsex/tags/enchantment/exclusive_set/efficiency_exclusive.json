@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:efficiency",
+    {
+      "id": "enchantmentsex:efficiency_ex",
+      "required": false
+    }
+  ]
+}

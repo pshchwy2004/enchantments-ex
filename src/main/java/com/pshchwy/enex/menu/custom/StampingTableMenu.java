@@ -42,7 +42,7 @@ public class StampingTableMenu extends AbstractContainerMenu {
     private int selectedEnchantmentIndex;
 
     public StampingTableMenu(int id, Inventory inventory, ContainerLevelAccess access) {
-        super(EXMenus.STAMPING_TABLE_MENU, id);
+        super(EXMenus.STAMPING_TABLE_MENU.get(), id);
         this.access = access;
         selectedEnchantmentIndex = -1;
         this.addSlot(new Slot(this.stampSlots, 0, 15, 47) { // enchanted book placement
@@ -136,7 +136,7 @@ public class StampingTableMenu extends AbstractContainerMenu {
      */
     @Override
     public boolean stillValid(Player player) { // canUse
-        return stillValid(this.access, player, EXBlocks.STAMPING_TABLE)
+        return stillValid(this.access, player, EXBlocks.STAMPING_TABLE.get())
             && this.stampSlots.stillValid(player);
     }
 
@@ -285,7 +285,7 @@ public class StampingTableMenu extends AbstractContainerMenu {
         player.level().playSound(
                 null,
                 player.blockPosition(),
-                EXSounds.STAMP,
+                EXSounds.STAMP.get(),
                 SoundSource.BLOCKS,
                 1.0F,
                 1.0F

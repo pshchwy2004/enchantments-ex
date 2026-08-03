@@ -1,9 +1,0 @@
-{
-  "values": [
-    "minecraft:luck_of_the_sea",
-    {
-      "id": "enchantments-ex:luck_of_the_sea_ex",
-      "required": false
-    }
-  ]
-}

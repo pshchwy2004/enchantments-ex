@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:wind_burst",
+    {
+      "id": "enchantmentsex:wind_burst_ex",
+      "required": false
+    }
+  ]
+}

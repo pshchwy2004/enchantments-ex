@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:smite",
+    {
+      "id": "enchantmentsex:smite_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/damage",
+      "required": false
+    }
+  ]
+}

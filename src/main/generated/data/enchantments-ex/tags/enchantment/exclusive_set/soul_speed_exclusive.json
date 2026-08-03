@@ -1,9 +1,0 @@
-{
-  "values": [
-    "minecraft:soul_speed",
-    {
-      "id": "enchantments-ex:soul_speed_ex",
-      "required": false
-    }
-  ]
-}

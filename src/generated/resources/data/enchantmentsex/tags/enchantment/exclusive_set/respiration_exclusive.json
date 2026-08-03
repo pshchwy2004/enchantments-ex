@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:respiration",
+    {
+      "id": "enchantmentsex:respiration_ex",
+      "required": false
+    }
+  ]
+}

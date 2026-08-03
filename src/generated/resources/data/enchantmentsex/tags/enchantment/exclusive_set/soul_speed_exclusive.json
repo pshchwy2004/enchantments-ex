@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:soul_speed",
+    {
+      "id": "enchantmentsex:soul_speed_ex",
+      "required": false
+    }
+  ]
+}

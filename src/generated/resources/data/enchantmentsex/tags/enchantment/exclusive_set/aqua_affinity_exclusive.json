@@ -1,0 +1,10 @@
+{
+  "replace": true,
+  "values": [
+    "minecraft:aqua_affinity",
+    {
+      "id": "enchantmentsex:aqua_affinity_ex",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "p": {
+      "tag": "enchantmentsex:stamping_cloths"
+    },
+    "w": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "pi",
+    "ww",
+    "ww"
+  ],
+  "result": {
+    "count": 1,
+    "id": "enchantmentsex:stamping_table"
+  }
+}

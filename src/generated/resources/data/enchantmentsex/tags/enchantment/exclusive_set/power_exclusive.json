@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:power",
+    {
+      "id": "enchantmentsex:power_ex",
+      "required": false
+    }
+  ]
+}

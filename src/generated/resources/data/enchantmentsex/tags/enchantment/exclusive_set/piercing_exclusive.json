@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:piercing",
+    {
+      "id": "enchantmentsex:piercing_ex",
+      "required": false
+    }
+  ]
+}

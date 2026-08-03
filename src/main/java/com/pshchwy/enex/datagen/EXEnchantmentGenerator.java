@@ -3,17 +3,12 @@ package com.pshchwy.enex.datagen;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import com.pshchwy.enex.enchantment.effect.*;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
-import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.minecraft.advancements.critereon.*;
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.Vec3i;
+import net.minecraft.core.*;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
@@ -48,32 +43,36 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelProvider;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 /// This class is a Provider that handles the registration of all new EX enchantments. Mapping their original variants happens in EXEnchantmentMap.java.
-public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
-    public EXEnchantmentGenerator(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-        super(output, registriesFuture);
+public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
+    public EXEnchantmentGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture, BUILDER, Set.of(EnchantmentsEX.MOD_ID));
     }
+
+    public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
+            .add(Registries.ENCHANTMENT, EXEnchantmentGenerator::bootstrap);
     /**
      * Registers all EX enchantments.
      */
-    @Override
-    protected void configure(HolderLookup.Provider registries, Entries entries) {
+    private static void bootstrap(BootstrapContext<Enchantment> context) {
         // easy variables for access
-        HolderGetter<DamageType> damageTypes = registries.lookupOrThrow(Registries.DAMAGE_TYPE);
-        HolderGetter<Enchantment> enchantments = registries.lookupOrThrow(Registries.ENCHANTMENT);
-        HolderGetter<Item> items = registries.lookupOrThrow(Registries.ITEM);
+        HolderGetter<DamageType> damageTypes = context.lookup(Registries.DAMAGE_TYPE);
+        HolderGetter<Enchantment> enchantments = context.lookup(Registries.ENCHANTMENT);
+        HolderGetter<Item> items = context.lookup(Registries.ITEM);
         @SuppressWarnings("unused")
-        HolderGetter<Block> blocks = registries.lookupOrThrow(Registries.BLOCK);
-        HolderGetter<EntityType<?>>  entityTypes = registries.lookupOrThrow(Registries.ENTITY_TYPE);
+        HolderGetter<Block> blocks = context.lookup(Registries.BLOCK);
+        HolderGetter<EntityType<?>>  entityTypes = context.lookup(Registries.ENTITY_TYPE);
         // register Knockback EX
-        register(entries, EXEnchantmentEffects.KNOCKBACK_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.KNOCKBACK_EX, Enchantment.enchantment(
                 Enchantment.definition(
                         items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
                         // weight of showing up in enchantment table
@@ -98,10 +97,10 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.KNOCKBACK,
                         new AddValue(LevelBasedValue.perLevel(1.0f, 1.0f))
                 )
-                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.KNOCKBACK_EXCLUSIVE))
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.KNOCKBACK_EXCLUSIVE)).build(EXEnchantmentEffects.KNOCKBACK_EX.location())
         );
         // register Sharpness EX
-        register(entries, EXEnchantmentEffects.SHARPNESS_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.SHARPNESS_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
                                 // weight of showing up in enchantment table
@@ -133,10 +132,10 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(1.0f, 0.5f))
                 )
-                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SHARPNESS_EXCLUSIVE))
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SHARPNESS_EXCLUSIVE)).build(EXEnchantmentEffects.SHARPNESS_EX.location())
         );
         // register Smite EX
-        register(entries, EXEnchantmentEffects.SMITE_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.SMITE_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
                                 items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
@@ -191,10 +190,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SMITE_EXCLUSIVE))
+                .build(EXEnchantmentEffects.SMITE_EX.location())
         );
 
         // register Aqua Affinity EX
-        register(entries, EXEnchantmentEffects.AQUA_AFFINITY_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.AQUA_AFFINITY_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
                                 items.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
@@ -227,10 +227,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         new AquaAffinityEXEffect(LevelBasedValue.constant(0.0f))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.AQUA_AFFINITY_EXCLUSIVE))
+                .build(EXEnchantmentEffects.AQUA_AFFINITY_EX.location())
         );
 
         // register Bane of Arthropods EX
-        register(entries, EXEnchantmentEffects.BANE_OF_ARTHROPODS_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.BANE_OF_ARTHROPODS_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
                                 items.getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
@@ -283,10 +284,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 .and(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.BANE_OF_ARTHROPODS_EXCLUSIVE))
+                .build(EXEnchantmentEffects.BANE_OF_ARTHROPODS_EX.location())
         );
 
         // register Blast Protection EX
-        register(entries, EXEnchantmentEffects.BLAST_PROTECTION_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.BLAST_PROTECTION_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
                                 items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
@@ -324,10 +326,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.BLAST_PROTECTION_EXCLUSIVE))
+                .build(EXEnchantmentEffects.BLAST_PROTECTION_EX.location())
         );
 
         // register Breach EX
-        register(entries, EXEnchantmentEffects.BREACH_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.BREACH_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
                                 items.getOrThrow(ItemTags.MACE_ENCHANTABLE),
@@ -361,10 +364,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.BREACH_EXCLUSIVE))
+                .build(EXEnchantmentEffects.BREACH_EX.location())
         );
 
         // register Channeling EX
-        register(entries, EXEnchantmentEffects.CHANNELING_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.CHANNELING_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
                                 items.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
@@ -415,10 +419,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
             )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.CHANNELING_EXCLUSIVE))
+                .build(EXEnchantmentEffects.CHANNELING_EX.location())
         );
 
         // register Density EX
-        register(entries, EXEnchantmentEffects.DENSITY_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.DENSITY_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.MACE_ENCHANTABLE),
@@ -444,10 +449,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         new DensityEXEffect(LevelBasedValue.perLevel(0.4f, 0.2f))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.DENSITY_EXCLUSIVE))
+                .build(EXEnchantmentEffects.DENSITY_EX.location())
         );
 
         // register Depth Strider EX
-        register(entries, EXEnchantmentEffects.DEPTH_STRIDER_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.DEPTH_STRIDER_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
@@ -507,10 +513,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.TICK,
                         new DepthStriderEXEffect(LevelBasedValue.perLevel(1.0f))
                 )
+                .build(EXEnchantmentEffects.DEPTH_STRIDER_EX.location())
         );
 
         // register Efficiency EX
-        register(entries, EXEnchantmentEffects.EFFICIENCY_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.EFFICIENCY_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.MINING_ENCHANTABLE),
@@ -568,10 +575,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         )
                         )
                 )
+                .build(EXEnchantmentEffects.EFFICIENCY_EX.location())
         );
 
         // register Feather Falling EX
-        register(entries, EXEnchantmentEffects.FEATHER_FALLING_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.FEATHER_FALLING_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
@@ -603,10 +611,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FEATHER_FALLING_EXCLUSIVE))
+                .build(EXEnchantmentEffects.FEATHER_FALLING_EX.location())
         );
 
         // register Fire Aspect EX
-        register(entries, EXEnchantmentEffects.FIRE_ASPECT_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.FIRE_ASPECT_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.FIRE_ASPECT_ENCHANTABLE),
@@ -678,10 +687,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         new Ignite(LevelBasedValue.perLevel(4.0F)),
                         DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true))
                 )
+                .build(EXEnchantmentEffects.FIRE_ASPECT_EX.location())
         );
 
         // register Fire Protection EX
-        register(entries, EXEnchantmentEffects.FIRE_PROTECTION_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.FIRE_PROTECTION_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
@@ -729,10 +739,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         )
                         )
                 )
+                .build(EXEnchantmentEffects.FIRE_PROTECTION_EX.location())
         );
 
         // register Flame EX
-        register(entries, EXEnchantmentEffects.FLAME_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.FLAME_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
@@ -802,11 +813,12 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FLAME_EXCLUSIVE))
+                .build(EXEnchantmentEffects.FLAME_EX.location())
 
         );
 
         // register Fortune EX
-        register(entries, EXEnchantmentEffects.FORTUNE_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.FORTUNE_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.MINING_LOOT_ENCHANTABLE),
@@ -826,10 +838,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
                         .withEffect(EnchantmentEffectComponents.BLOCK_EXPERIENCE, new MultiplyValue(LevelBasedValue.perLevel(1.5f, 0.5f)))
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FORTUNE_EXCLUSIVE))
+                .build(EXEnchantmentEffects.FORTUNE_EX.location())
         );
 
         // register Frost Walker EX
-        register(entries, EXEnchantmentEffects.FROST_WALKER_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.FROST_WALKER_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
@@ -943,10 +956,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 )
                         )
                 )
+                .build(EXEnchantmentEffects.FROST_WALKER_EX.location())
         );
 
         // register Impaling EX
-        register(entries, EXEnchantmentEffects.IMPALING_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.IMPALING_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
@@ -1009,10 +1023,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentTarget.VICTIM,
                         new BreathStealEffect(LevelBasedValue.constant(1.0f))
                 )
+                .build(EXEnchantmentEffects.IMPALING_EX.location())
         );
 
         // register Infinity EX
-        register(entries, EXEnchantmentEffects.INFINITY_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.INFINITY_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
@@ -1042,10 +1057,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
 
                 )
+                .build(EXEnchantmentEffects.INFINITY_EX.location())
         );
 
         // register Looting EX
-        register(entries, EXEnchantmentEffects.LOOTING_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.LOOTING_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
@@ -1075,10 +1091,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
                 )
                 .withEffect(EnchantmentEffectComponents.MOB_EXPERIENCE, new MultiplyValue(LevelBasedValue.perLevel(2.5f, 1.0f)))
+                .build(EXEnchantmentEffects.LOOTING_EX.location())
         );
 
         // register Loyalty EX
-        register(entries, EXEnchantmentEffects.LOYALTY_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.LOYALTY_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
@@ -1102,11 +1119,12 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         new TridentItemRetrievalEffect(LevelBasedValue.constant(1.0f))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.LOYALTY_EXCLUSIVE))
+                .build(EXEnchantmentEffects.LOYALTY_EX.location())
 
         );
 
         // register Luck of the Sea EX
-        register(entries, EXEnchantmentEffects.LUCK_OF_THE_SEA_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.FISHING_ENCHANTABLE),
@@ -1126,10 +1144,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
                 .withEffect(EnchantmentEffectComponents.FISHING_LUCK_BONUS, new AddValue(LevelBasedValue.perLevel(1.0F))) // changes happen in the loot tables
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.LUCK_OF_THE_SEA_EXCLUSIVE))
+                .build(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX.location())
         );
 
         // register Lure EX
-        register(entries, EXEnchantmentEffects.LURE_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.LURE_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.FISHING_ENCHANTABLE),
@@ -1152,11 +1171,12 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.TICK,
                         new LureEXEffect(LevelBasedValue.constant(0.0f))
                 ).exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.LURE_EXCLUSIVE))
+                .build(EXEnchantmentEffects.LURE_EX.location())
 
         );
 
         // register Mending EX
-        register(entries, EXEnchantmentEffects.MENDING_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.MENDING_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.DURABILITY_ENCHANTABLE),
@@ -1176,10 +1196,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
                 .withEffect(EnchantmentEffectComponents.REPAIR_WITH_XP, new MultiplyValue(LevelBasedValue.constant(4.0F)))
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.MENDING_EXCLUSIVE))
+                .build(EXEnchantmentEffects.MENDING_EX.location())
         );
 
         // register Multishot EX
-        register(entries, EXEnchantmentEffects.MULTISHOT_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.MULTISHOT_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
@@ -1202,10 +1223,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(EnchantmentEffectComponents.PROJECTILE_COUNT, new AddValue(LevelBasedValue.perLevel(4.0F)))
                 .withEffect(EnchantmentEffectComponents.PROJECTILE_SPREAD, new AddValue(LevelBasedValue.perLevel(5.0F)))
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.MULTISHOT_EXCLUSIVE))
+                .build(EXEnchantmentEffects.MULTISHOT_EX.location())
         );
 
         // register Piercing EX
-        register(entries, EXEnchantmentEffects.PIERCING_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.PIERCING_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
@@ -1252,10 +1274,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
 
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.PIERCING_EXCLUSIVE))
+                .build(EXEnchantmentEffects.PIERCING_EX.location())
         );
 
         // register Power EX
-        register(entries, EXEnchantmentEffects.POWER_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.POWER_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
@@ -1300,10 +1323,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
 
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.POWER_EXCLUSIVE))
+                .build(EXEnchantmentEffects.POWER_EX.location())
         );
 
         // register Projectile Protection EX
-        register(entries, EXEnchantmentEffects.PROJECTILE_PROTECTION_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.PROJECTILE_PROTECTION_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
@@ -1344,10 +1368,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 AttributeModifier.Operation.ADD_VALUE
                         )
                 )
+                .build(EXEnchantmentEffects.PROJECTILE_PROTECTION_EX.location())
         );
 
         // register Protection EX
-        register(entries, EXEnchantmentEffects.PROTECTION_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.PROTECTION_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
@@ -1386,10 +1411,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         ),
                         LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))
                 )
+                .build(EXEnchantmentEffects.PROTECTION_EX.location())
         );
 
         // register Punch EX
-        register(entries, EXEnchantmentEffects.PUNCH_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.PUNCH_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.BOW_ENCHANTABLE),
@@ -1424,10 +1450,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
                         )
                 )
+                .build(EXEnchantmentEffects.PUNCH_EX.location())
         );
 
         // register Quick Charge EX
-        register(entries, EXEnchantmentEffects.QUICK_CHARGE_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.QUICK_CHARGE_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE),
@@ -1460,10 +1487,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.PROJECTILE_SPAWNED,
                         new Ignite(LevelBasedValue.constant(100.0F))
                 )
+                .build(EXEnchantmentEffects.QUICK_CHARGE_EX.location())
         );
 
         // register Respiration EX
-        register(entries, EXEnchantmentEffects.RESPIRATION_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.RESPIRATION_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
@@ -1495,10 +1523,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         EnchantmentEffectComponents.TICK,
                         new RespirationEXEffect(LevelBasedValue.constant(1.0f))
                 )
+                .build(EXEnchantmentEffects.RESPIRATION_EX.location())
         );
 
         // register Riptide EX
-        register(entries, EXEnchantmentEffects.RIPTIDE_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.RIPTIDE_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.TRIDENT_ENCHANTABLE),
@@ -1530,6 +1559,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withSpecialEffect(
                         EnchantmentEffectComponents.TRIDENT_SOUND, List.of(SoundEvents.TRIDENT_RIPTIDE_1, SoundEvents.TRIDENT_RIPTIDE_2, SoundEvents.TRIDENT_RIPTIDE_3)
                 )
+                .build(EXEnchantmentEffects.RIPTIDE_EX.location())
         );
 
         // register Soul Speed EX
@@ -1542,7 +1572,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
                                 .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.SOUL_SPEED_BLOCKS))
                 );
-        register(entries, EXEnchantmentEffects.SOUL_SPEED_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.SOUL_SPEED_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE),
@@ -1653,10 +1683,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 LootItemRandomChanceCondition.randomChance(0.35F), LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, soulSpeedBuilder)
                         )
                 )
+                .build(EXEnchantmentEffects.SOUL_SPEED_EX.location())
         );
 
         // register Sweeping Edge EX
-        register(entries, EXEnchantmentEffects.SWEEPING_EDGE_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.SWEEPING_EDGE_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
@@ -1698,10 +1729,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         new BaneOfPhantomsEffect(LevelBasedValue.constant(0.0f))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SWEEPING_EDGE_EXCLUSIVE))
+                .build(EXEnchantmentEffects.SWEEPING_EDGE_EX.location())
         );
 
         // register Swift Sneak EX
-        register(entries, EXEnchantmentEffects.SWIFT_SNEAK_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.SWIFT_SNEAK_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE),
@@ -1738,10 +1770,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 AttributeModifier.Operation.ADD_VALUE
                         )
                 )
+                .build(EXEnchantmentEffects.SWIFT_SNEAK_EX.location())
         );
 
         // register Thorns EX
-        register(entries, EXEnchantmentEffects.THORNS_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.THORNS_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
@@ -1770,10 +1803,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.25F)))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.THORNS_EXCLUSIVE))
+                .build(EXEnchantmentEffects.THORNS_EX.location())
         );
 
         // register Unbreaking EX
-        register(entries, EXEnchantmentEffects.UNBREAKING_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.UNBREAKING_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.DURABILITY_ENCHANTABLE),
@@ -1807,11 +1841,11 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect(
                         EnchantmentEffectComponents.TICK,
                         new LastStandEffect(LevelBasedValue.constant(0.0f))
-                )
+                ).build(EXEnchantmentEffects.UNBREAKING_EX.location())
         );
 
         // register Wind Burst EX
-        register(entries, EXEnchantmentEffects.WIND_BURST_EX, Enchantment.enchantment(
+        context.register(EXEnchantmentEffects.WIND_BURST_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.DURABILITY_ENCHANTABLE),
@@ -1876,13 +1910,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         DamageSourceCondition.hasDamageSource(
                                 DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.IS_FALL)).tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
                         )
-                )
+                ).build(EXEnchantmentEffects.WIND_BURST_EX.location())
         );
-    }
-
-    /// Register function.
-    private void register(Entries entries, ResourceKey<Enchantment> key, Enchantment.Builder builder, ResourceCondition... resourceConditions) {
-        entries.add(key, builder.build(key.location()), resourceConditions);
     }
 
     @Override

@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:channeling",
+    {
+      "id": "enchantmentsex:channeling_ex",
+      "required": false
+    }
+  ]
+}

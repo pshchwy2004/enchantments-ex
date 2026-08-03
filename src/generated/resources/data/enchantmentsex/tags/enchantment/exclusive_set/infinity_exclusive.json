@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:infinity",
+    {
+      "id": "enchantmentsex:infinity_ex",
+      "required": false
+    },
+    {
+      "id": "#minecraft:exclusive_set/bow",
+      "required": false
+    }
+  ]
+}

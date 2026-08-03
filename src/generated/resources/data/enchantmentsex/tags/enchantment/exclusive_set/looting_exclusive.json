@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:looting",
+    {
+      "id": "enchantmentsex:looting_ex",
+      "required": false
+    }
+  ]
+}

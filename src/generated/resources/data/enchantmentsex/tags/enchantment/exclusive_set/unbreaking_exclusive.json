@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:unbreaking",
+    {
+      "id": "enchantmentsex:unbreaking_ex",
+      "required": false
+    }
+  ]
+}
