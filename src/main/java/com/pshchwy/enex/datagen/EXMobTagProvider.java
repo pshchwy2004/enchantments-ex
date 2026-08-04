@@ -5,21 +5,19 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 /// This class declares mob tags.
 public class EXMobTagProvider extends EntityTypeTagsProvider {
 
-    public static final TagKey<EntityType<?>> BREACH_EX_VULNERABLE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "boss_mobs"));
-    public static final TagKey<EntityType<?>> FIRE_IMMUNE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "immune_to_fire"));
-    public static final TagKey<EntityType<?>> FLYING_MOBS = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "flying_mobs"));
+    public static final TagKey<EntityType<?>> BREACH_EX_VULNERABLE = TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "boss_mobs"));
+    public static final TagKey<EntityType<?>> FIRE_IMMUNE = TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "immune_to_fire"));
+    public static final TagKey<EntityType<?>> FLYING_MOBS = TagKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "flying_mobs"));
 
     /**
      * Constructs a new {@link EntityTypeTagsProvider} with the default computed path.
@@ -29,8 +27,8 @@ public class EXMobTagProvider extends EntityTypeTagsProvider {
      * @param output           the {@link PackOutput} instance
      * @param registriesFuture the backing registry for the tag type
      */
-    public EXMobTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, registriesFuture, EnchantmentsEX.MOD_ID, existingFileHelper);
+    public EXMobTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture, EnchantmentsEX.MOD_ID);
     }
 
     @Override

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enchantmentsex:nether_crystal_fragment_from_scraps"
+        "recipe": "minecraft:nether_crystal_fragment_from_scraps"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "enchantmentsex:nether_crystal_fragment_from_scraps"
+      "minecraft:nether_crystal_fragment_from_scraps"
     ]
   }
 }

@@ -1,43 +1,42 @@
 package com.pshchwy.enex.menu.custom;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentMap;
 import com.pshchwy.enex.item.EXItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This class is the client-side logic of the Stamping Table GUI, handling the frontend, visual elements of the GUI.
  * Here, GUI elements, such as menu buttons, slots, the background, and text are drafted.
  */
 public class StampingTableScreen extends AbstractContainerScreen<StampingTableMenu> {
-    public static final ResourceLocation GUI_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "textures/gui/container/stamping_table/stamping_table.png");
-    private static final ResourceLocation SCROLLER_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/scroller");
-    private static final ResourceLocation SCROLLER_DISABLED_SPRITE = ResourceLocation.withDefaultNamespace("container/stonecutter/scroller_disabled");
-    private static final ResourceLocation ENCHANTMENT_SLOT_DISABLED_SPRITE = ResourceLocation.fromNamespaceAndPath(
+    public static final Identifier GUI_TEXTURE =
+            Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "textures/gui/container/stamping_table/stamping_table.png");
+    private static final Identifier SCROLLER_SPRITE = Identifier.withDefaultNamespace("container/stonecutter/scroller");
+    private static final Identifier SCROLLER_DISABLED_SPRITE = Identifier.withDefaultNamespace("container/stonecutter/scroller_disabled");
+    private static final Identifier ENCHANTMENT_SLOT_DISABLED_SPRITE = Identifier.fromNamespaceAndPath(
             EnchantmentsEX.MOD_ID,
             "container/stamping_table/enchantment_slot_disabled"
     );
-    private static final ResourceLocation ENCHANTMENT_SLOT_HIGHLIGHTED_SPRITE = ResourceLocation.fromNamespaceAndPath(
+    private static final Identifier ENCHANTMENT_SLOT_HIGHLIGHTED_SPRITE = Identifier.fromNamespaceAndPath(
             EnchantmentsEX.MOD_ID,
             "container/stamping_table/enchantment_slot_highlighted"
     );
-    private static final ResourceLocation ENCHANTMENT_SLOT_SPRITE = ResourceLocation.fromNamespaceAndPath(
+    private static final Identifier ENCHANTMENT_SLOT_SPRITE = Identifier.fromNamespaceAndPath(
             EnchantmentsEX.MOD_ID,
             "container/stamping_table/enchantment_slot"
     );
@@ -70,14 +69,12 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
      */
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         int x = this.leftPos;
         int y = this.topPos;
 
         // main GUI plate layout
-        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x, y, 0.0f, 0.0f, this.imageWidth, this.imageHeight, 256, 256);
 
         // scrollbar
         int scrollbarX = x + SCROLL_X;
@@ -86,8 +83,8 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         int scrollTrackLength = scrollbarHeight - 15;
         int thumbY = scrollbarYTop + (int)(this.scrollOffs * (float)scrollTrackLength);
 
-        ResourceLocation scrollSprite = this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
-        guiGraphics.blitSprite(scrollSprite, scrollbarX, thumbY, 12, 15);
+        Identifier scrollSprite = this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, scrollSprite, scrollbarX, thumbY, 12, 15);
 
         // render text entries
         List<Holder<Enchantment>> available = this.menu.getAvailableEnchantments();
@@ -107,7 +104,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             boolean isHovered = mouseX >= renderX && mouseX < renderX + BUTTON_WIDTH && mouseY >= itemY && mouseY < itemY + BUTTON_HEIGHT;
 
             // button sprite
-            ResourceLocation buttonSprite;
+            Identifier buttonSprite;
             int textColor;
 
             if (!hasInk) {
@@ -125,7 +122,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             }
 
             // draw the button
-            guiGraphics.blitSprite(buttonSprite, renderX, itemY, BUTTON_WIDTH, BUTTON_HEIGHT);
+            guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, buttonSprite, renderX, itemY, BUTTON_WIDTH, BUTTON_HEIGHT);
 
             // gather and format the text name
             Holder<Enchantment> currentEnchant = available.get(i);
@@ -146,17 +143,19 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
                 var optKey = currentEnchant.unwrapKey();
                 if (optKey.isPresent()) {
                     ResourceKey<Enchantment> exKey = EXEnchantmentMap.getUpgrade(optKey.get());
-                    var registry = this.minecraft.level.registryAccess().registry(Registries.ENCHANTMENT);
-                    if (registry.isPresent() && registry.get().get(exKey) != null) {
-                        var exEnchant = registry.get().get(exKey);
-                        Component exDesc = Objects.requireNonNull(exEnchant).description();
+                    var lookup = this.minecraft.level.registryAccess().lookup(Registries.ENCHANTMENT);
+                    if (lookup.isPresent()) {
+                        var exHolderOpt = lookup.get().get(exKey);
+                        if (exHolderOpt.isPresent()) {
+                            Enchantment exEnchant = exHolderOpt.get().value();
+                            Component exDesc = exEnchant.description();
 
-                        Component levelComponent = (exEnchant.getMaxLevel() > 1 && currentLevel != 0)
-                                ? Component.literal(" ").append(Component.translatable("enchantment.level." + currentLevel))
-                                : Component.empty();
+                            Component levelComponent = (exEnchant.getMaxLevel() > 1 && currentLevel != 0)
+                                    ? Component.literal(" ").append(Component.translatable("enchantment.level." + currentLevel))
+                                    : Component.empty();
 
-                        // Prefix with a clean arrow to indicate upgrade direction
-                        exLine = Component.literal("➔ ").append(exDesc).append(levelComponent);
+                            exLine = Component.literal("➔ ").append(exDesc).append(levelComponent);
+                        }
                     }
                 }
             }
@@ -191,7 +190,10 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
      * Executes when the mouse is clicked while the screen is open. Handles mouse scrolling.
      */
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(MouseButtonEvent mouseButtonEvent, boolean bl) {
+        double mouseX = mouseButtonEvent.x();
+        double mouseY = mouseButtonEvent.y();
+        int button = mouseButtonEvent.button();
         this.scrolling = false;
         int x = this.leftPos;
         int y = this.topPos;
@@ -220,14 +222,17 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             }
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(mouseButtonEvent, bl);
     }
 
     /**
      * Executes when the mouse is dragged.
      */
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+    public boolean mouseDragged(MouseButtonEvent mouseButtonEvent, double dragX, double dragY) {
+        double mouseX = mouseButtonEvent.x();
+        double mouseY = mouseButtonEvent.y();
+        int button = mouseButtonEvent.button();
         if (this.scrolling && this.isScrollBarActive()) {
             int trackTop = this.topPos + SCROLL_Y;
             int trackBottom = trackTop + 57;
@@ -236,7 +241,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 1.0F);
             return true;
         }
-        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        return super.mouseDragged(mouseButtonEvent, dragX, dragY);
     }
 
     /**
@@ -294,10 +299,12 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         float scaledWidth = textWidth * finalScale;
         float startX = x + (width - scaledWidth) / 2.0F;
 
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(startX, y, 0.0F);
-        guiGraphics.pose().scale(finalScale, finalScale, 1.0F);
-        guiGraphics.drawString(this.font, text, 0, 0, color, true);
-        guiGraphics.pose().popPose();
+        int argbColor = (color & 0xFF000000) == 0 ? (color | 0xFF000000) : color;
+
+        guiGraphics.pose().pushMatrix();
+        guiGraphics.pose().translate(startX, y);
+        guiGraphics.pose().scale(finalScale, finalScale);
+        guiGraphics.drawString(this.font, text, 0, 0, argbColor, true);
+        guiGraphics.pose().popMatrix();
     }
 }

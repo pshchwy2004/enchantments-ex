@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:nether_star",
+    "minecraft:netherite_scrap",
+    "minecraft:netherite_scrap",
+    "minecraft:netherite_scrap",
+    "minecraft:netherite_scrap",
+    "minecraft:netherite_scrap",
+    "minecraft:netherite_scrap",
+    "minecraft:netherite_scrap",
+    "minecraft:netherite_scrap"
+  ],
+  "result": {
+    "count": 6,
+    "id": "enchantmentsex:nether_crystal_fragment"
+  }
+}

@@ -184,8 +184,8 @@ public class StampingTableMenu extends AbstractContainerMenu {
         }
         // sort list by string to ensure client-server continuity
         filteredList.sort((h1, h2) -> {
-            String path1 = h1.unwrapKey().map(key -> key.location().toString()).orElse("");
-            String path2 = h2.unwrapKey().map(key -> key.location().toString()).orElse("");
+            String path1 = h1.unwrapKey().map(key -> key.identifier().toString()).orElse("");
+            String path2 = h2.unwrapKey().map(key -> key.identifier().toString()).orElse("");
             return path1.compareTo(path2);
         });
 
@@ -257,7 +257,7 @@ public class StampingTableMenu extends AbstractContainerMenu {
             ResourceKey<Enchantment> exKey = com.pshchwy.enex.enchantment.EXEnchantmentMap.getUpgrade(originalKey);
 
             // get holder
-            player.level().registryAccess().registry(Registries.ENCHANTMENT).flatMap(registry -> registry.getHolder(exKey)).ifPresent(exHolder -> {
+            player.level().registryAccess().lookup(Registries.ENCHANTMENT).flatMap(registry -> registry.get(exKey)).ifPresent(exHolder -> {
                 // remove the old enchantment from the book
                 builder.set(targetEnchant, 0);
                 // set new EX enchantment level

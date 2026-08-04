@@ -2,6 +2,8 @@ package com.pshchwy.enex.block;
 
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.block.custom.StampingTableBlock;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -19,14 +21,15 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class EXBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(EnchantmentsEX.MOD_ID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(EnchantmentsEX.MOD_ID);
-    public static final DeferredBlock<Block> STAMPING_TABLE = BLOCKS.registerBlock(
-            "stamping_table",
-            StampingTableBlock::new,
-            BlockBehaviour.Properties.of()
-                    .sound(SoundType.WOOD)
-                    .strength(2.0F)
-                    .ignitedByLava()
-                    .mapColor(Blocks.BIRCH_PLANKS.defaultMapColor())
+    public static final DeferredBlock<Block> STAMPING_TABLE = BLOCKS.register(
+            "stamping_table", registryName -> new StampingTableBlock(
+                    BlockBehaviour.Properties.of()
+                            .setId(ResourceKey.create(Registries.BLOCK, registryName))
+                            .sound(SoundType.WOOD)
+                            .strength(2.0F)
+                            .ignitedByLava()
+                            .mapColor(Blocks.BIRCH_PLANKS.defaultMapColor())
+            )
     );
 
 

@@ -34,11 +34,11 @@ public record LastStandEffect(LevelBasedValue amount) implements EnchantmentEnti
             ItemStack itemStack = item.itemStack();
             ItemEnchantments enchants = itemStack.getEnchantments();
             if (itemStack.is(ItemTags.ARMOR_ENCHANTABLE)) {
-                player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 0, true, false));
+                player.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 100, 0, true, false));
             } else if (itemStack.is(ItemTags.WEAPON_ENCHANTABLE)) {
-                player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 100, 0, true, false));
+                player.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 100, 0, true, false));
             } else { // tool
-                player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 100, 0, true, false));
+                player.addEffect(new MobEffectInstance(MobEffects.HASTE, 100, 0, true, false));
             }
             if (hasEnchantment(enchants, Enchantments.FIRE_PROTECTION) || hasEnchantment(enchants, EXEnchantmentEffects.FIRE_PROTECTION_EX)) {
                 player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0, true, false));
@@ -56,6 +56,6 @@ public record LastStandEffect(LevelBasedValue amount) implements EnchantmentEnti
     }
 
     boolean hasEnchantment(ItemEnchantments itemEnchantments, ResourceKey<Enchantment> enchantment) {
-        return itemEnchantments.toString().contains(enchantment.location().getPath());
+        return itemEnchantments.toString().contains(enchantment.identifier().getPath());
     }
 }

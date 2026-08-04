@@ -40,7 +40,7 @@ public record BlastProtectionEXEffect(LevelBasedValue amount) implements Enchant
             );
             for (Creeper creeper : creepers) {
                 creeper.addEffect(new MobEffectInstance(MobEffects.GLOWING, 10, 0));
-                creeper.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, level - 1));
+                creeper.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 10, level - 1));
             }
         }
     }

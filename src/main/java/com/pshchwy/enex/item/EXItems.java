@@ -3,10 +3,12 @@ package com.pshchwy.enex.item;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.block.EXBlocks;
 import com.pshchwy.enex.item.custom.MoltenInkItem;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -19,16 +21,29 @@ public class EXItems {
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(EnchantmentsEX.MOD_ID);
 
-    public static final DeferredItem<Item> NETHER_CRYSTAL_FRAGMENT = ITEMS.registerItem(
-            "nether_crystal_fragment",
-            Item::new,
-            new Item.Properties().fireResistant()
+    public static final DeferredItem<Item> NETHER_CRYSTAL_FRAGMENT = ITEMS.register(
+            "nether_crystal_fragment", registryName -> new Item(
+                    new Item.Properties()
+                            .fireResistant()
+                            .setId(ResourceKey.create(Registries.ITEM, registryName))
+            )
     );
 
-    public static final DeferredItem<MoltenInkItem> MOLTEN_INK = ITEMS.registerItem(
-            "molten_ink",
-            MoltenInkItem::new,
-            new Item.Properties().fireResistant().stacksTo(1)
+    public static final DeferredItem<MoltenInkItem> MOLTEN_INK = ITEMS.register(
+            "molten_ink", registryName -> new MoltenInkItem(
+                    new Item.Properties()
+                            .fireResistant()
+                            .stacksTo(1)
+                            .setId(ResourceKey.create(Registries.ITEM, registryName))
+                            .craftRemainder(Items.GLASS_BOTTLE)
+                            .component(DataComponents.CONSUMABLE,
+                                    Consumable.builder()
+                                            .consumeSeconds(2.0F) // 40 ticks = 2.0 seconds
+                                            .animation(ItemUseAnimation.DRINK)
+                                            .sound(SoundEvents.HONEY_DRINK)
+                                            .hasConsumeParticles(false)
+                                            .build())
+            )
     );
     @SuppressWarnings("unused")
     public static final DeferredItem<BlockItem> STAMPING_TABLE = ITEMS.registerSimpleBlockItem("stamping_table", EXBlocks.STAMPING_TABLE);

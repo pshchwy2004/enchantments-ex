@@ -3,18 +3,22 @@ package com.pshchwy.enex.datagen;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import com.pshchwy.enex.enchantment.effect.*;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.criterion.*;
+import net.minecraft.advancements.criterion.DamageSourcePredicate;
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.criterion.EntityTypePredicate;
 import net.minecraft.core.*;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.damagesource.DamageType;
@@ -43,6 +47,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelProvider;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -74,7 +79,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
         // register Knockback EX
         context.register(EXEnchantmentEffects.KNOCKBACK_EX, Enchantment.enchantment(
                 Enchantment.definition(
-                        items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                        items.getOrThrow(ItemTags.SHARP_WEAPON_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                         // weight of showing up in enchantment table
                         1,
                         // enchantment max level
@@ -97,12 +103,13 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentEffectComponents.KNOCKBACK,
                         new AddValue(LevelBasedValue.perLevel(1.0f, 1.0f))
                 )
-                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.KNOCKBACK_EXCLUSIVE)).build(EXEnchantmentEffects.KNOCKBACK_EX.location())
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.KNOCKBACK_EXCLUSIVE)).build(EXEnchantmentEffects.KNOCKBACK_EX.identifier())
         );
         // register Sharpness EX
         context.register(EXEnchantmentEffects.SHARPNESS_EX, Enchantment.enchantment(
                         Enchantment.definition(
-                                items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.SHARP_WEAPON_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -132,13 +139,14 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(1.0f, 0.5f))
                 )
-                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SHARPNESS_EXCLUSIVE)).build(EXEnchantmentEffects.SHARPNESS_EX.location())
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SHARPNESS_EXCLUSIVE)).build(EXEnchantmentEffects.SHARPNESS_EX.identifier())
         );
         // register Smite EX
         context.register(EXEnchantmentEffects.SMITE_EX, Enchantment.enchantment(
                         Enchantment.definition(
                                 // which items can be enchanted
-                                items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.SHARP_WEAPON_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -165,8 +173,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EntityPredicate.Builder.entity()
                                 .entityType(
                                         EntityTypePredicate.of(
-                                                entityTypes
-                                                        .getOrThrow(EntityTypeTags.SENSITIVE_TO_SMITE).key()
+                                                entityTypes, EntityTypeTags.SENSITIVE_TO_SMITE
                                         )
                                 )
                 )
@@ -183,14 +190,14 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                         EntityPredicate.Builder.entity()
                                                 .entityType(
                                                         EntityTypePredicate.of(
-                                                                EntityType.ZOMBIE_VILLAGER
+                                                                entityTypes, EntityType.ZOMBIE_VILLAGER
                                                         )
                                                 )
                                 )
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SMITE_EXCLUSIVE))
-                .build(EXEnchantmentEffects.SMITE_EX.location())
+                .build(EXEnchantmentEffects.SMITE_EX.identifier())
         );
 
         // register Aqua Affinity EX
@@ -215,7 +222,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
                                 // id
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.aqua_affinity_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.aqua_affinity_ex"),
                                 // attribute
                                 Attributes.SUBMERGED_MINING_SPEED,
                                 // Multiplier
@@ -227,7 +234,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         new AquaAffinityEXEffect(LevelBasedValue.constant(0.0f))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.AQUA_AFFINITY_EXCLUSIVE))
-                .build(EXEnchantmentEffects.AQUA_AFFINITY_EX.location())
+                .build(EXEnchantmentEffects.AQUA_AFFINITY_EX.identifier())
         );
 
         // register Bane of Arthropods EX
@@ -235,7 +242,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         Enchantment.definition(
                                 // which items can be enchanted
                                 items.getOrThrow(ItemTags.WEAPON_ENCHANTABLE),
-                                items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                                 // weight of showing up in enchantment table
                                 1,
                                 // enchantment max level
@@ -257,8 +264,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                 EntityPredicate.Builder.entity()
                                         .entityType(
                                                 EntityTypePredicate.of(
-                                                        entityTypes
-                                                                .getOrThrow(EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS).key()
+                                                        entityTypes, EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS
                                                 )
                                         )
                         )
@@ -270,7 +276,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
                         new ApplyMobEffect(
-                                HolderSet.direct(MobEffects.MOVEMENT_SLOWDOWN),
+                                HolderSet.direct(MobEffects.SLOWNESS),
                                 LevelBasedValue.constant(1.5F),
                                 LevelBasedValue.perLevel(1.5F, 0.5F),
                                 LevelBasedValue.constant(3.0F),
@@ -278,13 +284,13 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         ),
                         LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS,
-                                        net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
-                                                .entityType(EntityTypePredicate.of(EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS))
+                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                .entityType(EntityTypePredicate.of(entityTypes, EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS))
                                 )
                                 .and(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.BANE_OF_ARTHROPODS_EXCLUSIVE))
-                .build(EXEnchantmentEffects.BANE_OF_ARTHROPODS_EX.location())
+                .build(EXEnchantmentEffects.BANE_OF_ARTHROPODS_EX.identifier())
         );
 
         // register Blast Protection EX
@@ -319,14 +325,14 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.blast_protection_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.blast_protection_ex"),
                                 Attributes.EXPLOSION_KNOCKBACK_RESISTANCE,
                                 LevelBasedValue.perLevel(0.15F),
                                 AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.BLAST_PROTECTION_EXCLUSIVE))
-                .build(EXEnchantmentEffects.BLAST_PROTECTION_EX.location())
+                .build(EXEnchantmentEffects.BLAST_PROTECTION_EX.identifier())
         );
 
         // register Breach EX
@@ -357,14 +363,13 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                 EntityPredicate.Builder.entity()
                                         .entityType(
                                                 EntityTypePredicate.of(
-                                                        entityTypes
-                                                                .getOrThrow(EXMobTagProvider.BREACH_EX_VULNERABLE).key()
+                                                        entityTypes, EXMobTagProvider.BREACH_EX_VULNERABLE
                                                 )
                                         )
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.BREACH_EXCLUSIVE))
-                .build(EXEnchantmentEffects.BREACH_EX.location())
+                .build(EXEnchantmentEffects.BREACH_EX.identifier())
         );
 
         // register Channeling EX
@@ -392,7 +397,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentTarget.VICTIM,
                         AllOf.entityEffects(
                                 new SummonEntityEffect(HolderSet.direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder()), false),
-                                new PlaySoundEffect(SoundEvents.TRIDENT_THUNDER, ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
+                                new PlaySoundEffect(List.of(SoundEvents.TRIDENT_THUNDER), ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
                         ),
                         AllOfCondition.allOf(
                                 LootItemEntityPropertyCondition.hasProperties(
@@ -401,7 +406,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                                 .located(LocationPredicate.Builder.location().setCanSeeSky(true))
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(EntityType.TRIDENT)
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(entityTypes, EntityType.TRIDENT)
                                 )
                         )
                 )
@@ -409,17 +414,17 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentEffectComponents.HIT_BLOCK,
                         AllOf.entityEffects(
                                 new SummonEntityEffect(HolderSet.direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder()), false),
-                                new PlaySoundEffect(SoundEvents.TRIDENT_THUNDER, ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
+                                new PlaySoundEffect(List.of(SoundEvents.TRIDENT_THUNDER), ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
                         ),
                         AllOfCondition.allOf(
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().of(EntityType.TRIDENT)
+                                        LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().of(entityTypes, EntityType.TRIDENT)
                                 ),
                                 LocationCheck.checkLocation(LocationPredicate.Builder.location().setCanSeeSky(true))
                         )
             )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.CHANNELING_EXCLUSIVE))
-                .build(EXEnchantmentEffects.CHANNELING_EX.location())
+                .build(EXEnchantmentEffects.CHANNELING_EX.identifier())
         );
 
         // register Density EX
@@ -449,7 +454,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         new DensityEXEffect(LevelBasedValue.perLevel(0.4f, 0.2f))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.DENSITY_EXCLUSIVE))
-                .build(EXEnchantmentEffects.DENSITY_EX.location())
+                .build(EXEnchantmentEffects.DENSITY_EX.identifier())
         );
 
         // register Depth Strider EX
@@ -475,7 +480,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.depth_strider_ex_water_movement_efficiency"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.depth_strider_ex_water_movement_efficiency"),
                                 Attributes.WATER_MOVEMENT_EFFICIENCY,
                                 LevelBasedValue.perLevel(0.33333334F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -484,7 +489,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID,"enchantment.depth_strider_ex_attack_speed"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID,"enchantment.depth_strider_ex_attack_speed"),
                                 Attributes.ATTACK_SPEED,
                                 LevelBasedValue.perLevel(0.25F, 0.25F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -513,7 +518,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentEffectComponents.TICK,
                         new DepthStriderEXEffect(LevelBasedValue.perLevel(1.0f))
                 )
-                .build(EXEnchantmentEffects.DEPTH_STRIDER_EX.location())
+                .build(EXEnchantmentEffects.DEPTH_STRIDER_EX.identifier())
         );
 
         // register Efficiency EX
@@ -538,13 +543,13 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect( // vanilla efficiency
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.efficiency_ex"), Attributes.MINING_EFFICIENCY, new LevelBasedValue.LevelsSquared(1.0F), AttributeModifier.Operation.ADD_VALUE
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.efficiency_ex"), Attributes.MINING_EFFICIENCY, new LevelBasedValue.LevelsSquared(1.0F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .withEffect( // more block interaction range
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.efficiency_ex"), Attributes.BLOCK_INTERACTION_RANGE, LevelBasedValue.constant(2.25F), AttributeModifier.Operation.ADD_VALUE
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.efficiency_ex"), Attributes.BLOCK_INTERACTION_RANGE, LevelBasedValue.constant(2.25F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .withEffect( // extra damage to shulkers
@@ -556,7 +561,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                 EntityPredicate.Builder.entity()
                                         .entityType(
                                                 EntityTypePredicate.of(
-                                                        EntityType.SHULKER
+                                                        entityTypes, EntityType.SHULKER
                                                 )
                                         )
                         )
@@ -570,12 +575,12 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                 EntityPredicate.Builder.entity()
                                         .entityType(
                                                 EntityTypePredicate.of(
-                                                        EntityType.SHULKER
+                                                        entityTypes, EntityType.SHULKER
                                                 )
                                         )
                         )
                 )
-                .build(EXEnchantmentEffects.EFFICIENCY_EX.location())
+                .build(EXEnchantmentEffects.EFFICIENCY_EX.identifier())
         );
 
         // register Feather Falling EX
@@ -607,11 +612,11 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect( // increase blocks needed to start taking FD
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.feather_falling_ex"), Attributes.SAFE_FALL_DISTANCE, LevelBasedValue.constant(7.0F), AttributeModifier.Operation.ADD_VALUE
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.feather_falling_ex"), Attributes.SAFE_FALL_DISTANCE, LevelBasedValue.constant(7.0F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FEATHER_FALLING_EXCLUSIVE))
-                .build(EXEnchantmentEffects.FEATHER_FALLING_EX.location())
+                .build(EXEnchantmentEffects.FEATHER_FALLING_EX.identifier())
         );
 
         // register Fire Aspect EX
@@ -619,7 +624,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.FIRE_ASPECT_ENCHANTABLE),
-                                        items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
@@ -648,7 +653,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                 LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS,
                                         EntityPredicate.Builder.entity()
-                                                .entityType(EntityTypePredicate.of(EXMobTagProvider.FIRE_IMMUNE))
+                                                .entityType(EntityTypePredicate.of(entityTypes, EXMobTagProvider.FIRE_IMMUNE))
                                                 .build()
                                 )
                         )
@@ -674,7 +679,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
                                                 EntityPredicate.Builder.entity()
-                                                        .entityType(EntityTypePredicate.of(EXMobTagProvider.FIRE_IMMUNE))
+                                                        .entityType(EntityTypePredicate.of(entityTypes, EXMobTagProvider.FIRE_IMMUNE))
                                                         .build()
                                         )
                                 )
@@ -687,7 +692,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         new Ignite(LevelBasedValue.perLevel(4.0F)),
                         DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true))
                 )
-                .build(EXEnchantmentEffects.FIRE_ASPECT_EX.location())
+                .build(EXEnchantmentEffects.FIRE_ASPECT_EX.identifier())
         );
 
         // register Fire Protection EX
@@ -722,7 +727,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect( // vanilla burning time reduction
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.fire_protection_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.fire_protection_ex"),
                                 Attributes.BURNING_TIME,
                                 LevelBasedValue.perLevel(-0.15F),
                                 AttributeModifier.Operation.ADD_MULTIPLIED_BASE
@@ -739,7 +744,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                         )
                         )
                 )
-                .build(EXEnchantmentEffects.FIRE_PROTECTION_EX.location())
+                .build(EXEnchantmentEffects.FIRE_PROTECTION_EX.identifier())
         );
 
         // register Flame EX
@@ -774,13 +779,13 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                         ),
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
-                                                net.minecraft.advancements.critereon.EntityPredicate.Builder.entity()
-                                                        .entityType(EntityTypePredicate.of(EXMobTagProvider.FIRE_IMMUNE))
+                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypes, EXMobTagProvider.FIRE_IMMUNE))
                                                         .build()
                                         )
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.critereon.EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                                 )
                         )
 
@@ -806,14 +811,14 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
                                                 EntityPredicate.Builder.entity()
-                                                        .entityType(EntityTypePredicate.of(EXMobTagProvider.FIRE_IMMUNE))
+                                                        .entityType(EntityTypePredicate.of(entityTypes, EXMobTagProvider.FIRE_IMMUNE))
                                                         .build()
                                         )
                                 )
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FLAME_EXCLUSIVE))
-                .build(EXEnchantmentEffects.FLAME_EX.location())
+                .build(EXEnchantmentEffects.FLAME_EX.identifier())
 
         );
 
@@ -838,7 +843,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         )
                         .withEffect(EnchantmentEffectComponents.BLOCK_EXPERIENCE, new MultiplyValue(LevelBasedValue.perLevel(1.5f, 0.5f)))
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FORTUNE_EXCLUSIVE))
-                .build(EXEnchantmentEffects.FORTUNE_EX.location())
+                .build(EXEnchantmentEffects.FORTUNE_EX.identifier())
         );
 
         // register Frost Walker EX
@@ -894,7 +899,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.frost_walker_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.frost_walker_ex"),
                                 Attributes.MOVEMENT_SPEED,
                                 LevelBasedValue.perLevel(0.0405F, 0.0105F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -920,8 +925,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                                                 LootContext.EntityTarget.THIS,
                                                                 EntityPredicate.Builder.entity()
                                                                         .movementAffectedBy(
-                                                                                net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                                                                        .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.ICE))
+                                                                                net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                                                                        .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.ICE))
                                                                         )
                                                         ),
                                                         LootItemEntityPropertyCondition.hasProperties(
@@ -938,8 +943,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                                         LootContext.EntityTarget.THIS,
                                                         EntityPredicate.Builder.entity()
                                                                 .movementAffectedBy(
-                                                                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                                                                .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.ICE))
+                                                                        net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                                                                .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.ICE))
                                                                 )
                                                                 .flags(EntityFlagsPredicate.Builder.flags().setIsFlying(false))
                                                 )
@@ -956,7 +961,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                 )
                         )
                 )
-                .build(EXEnchantmentEffects.FROST_WALKER_EX.location())
+                .build(EXEnchantmentEffects.FROST_WALKER_EX.identifier())
         );
 
         // register Impaling EX
@@ -986,7 +991,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                 LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS,
                                         EntityPredicate.Builder.entity()
-                                                .entityType(EntityTypePredicate.of(EntityTypeTags.SENSITIVE_TO_IMPALING))
+                                                .entityType(EntityTypePredicate.of(entityTypes, EntityTypeTags.SENSITIVE_TO_IMPALING))
                                                 .build()
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
@@ -1023,7 +1028,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentTarget.VICTIM,
                         new BreathStealEffect(LevelBasedValue.constant(1.0f))
                 )
-                .build(EXEnchantmentEffects.IMPALING_EX.location())
+                .build(EXEnchantmentEffects.IMPALING_EX.identifier())
         );
 
         // register Infinity EX
@@ -1050,21 +1055,22 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentEffectComponents.AMMO_USE,
                         new SetValue(LevelBasedValue.constant(0.0F)),
                         AnyOfCondition.anyOf(
-                                MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.ARROW)),
-                                MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SPECTRAL_ARROW)),
-                                MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.TIPPED_ARROW)),
-                                MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.FIREWORK_ROCKET))
+                                MatchTool.toolMatches(ItemPredicate.Builder.item().of(items, Items.ARROW)),
+                                MatchTool.toolMatches(ItemPredicate.Builder.item().of(items, Items.SPECTRAL_ARROW)),
+                                MatchTool.toolMatches(ItemPredicate.Builder.item().of(items, Items.TIPPED_ARROW)),
+                                MatchTool.toolMatches(ItemPredicate.Builder.item().of(items, Items.FIREWORK_ROCKET))
                         )
 
                 )
-                .build(EXEnchantmentEffects.INFINITY_EX.location())
+                .build(EXEnchantmentEffects.INFINITY_EX.identifier())
         );
 
         // register Looting EX
         context.register(EXEnchantmentEffects.LOOTING_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
-                                        items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.SHARP_WEAPON_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
@@ -1087,11 +1093,11 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         new AddValue(LevelBasedValue.perLevel(0.01F)),
                         LootItemEntityPropertyCondition.hasProperties(
                                 LootContext.EntityTarget.ATTACKER,
-                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(EntityType.PLAYER))
+                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER))
                         )
                 )
                 .withEffect(EnchantmentEffectComponents.MOB_EXPERIENCE, new MultiplyValue(LevelBasedValue.perLevel(2.5f, 1.0f)))
-                .build(EXEnchantmentEffects.LOOTING_EX.location())
+                .build(EXEnchantmentEffects.LOOTING_EX.identifier())
         );
 
         // register Loyalty EX
@@ -1119,7 +1125,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         new TridentItemRetrievalEffect(LevelBasedValue.constant(1.0f))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.LOYALTY_EXCLUSIVE))
-                .build(EXEnchantmentEffects.LOYALTY_EX.location())
+                .build(EXEnchantmentEffects.LOYALTY_EX.identifier())
 
         );
 
@@ -1144,7 +1150,55 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         )
                 .withEffect(EnchantmentEffectComponents.FISHING_LUCK_BONUS, new AddValue(LevelBasedValue.perLevel(1.0F))) // changes happen in the loot tables
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.LUCK_OF_THE_SEA_EXCLUSIVE))
-                .build(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX.location())
+                .build(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX.identifier())
+        );
+
+        // register Lunge EX
+        context.register(EXEnchantmentEffects.LUNGE_EX, Enchantment.enchantment(
+                                Enchantment.definition(
+                                        // which items can be enchanted
+                                        items.getOrThrow(ItemTags.LUNGE_ENCHANTABLE),
+                                        // weight of showing up in enchantment table
+                                        1,
+                                        // enchantment max level
+                                        3,
+                                        // base cost for level 1 of the enchantment, and min levels required for something higher
+                                        Enchantment.dynamicCost(5, 8),
+                                        // same fields as above but for max cost
+                                        Enchantment.dynamicCost(25, 8),
+                                        // anvil cost
+                                        5,
+                                        // valid slots
+                                        EquipmentSlotGroup.HAND
+                                )
+                        )
+                        .withEffect(
+                                EnchantmentEffectComponents.POST_PIERCING_ATTACK,
+                                AllOf.entityEffects(
+                                        new ChangeItemDamage(new LevelBasedValue.Constant(1.0F)),
+                                        new ApplyEntityImpulse(new Vec3(0.0, 0.0, 1.0), new Vec3(1.0, 0.0, 1.0), LevelBasedValue.perLevel(0.458F)),
+                                        new PlaySoundEffect(List.of(SoundEvents.LUNGE_1, SoundEvents.LUNGE_2, SoundEvents.LUNGE_3), ConstantFloat.of(1.0F), ConstantFloat.of(1.0F))
+                                ),
+                                AllOfCondition.allOf(
+                                        InvertedLootItemCondition.invert(
+                                                LootItemEntityPropertyCondition.hasProperties(
+                                                        LootContext.EntityTarget.THIS,
+                                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                                .vehicle(net.minecraft.advancements.criterion.EntityPredicate.Builder.entity())
+                                                )
+                                        ),
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.THIS,
+                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                        .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsFallFlying(false))
+                                        ),
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.THIS,
+                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                        .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsInWater(false))
+                                        )
+                                )
+                        ).build(EXEnchantmentEffects.LUNGE_EX.identifier())
         );
 
         // register Lure EX
@@ -1171,7 +1225,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentEffectComponents.TICK,
                         new LureEXEffect(LevelBasedValue.constant(0.0f))
                 ).exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.LURE_EXCLUSIVE))
-                .build(EXEnchantmentEffects.LURE_EX.location())
+                .build(EXEnchantmentEffects.LURE_EX.identifier())
 
         );
 
@@ -1196,7 +1250,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         )
                 .withEffect(EnchantmentEffectComponents.REPAIR_WITH_XP, new MultiplyValue(LevelBasedValue.constant(4.0F)))
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.MENDING_EXCLUSIVE))
-                .build(EXEnchantmentEffects.MENDING_EX.location())
+                .build(EXEnchantmentEffects.MENDING_EX.identifier())
         );
 
         // register Multishot EX
@@ -1223,7 +1277,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(EnchantmentEffectComponents.PROJECTILE_COUNT, new AddValue(LevelBasedValue.perLevel(4.0F)))
                 .withEffect(EnchantmentEffectComponents.PROJECTILE_SPREAD, new AddValue(LevelBasedValue.perLevel(5.0F)))
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.MULTISHOT_EXCLUSIVE))
-                .build(EXEnchantmentEffects.MULTISHOT_EX.location())
+                .build(EXEnchantmentEffects.MULTISHOT_EX.identifier())
         );
 
         // register Piercing EX
@@ -1254,27 +1308,26 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         AnyOfCondition.anyOf(
                                 AllOfCondition.allOf(
                                         LootItemEntityPropertyCondition.hasProperties(
-                                                LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
+                                                LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                                         ),
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
                                                 EntityPredicate.Builder.entity()
                                                         .entityType(
                                                                 EntityTypePredicate.of(
-                                                                        entityTypes
-                                                                                .getOrThrow(EntityTypeTags.SKELETONS).key()
+                                                                        entityTypes, EntityType.SKELETON
                                                                 )
                                                         )
                                         )
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(EntityType.FIREWORK_ROCKET).build()
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(entityTypes, EntityType.FIREWORK_ROCKET).build()
                                 )
                         )
 
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.PIERCING_EXCLUSIVE))
-                .build(EXEnchantmentEffects.PIERCING_EX.location())
+                .build(EXEnchantmentEffects.PIERCING_EX.identifier())
         );
 
         // register Power EX
@@ -1300,7 +1353,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentEffectComponents.DAMAGE,
                         new AddValue(LevelBasedValue.perLevel(0.5F)),
                         LootItemEntityPropertyCondition.hasProperties(
-                                LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
+                                LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                         )
                 )
                 .withEffect(
@@ -1316,14 +1369,14 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         ),
                         AllOfCondition.allOf(
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                                 ),
                                 LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))
                         )
 
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.POWER_EXCLUSIVE))
-                .build(EXEnchantmentEffects.POWER_EX.location())
+                .build(EXEnchantmentEffects.POWER_EX.identifier())
         );
 
         // register Projectile Protection EX
@@ -1362,13 +1415,13 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect( // reduces generic knockback
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.projectile_protection_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.projectile_protection_ex"),
                                 Attributes.KNOCKBACK_RESISTANCE,
                                 LevelBasedValue.perLevel(0.15F),
                                 AttributeModifier.Operation.ADD_VALUE
                         )
                 )
-                .build(EXEnchantmentEffects.PROJECTILE_PROTECTION_EX.location())
+                .build(EXEnchantmentEffects.PROJECTILE_PROTECTION_EX.identifier())
         );
 
         // register Protection EX
@@ -1411,7 +1464,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         ),
                         LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))
                 )
-                .build(EXEnchantmentEffects.PROTECTION_EX.location())
+                .build(EXEnchantmentEffects.PROTECTION_EX.identifier())
         );
 
         // register Punch EX
@@ -1437,7 +1490,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentEffectComponents.KNOCKBACK,
                         new AddValue(LevelBasedValue.perLevel(1.0F)),
                         LootItemEntityPropertyCondition.hasProperties(
-                                LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
+                                LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.PUNCH_EXCLUSIVE))
@@ -1447,10 +1500,10 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentTarget.VICTIM,
                         new KnockbackEXEffect(LevelBasedValue.perLevel(0.4f, 0.2f)),
                         LootItemEntityPropertyCondition.hasProperties(
-                                LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(EntityTypeTags.ARROWS).build()
+                                LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                         )
                 )
-                .build(EXEnchantmentEffects.PUNCH_EX.location())
+                .build(EXEnchantmentEffects.PUNCH_EX.identifier())
         );
 
         // register Quick Charge EX
@@ -1487,7 +1540,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentEffectComponents.PROJECTILE_SPAWNED,
                         new Ignite(LevelBasedValue.constant(100.0F))
                 )
-                .build(EXEnchantmentEffects.QUICK_CHARGE_EX.location())
+                .build(EXEnchantmentEffects.QUICK_CHARGE_EX.identifier())
         );
 
         // register Respiration EX
@@ -1513,7 +1566,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.respiration_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.respiration_ex"),
                                 Attributes.OXYGEN_BONUS,
                                 LevelBasedValue.perLevel(1.0F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1523,7 +1576,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentEffectComponents.TICK,
                         new RespirationEXEffect(LevelBasedValue.constant(1.0f))
                 )
-                .build(EXEnchantmentEffects.RESPIRATION_EX.location())
+                .build(EXEnchantmentEffects.RESPIRATION_EX.identifier())
         );
 
         // register Riptide EX
@@ -1548,7 +1601,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         .withEffect(
                                 EnchantmentEffectComponents.ATTRIBUTES,
                                 new EnchantmentAttributeEffect(
-                                        ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.riptide_ex"),
+                                        Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.riptide_ex"),
                                         Attributes.OXYGEN_BONUS,
                                         LevelBasedValue.perLevel(1.0F),
                                         AttributeModifier.Operation.ADD_VALUE
@@ -1559,7 +1612,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withSpecialEffect(
                         EnchantmentEffectComponents.TRIDENT_SOUND, List.of(SoundEvents.TRIDENT_RIPTIDE_1, SoundEvents.TRIDENT_RIPTIDE_2, SoundEvents.TRIDENT_RIPTIDE_3)
                 )
-                .build(EXEnchantmentEffects.RIPTIDE_EX.location())
+                .build(EXEnchantmentEffects.RIPTIDE_EX.identifier())
         );
 
         // register Soul Speed EX
@@ -1569,8 +1622,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .flags(EntityFlagsPredicate.Builder.flags().setIsFlying(false).setOnGround(true))
                 .moving(MovementPredicate.horizontalSpeed(MinMaxBounds.Doubles.atLeast(1.0E-5F)))
                 .movementAffectedBy(
-                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.SOUL_SPEED_BLOCKS))
+                        net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
                 );
         context.register(EXEnchantmentEffects.SOUL_SPEED_EX, Enchantment.enchantment(
                                 Enchantment.definition(
@@ -1594,7 +1647,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.soul_speed"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.soul_speed"),
                                 Attributes.MOVEMENT_SPEED,
                                 LevelBasedValue.perLevel(0.0405F, 0.0105F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1620,8 +1673,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                                                 LootContext.EntityTarget.THIS,
                                                                 EntityPredicate.Builder.entity()
                                                                         .movementAffectedBy(
-                                                                                net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                                                                        .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.SOUL_SPEED_BLOCKS))
+                                                                                net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                                                                        .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
                                                                         )
                                                         ),
                                                         LootItemEntityPropertyCondition.hasProperties(
@@ -1638,8 +1691,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                                         LootContext.EntityTarget.THIS,
                                                         EntityPredicate.Builder.entity()
                                                                 .movementAffectedBy(
-                                                                        net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                                                                .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.SOUL_SPEED_BLOCKS))
+                                                                        net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                                                                .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
                                                                 )
                                                                 .flags(EntityFlagsPredicate.Builder.flags().setIsFlying(false))
                                                 )
@@ -1650,7 +1703,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(
                         EnchantmentEffectComponents.LOCATION_CHANGED,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.soul_speed_ex"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.soul_speed_ex"),
                                 Attributes.MOVEMENT_EFFICIENCY,
                                 LevelBasedValue.constant(1.0F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1659,8 +1712,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                 LootContext.EntityTarget.THIS,
                                 EntityPredicate.Builder.entity()
                                         .movementAffectedBy(
-                                                net.minecraft.advancements.critereon.LocationPredicate.Builder.location()
-                                                        .setBlock(net.minecraft.advancements.critereon.BlockPredicate.Builder.block().of(BlockTags.SOUL_SPEED_BLOCKS))
+                                                net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
+                                                        .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
                                         )
                         )
                 )
@@ -1678,19 +1731,20 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 )
                 .withEffect(
                         EnchantmentEffectComponents.TICK,
-                        new PlaySoundEffect(SoundEvents.SOUL_ESCAPE, ConstantFloat.of(0.6F), UniformFloat.of(0.6F, 1.0F)),
+                        new PlaySoundEffect(List.of(SoundEvents.SOUL_ESCAPE), ConstantFloat.of(0.6F), UniformFloat.of(0.6F, 1.0F)),
                         AllOfCondition.allOf(
                                 LootItemRandomChanceCondition.randomChance(0.35F), LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, soulSpeedBuilder)
                         )
                 )
-                .build(EXEnchantmentEffects.SOUL_SPEED_EX.location())
+                .build(EXEnchantmentEffects.SOUL_SPEED_EX.identifier())
         );
 
         // register Sweeping Edge EX
         context.register(EXEnchantmentEffects.SWEEPING_EDGE_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
-                                        items.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.SHARP_WEAPON_ENCHANTABLE),
+                                items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
@@ -1708,7 +1762,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "sweeping_edge_ex_ratio"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "sweeping_edge_ex_ratio"),
                                 Attributes.SWEEPING_DAMAGE_RATIO,
                                 new LevelBasedValue.Fraction(LevelBasedValue.perLevel(1.0F), LevelBasedValue.perLevel(2.0F, 1.0F)),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1718,7 +1772,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "sweeping_edge_ex_drag"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "sweeping_edge_ex_drag"),
                                 Attributes.FLYING_SPEED,
                                 LevelBasedValue.perLevel(-0.10F, -0.10F),
                                 AttributeModifier.Operation.ADD_MULTIPLIED_BASE
@@ -1729,7 +1783,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         new BaneOfPhantomsEffect(LevelBasedValue.constant(0.0f))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SWEEPING_EDGE_EXCLUSIVE))
-                .build(EXEnchantmentEffects.SWEEPING_EDGE_EX.location())
+                .build(EXEnchantmentEffects.SWEEPING_EDGE_EX.identifier())
         );
 
         // register Swift Sneak EX
@@ -1754,7 +1808,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.swift_sneak_ex_sneak_speed"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.swift_sneak_ex_sneak_speed"),
                                 Attributes.SNEAKING_SPEED,
                                 LevelBasedValue.perLevel(0.15F),
                                 AttributeModifier.Operation.ADD_VALUE
@@ -1764,13 +1818,13 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.swift_sneak_ex_step_height"),
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.swift_sneak_ex_step_height"),
                                 Attributes.STEP_HEIGHT,
                                 LevelBasedValue.constant(0.5F),
                                 AttributeModifier.Operation.ADD_VALUE
                         )
                 )
-                .build(EXEnchantmentEffects.SWIFT_SNEAK_EX.location())
+                .build(EXEnchantmentEffects.SWIFT_SNEAK_EX.identifier())
         );
 
         // register Thorns EX
@@ -1798,12 +1852,12 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentTarget.ATTACKER,
                         AllOf.entityEffects(
                                 new DamageEntity(LevelBasedValue.perLevel(1.0F, 1.0F), LevelBasedValue.perLevel(5.0F, 1.0F), damageTypes.getOrThrow(DamageTypes.THORNS)),
-                                new DamageItem(LevelBasedValue.constant(1.0F))
+                                new ChangeItemDamage(LevelBasedValue.constant(1.0F))
                         ),
                         LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.25F)))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.THORNS_EXCLUSIVE))
-                .build(EXEnchantmentEffects.THORNS_EX.location())
+                .build(EXEnchantmentEffects.THORNS_EX.identifier())
         );
 
         // register Unbreaking EX
@@ -1828,20 +1882,20 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect(
                         EnchantmentEffectComponents.ITEM_DAMAGE,
                         new RemoveBinomial(new LevelBasedValue.Fraction(LevelBasedValue.perLevel(2.0F), LevelBasedValue.perLevel(10.0F, 2.5F))),
-                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.ARMOR_ENCHANTABLE))
+                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(items, ItemTags.ARMOR_ENCHANTABLE))
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.UNBREAKING_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.ITEM_DAMAGE,
                         new RemoveBinomial(new LevelBasedValue.Fraction(LevelBasedValue.perLevel(1.0F), LevelBasedValue.perLevel(2.0F, 1.0F))),
                         InvertedLootItemCondition.invert(
-                                MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.ARMOR_ENCHANTABLE))
+                                MatchTool.toolMatches(ItemPredicate.Builder.item().of(items, ItemTags.ARMOR_ENCHANTABLE))
                         )
                 )
                 .withEffect(
                         EnchantmentEffectComponents.TICK,
                         new LastStandEffect(LevelBasedValue.constant(0.0f))
-                ).build(EXEnchantmentEffects.UNBREAKING_EX.location())
+                ).build(EXEnchantmentEffects.UNBREAKING_EX.identifier())
         );
 
         // register Wind Burst EX
@@ -1880,17 +1934,18 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                         Level.ExplosionInteraction.TRIGGER,
                                         ParticleTypes.GUST_EMITTER_SMALL,
                                         ParticleTypes.GUST_EMITTER_LARGE,
+                                        WeightedList.of(),
                                         SoundEvents.WIND_CHARGE_BURST
                                 ),
                                 new ApplyMobEffect(
-                                        HolderSet.direct(MobEffects.DAMAGE_BOOST),
+                                        HolderSet.direct(MobEffects.STRENGTH),
                                         LevelBasedValue.constant(10.0F),
                                         LevelBasedValue.constant(10.0F),
                                         LevelBasedValue.perLevel(1.0F),
                                         LevelBasedValue.perLevel(1.0F)
                                 ),
                                 new ApplyMobEffect(
-                                        HolderSet.direct(MobEffects.DAMAGE_RESISTANCE),
+                                        HolderSet.direct(MobEffects.RESISTANCE),
                                         LevelBasedValue.constant(10.0F),
                                         LevelBasedValue.constant(10.0F),
                                         LevelBasedValue.perLevel(1.0F),
@@ -1910,7 +1965,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         DamageSourceCondition.hasDamageSource(
                                 DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.IS_FALL)).tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
                         )
-                ).build(EXEnchantmentEffects.WIND_BURST_EX.location())
+                ).build(EXEnchantmentEffects.WIND_BURST_EX.identifier())
         );
     }
 

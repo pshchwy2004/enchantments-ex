@@ -2,7 +2,7 @@ package com.pshchwy.enex.misc;
 
 import com.pshchwy.enex.EnchantmentsEX;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -18,7 +18,7 @@ public class EXSounds {
     // All vanilla sounds use variable range events.
     public static final DeferredHolder<SoundEvent, SoundEvent> STAMP = SOUND_EVENTS.register(
             "stamp", // must match the resource location on the next line
-            () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MOD_ID, "stamp"))
+            () -> SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(MOD_ID, "stamp"))
     );
     public static void initialize(IEventBus bus) {
         EnchantmentsEX.LOGGER.info("Registering sounds for " + EnchantmentsEX.MOD_ID);

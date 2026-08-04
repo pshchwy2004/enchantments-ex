@@ -5,7 +5,7 @@ import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.effect.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.neoforged.bus.api.IEventBus;
@@ -109,7 +109,7 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> WIND_BURST_EX = of("wind_burst_ex");
 
     private static ResourceKey<Enchantment> of(String path) {
-        return ResourceKey.create(Registries.ENCHANTMENT, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path));
+        return ResourceKey.create(Registries.ENCHANTMENT, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, path));
     }
 
     // 2. Register the DeferredRegister to the mod event bus

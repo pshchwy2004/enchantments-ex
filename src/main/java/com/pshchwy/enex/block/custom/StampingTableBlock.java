@@ -37,7 +37,7 @@ public class StampingTableBlock extends BaseEntityBlock {
 /// Handles right clicking to bring up the Stamping Table menu.
     @Override
     protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState blockState, Level level, @NotNull BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         } else {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);

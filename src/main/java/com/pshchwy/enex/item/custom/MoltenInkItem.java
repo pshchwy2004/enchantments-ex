@@ -1,10 +1,10 @@
 package com.pshchwy.enex.item.custom;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -14,6 +14,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -30,13 +31,6 @@ public class MoltenInkItem extends PotionItem {
         return DRINK_DURATION;
     }
 
-    public @NotNull SoundEvent getDrinkingSound() {
-        return SoundEvents.HONEY_DRINK;
-    }
-
-    public @NotNull SoundEvent getEatingSound() {
-        return SoundEvents.HONEY_DRINK;
-    }
 
     /**
      * Kills the player when they drink it.
@@ -51,13 +45,13 @@ public class MoltenInkItem extends PotionItem {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, itemStack);
         }
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             if (!livingEntity.fireImmune()) {
                 livingEntity.igniteForTicks(500);
             }
             livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER, 500, 2));
             livingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 500, 2));
-            livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 500, 2));
+            livingEntity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 500, 2));
         }
 
         if (player != null) {
@@ -79,14 +73,13 @@ public class MoltenInkItem extends PotionItem {
         return itemStack;
     }
 
-    @Override
-    public @NotNull String getDescriptionId(ItemStack itemStack) {
-        return this.getDescriptionId();
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
+
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
-
+    public @NonNull Component getName(ItemStack stack) {
+        return stack.getComponents().getOrDefault(DataComponents.ITEM_NAME, CommonComponents.EMPTY);
     }
 
 }

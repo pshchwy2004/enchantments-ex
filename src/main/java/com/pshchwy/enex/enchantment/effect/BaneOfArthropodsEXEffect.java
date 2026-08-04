@@ -36,7 +36,7 @@ public record BaneOfArthropodsEXEffect(LevelBasedValue amount) implements Enchan
                 player.removeEffect(MobEffects.POISON);
             }
             // if the player is touching a Cobweb block, break it
-            if (!world.isClientSide) {
+            if (!world.isClientSide()) {
                 AABB box = player.getBoundingBox();
                 // iterate through all blocks touched by bounding box
                 for (BlockPos blockPos : BlockPos.betweenClosed(

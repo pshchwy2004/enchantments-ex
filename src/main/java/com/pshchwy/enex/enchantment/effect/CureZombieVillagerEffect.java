@@ -5,7 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.pshchwy.enex.mixin.ZombieVillagerAccessor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.monster.ZombieVillager;
+import net.minecraft.world.entity.monster.zombie.ZombieVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.LevelBasedValue;

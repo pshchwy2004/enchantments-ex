@@ -34,8 +34,8 @@ public record AquaAffinityEXEffect(LevelBasedValue amount) implements Enchantmen
         // If the player has Mining Fatigue (any level), remove it
         // All Elder Guardians within a 30 block radius get Glowing
         if (target instanceof Player player) {
-            if (player.hasEffect(MobEffects.DIG_SLOWDOWN)) {
-                player.removeEffect(MobEffects.DIG_SLOWDOWN);
+            if (player.hasEffect(MobEffects.SLOWNESS)) {
+                player.removeEffect(MobEffects.SLOWNESS);
             }
             AABB box = player.getBoundingBox().inflate(30);
             List<ElderGuardian> elderGuardians = world.getEntitiesOfClass(ElderGuardian.class, box);
