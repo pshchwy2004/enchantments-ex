@@ -18,6 +18,6 @@ public class EXBlockTagProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider wrapperLookup) {
         this.tag(BlockTags.MINEABLE_WITH_AXE)
-                .add(EXBlocks.STAMPING_TABLE.get());
+                .add(EXBlocks.STAMPING_TABLE.getKey());
     }
 }

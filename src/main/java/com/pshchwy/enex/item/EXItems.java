@@ -4,6 +4,7 @@ import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.block.EXBlocks;
 import com.pshchwy.enex.item.custom.MoltenInkItem;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
@@ -54,6 +55,10 @@ public class EXItems {
         ITEMS.register(modEventBus);
         // Register creative tab additions
         modEventBus.addListener(EXItems::addCreative);
+    }
+
+    public static ResourceKey<Item> getRK(Item item) {
+        return BuiltInRegistries.ITEM.getResourceKey(item).get();
     }
 
     private static void addCreative(BuildCreativeModeTabContentsEvent event) {

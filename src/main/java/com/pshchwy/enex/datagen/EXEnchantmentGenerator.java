@@ -3,10 +3,9 @@ package com.pshchwy.enex.datagen;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
 import com.pshchwy.enex.enchantment.effect.*;
-import net.minecraft.advancements.criterion.*;
-import net.minecraft.advancements.criterion.DamageSourcePredicate;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.EntityTypePredicate;
+import net.minecraft.advancements.predicates.ItemPredicate;
+import net.minecraft.advancements.predicates.*;
+import net.minecraft.advancements.predicates.entity.*;
 import net.minecraft.core.*;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -25,6 +24,7 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -190,7 +190,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                         EntityPredicate.Builder.entity()
                                                 .entityType(
                                                         EntityTypePredicate.of(
-                                                                entityTypes, EntityType.ZOMBIE_VILLAGER
+                                                                entityTypes, EntityTypes.ZOMBIE_VILLAGER
                                                         )
                                                 )
                                 )
@@ -284,7 +284,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         ),
                         LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS,
-                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                        net.minecraft.advancements.predicates.entity.EntityPredicate.Builder.entity()
                                                 .entityType(EntityTypePredicate.of(entityTypes, EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS))
                                 )
                                 .and(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().isDirect(true)))
@@ -396,7 +396,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
                         AllOf.entityEffects(
-                                new SummonEntityEffect(HolderSet.direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder()), false),
+                                new SummonEntityEffect(HolderSet.direct(EntityTypes.LIGHTNING_BOLT.builtInRegistryHolder()), false),
                                 new PlaySoundEffect(List.of(SoundEvents.TRIDENT_THUNDER), ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
                         ),
                         AllOfCondition.allOf(
@@ -406,19 +406,19 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                                 .located(LocationPredicate.Builder.location().setCanSeeSky(true))
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(entityTypes, EntityType.TRIDENT)
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(entityTypes, EntityTypes.TRIDENT)
                                 )
                         )
                 )
                 .withEffect(
                         EnchantmentEffectComponents.HIT_BLOCK,
                         AllOf.entityEffects(
-                                new SummonEntityEffect(HolderSet.direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder()), false),
+                                new SummonEntityEffect(HolderSet.direct(EntityTypes.LIGHTNING_BOLT.builtInRegistryHolder()), false),
                                 new PlaySoundEffect(List.of(SoundEvents.TRIDENT_THUNDER), ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
                         ),
                         AllOfCondition.allOf(
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().of(entityTypes, EntityType.TRIDENT)
+                                        LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().of(entityTypes, EntityTypes.TRIDENT)
                                 ),
                                 LocationCheck.checkLocation(LocationPredicate.Builder.location().setCanSeeSky(true))
                         )
@@ -561,7 +561,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                 EntityPredicate.Builder.entity()
                                         .entityType(
                                                 EntityTypePredicate.of(
-                                                        entityTypes, EntityType.SHULKER
+                                                        entityTypes, EntityTypes.SHULKER
                                                 )
                                         )
                         )
@@ -575,7 +575,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                 EntityPredicate.Builder.entity()
                                         .entityType(
                                                 EntityTypePredicate.of(
-                                                        entityTypes, EntityType.SHULKER
+                                                        entityTypes, EntityTypes.SHULKER
                                                 )
                                         )
                         )
@@ -779,13 +779,13 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                         ),
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
-                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
+                                                net.minecraft.advancements.predicates.entity.EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypes, EXMobTagProvider.FIRE_IMMUNE))
                                                         .build()
                                         )
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.criterion.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, net.minecraft.advancements.predicates.entity.EntityPredicate.Builder.entity().of(entityTypes, EntityTypeTags.ARROWS).build()
                                 )
                         )
 
@@ -925,8 +925,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                                                 LootContext.EntityTarget.THIS,
                                                                 EntityPredicate.Builder.entity()
                                                                         .movementAffectedBy(
-                                                                                net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
-                                                                                        .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.ICE))
+                                                                                net.minecraft.advancements.predicates.LocationPredicate.Builder.location()
+                                                                                        .setBlock(net.minecraft.advancements.predicates.BlockPredicate.Builder.block().of(blocks, BlockTags.ICE))
                                                                         )
                                                         ),
                                                         LootItemEntityPropertyCondition.hasProperties(
@@ -943,8 +943,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                                         LootContext.EntityTarget.THIS,
                                                         EntityPredicate.Builder.entity()
                                                                 .movementAffectedBy(
-                                                                        net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
-                                                                                .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.ICE))
+                                                                        net.minecraft.advancements.predicates.LocationPredicate.Builder.location()
+                                                                                .setBlock(net.minecraft.advancements.predicates.BlockPredicate.Builder.block().of(blocks, BlockTags.ICE))
                                                                 )
                                                                 .flags(EntityFlagsPredicate.Builder.flags().setIsFlying(false))
                                                 )
@@ -1093,7 +1093,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         new AddValue(LevelBasedValue.perLevel(0.01F)),
                         LootItemEntityPropertyCondition.hasProperties(
                                 LootContext.EntityTarget.ATTACKER,
-                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityType.PLAYER))
+                                EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypes, EntityTypes.PLAYER))
                         )
                 )
                 .withEffect(EnchantmentEffectComponents.MOB_EXPERIENCE, new MultiplyValue(LevelBasedValue.perLevel(2.5f, 1.0f)))
@@ -1183,19 +1183,19 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                         InvertedLootItemCondition.invert(
                                                 LootItemEntityPropertyCondition.hasProperties(
                                                         LootContext.EntityTarget.THIS,
-                                                        net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
-                                                                .vehicle(net.minecraft.advancements.criterion.EntityPredicate.Builder.entity())
+                                                        net.minecraft.advancements.predicates.entity.EntityPredicate.Builder.entity()
+                                                                .vehicle(net.minecraft.advancements.predicates.entity.EntityPredicate.Builder.entity())
                                                 )
                                         ),
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
-                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
-                                                        .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsFallFlying(false))
+                                                net.minecraft.advancements.predicates.entity.EntityPredicate.Builder.entity()
+                                                        .flags(net.minecraft.advancements.predicates.entity.EntityFlagsPredicate.Builder.flags().setIsFallFlying(false))
                                         ),
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
-                                                net.minecraft.advancements.criterion.EntityPredicate.Builder.entity()
-                                                        .flags(net.minecraft.advancements.criterion.EntityFlagsPredicate.Builder.flags().setIsInWater(false))
+                                                net.minecraft.advancements.predicates.entity.EntityPredicate.Builder.entity()
+                                                        .flags(net.minecraft.advancements.predicates.entity.EntityFlagsPredicate.Builder.flags().setIsInWater(false))
                                         )
                                 )
                         ).build(EXEnchantmentEffects.LUNGE_EX.identifier())
@@ -1315,13 +1315,13 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                                 EntityPredicate.Builder.entity()
                                                         .entityType(
                                                                 EntityTypePredicate.of(
-                                                                        entityTypes, EntityType.SKELETON
+                                                                        entityTypes, EntityTypes.SKELETON
                                                                 )
                                                         )
                                         )
                                 ),
                                 LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(entityTypes, EntityType.FIREWORK_ROCKET).build()
+                                        LootContext.EntityTarget.DIRECT_ATTACKER, EntityPredicate.Builder.entity().of(entityTypes, EntityTypes.FIREWORK_ROCKET).build()
                                 )
                         )
 
@@ -1622,8 +1622,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .flags(EntityFlagsPredicate.Builder.flags().setIsFlying(false).setOnGround(true))
                 .moving(MovementPredicate.horizontalSpeed(MinMaxBounds.Doubles.atLeast(1.0E-5F)))
                 .movementAffectedBy(
-                        net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
-                                .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
+                        net.minecraft.advancements.predicates.LocationPredicate.Builder.location()
+                                .setBlock(net.minecraft.advancements.predicates.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
                 );
         context.register(EXEnchantmentEffects.SOUL_SPEED_EX, Enchantment.enchantment(
                                 Enchantment.definition(
@@ -1673,8 +1673,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                                                 LootContext.EntityTarget.THIS,
                                                                 EntityPredicate.Builder.entity()
                                                                         .movementAffectedBy(
-                                                                                net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
-                                                                                        .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
+                                                                                net.minecraft.advancements.predicates.LocationPredicate.Builder.location()
+                                                                                        .setBlock(net.minecraft.advancements.predicates.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
                                                                         )
                                                         ),
                                                         LootItemEntityPropertyCondition.hasProperties(
@@ -1691,8 +1691,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                                         LootContext.EntityTarget.THIS,
                                                         EntityPredicate.Builder.entity()
                                                                 .movementAffectedBy(
-                                                                        net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
-                                                                                .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
+                                                                        net.minecraft.advancements.predicates.LocationPredicate.Builder.location()
+                                                                                .setBlock(net.minecraft.advancements.predicates.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
                                                                 )
                                                                 .flags(EntityFlagsPredicate.Builder.flags().setIsFlying(false))
                                                 )
@@ -1712,8 +1712,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                                 LootContext.EntityTarget.THIS,
                                 EntityPredicate.Builder.entity()
                                         .movementAffectedBy(
-                                                net.minecraft.advancements.criterion.LocationPredicate.Builder.location()
-                                                        .setBlock(net.minecraft.advancements.criterion.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
+                                                net.minecraft.advancements.predicates.LocationPredicate.Builder.location()
+                                                        .setBlock(net.minecraft.advancements.predicates.BlockPredicate.Builder.block().of(blocks, BlockTags.SOUL_SPEED_BLOCKS))
                                         )
                         )
                 )

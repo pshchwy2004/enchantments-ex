@@ -1,6 +1,7 @@
 package com.pshchwy.enex.datagen;
 
 import com.pshchwy.enex.EnchantmentsEX;
+import com.pshchwy.enex.item.EXItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -33,9 +34,9 @@ public class EXItemTagProvider extends ItemTagsProvider {
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         this.tag(STAMPING_CLOTHS)
                 .addOptionalTag(ItemTags.WOOL_CARPETS)
-                .add(Items.PAPER)
-                .add(Items.LEATHER)
-                .add(Items.RABBIT_HIDE)
+                .add(EXItems.getRK(Items.PAPER))
+                .add(EXItems.getRK(Items.LEATHER))
+                .add(EXItems.getRK(Items.RABBIT_HIDE))
                 .replace(true);
     }
 }
