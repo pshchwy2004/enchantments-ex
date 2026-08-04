@@ -33,7 +33,7 @@ public record SmiteEXEffect(LevelBasedValue amount) implements EnchantmentEntity
             if (!victim.canBeAffected(new MobEffectInstance(MobEffects.WEAKNESS, 1, 0))) {
                 return;
             }
-            boolean strong = victim.getType().is(EntityTypeTags.SENSITIVE_TO_SMITE) || victim.getType() == EntityType.WARDEN;
+            boolean strong = victim.is(EntityTypeTags.SENSITIVE_TO_SMITE) || victim.getType() == EntityType.WARDEN;
             int amplifier = strong ? 4 : 0;
             victim.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 3000, amplifier));
         }
