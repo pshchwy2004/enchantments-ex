@@ -11,6 +11,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -177,7 +178,7 @@ public class StampingTableMenu extends AbstractContainerMenu {
         for (Holder<Enchantment> holder : enchantsMap.keySet()) {
             // get key -> add to new filtered list
             holder.unwrapKey().ifPresent(key -> {
-                if (EXEnchantmentMap.isUpgradable(key)) {
+                if (EXEnchantmentMap.isUpgradable(key) || holder.is(EnchantmentTags.CURSE)) {
                     filteredList.add(holder);
                 }
             });
@@ -214,7 +215,7 @@ public class StampingTableMenu extends AbstractContainerMenu {
             }
         }
     }
-
+    @SuppressWarnings("unused")
     /**
      * Allows the Screen to query which button should look active/selected.
      */
@@ -252,9 +253,14 @@ public class StampingTableMenu extends AbstractContainerMenu {
 
         int currentLevel = currentEnchants.getLevel(targetEnchant);
 
-        // Resolve the registry key for the target enchantment, fetch its upgrade key, and lookup the new Holder
-        targetEnchant.unwrapKey().ifPresent(originalKey -> {
-            ResourceKey<Enchantment> exKey = com.pshchwy.enex.enchantment.EXEnchantmentMap.getUpgrade(originalKey);
+        // remove the enchantment if it is a curse
+        if (targetEnchant.is(EnchantmentTags.CURSE)) {
+            builder.set(targetEnchant, 0);
+        }
+        else { // normal EX enchantment logic
+            // Resolve the registry key for the target enchantment, fetch its upgrade key, and lookup the new Holder
+            targetEnchant.unwrapKey().ifPresent(originalKey -> {
+                ResourceKey<Enchantment> exKey = com.pshchwy.enex.enchantment.EXEnchantmentMap.getUpgrade(originalKey);
 
             // get holder
             player.level().registryAccess().lookup(Registries.ENCHANTMENT).flatMap(registry -> registry.get(exKey)).ifPresent(exHolder -> {
@@ -266,7 +272,13 @@ public class StampingTableMenu extends AbstractContainerMenu {
         });
 
         // apply the mutated enchantment map back to the book copy
-        upgradedBook.set(DataComponents.STORED_ENCHANTMENTS, builder.toImmutable());
+        if (builder.toImmutable().isEmpty()) {
+            upgradedBook = new ItemStack(Items.BOOK);
+        }
+        else {
+            upgradedBook.set(DataComponents.STORED_ENCHANTMENTS, builder.toImmutable());
+        }
+
 
         this.stampSlots.setItem(0, upgradedBook); // overwrite old book with upgraded version
 
