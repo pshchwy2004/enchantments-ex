@@ -5,11 +5,15 @@ import net.minecraft.advancements.criterion.DataComponentMatchers;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.MinMaxBounds;
+import com.pshchwy.enex.enchantment.EXEnchantmentMap;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.predicates.DataComponentPredicates;
 import net.minecraft.core.component.predicates.EnchantmentsPredicate;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -19,19 +23,20 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EXLootTableModifiers {
 
     @SubscribeEvent
     public static void onLootTableLoad(LootTableLoadEvent event) {
-
         ResourceKey<LootTable> key = event.getKey();
         HolderLookup.Provider registries = event.getRegistries();
         HolderLookup.RegistryLookup<Enchantment> registryLookup = registries.lookupOrThrow(Registries.ENCHANTMENT);
@@ -123,6 +128,11 @@ public class EXLootTableModifiers {
         }
         // Fishing Treasure
         else if (key.equals(BuiltInLootTables.FISHING_TREASURE)) {
+            HolderSet<ResourceKey<Enchantment>> exSets;
+            ArrayList<Holder<Enchantment>> exList = new ArrayList<>();
+            for (ResourceKey<Enchantment> rk : EXEnchantmentMap.getAllEXEnchantments()) {
+                exList.add(registryLookup.getOrThrow(rk));
+            }
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.IRON_INGOT).setWeight(20))
                     .add(LootItem.lootTableItem(Items.EMERALD).setWeight(20))
@@ -134,7 +144,8 @@ public class EXLootTableModifiers {
                     .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(10))
                     .add(LootItem.lootTableItem(Items.CONDUIT).setWeight(10))
                     .add(LootItem.lootTableItem(Items.ENCHANTED_GOLDEN_APPLE).setWeight(5))
-                    .add(LootItem.lootTableItem(Items.SPONGE).setWeight(20))
+                    .add(LootItem.lootTableItem(Items.SPONGE).setWeight(10))
+                    .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(EnchantRandomlyFunction.randomEnchantment().withOneOf(HolderSet.direct(exList))).setWeight(10))
                     .add(LootItem.lootTableItem(Items.ECHO_SHARD).setWeight(10))
                     .when(luckOfTheSeaEXCondition);
             event.getTable().addPool(poolBuilder.build());
