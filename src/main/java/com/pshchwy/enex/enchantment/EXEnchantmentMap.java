@@ -4,7 +4,10 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /// This class' function is to provide a map mapping the enchantments to their EX variants.
@@ -186,5 +189,9 @@ public class EXEnchantmentMap {
 
     public static ResourceKey<Enchantment> getUpgrade(ResourceKey<Enchantment> key) {
         return UPGRADE_MAP.get(key);
+    }
+
+    public static List<ResourceKey<Enchantment>> getAllEXEnchantments() {
+        return new ArrayList<>(UPGRADE_MAP.values());
     }
 }
