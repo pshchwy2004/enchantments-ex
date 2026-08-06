@@ -13,6 +13,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -132,7 +133,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             var storedEnchants = this.menu.getSlot(0).getItem().getOrDefault(net.minecraft.core.component.DataComponents.STORED_ENCHANTMENTS, net.minecraft.world.item.enchantment.ItemEnchantments.EMPTY);
             int currentLevel = storedEnchants.getLevel(currentEnchant);
 
-            // --- LINE 1: Original Enchantment + Level ---
+            // original enchant + level
             Component ogLine = (currentLevel != 0 && currentEnchant.value().getMaxLevel() > 1)
                     ? currentEnchant.value().description().copy()
                     .append(" ")
@@ -140,50 +141,74 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
                     .withStyle(ChatFormatting.ITALIC)
                     : currentEnchant.value().description().copy().withStyle(ChatFormatting.ITALIC);
 
-            // --- LINE 2: EX Target Upgrade Name + Level ---
-            Component exLine = Component.empty();
-            if (this.minecraft != null && this.minecraft.level != null) {
-                var optKey = currentEnchant.unwrapKey();
-                if (optKey.isPresent()) {
-                    ResourceKey<Enchantment> exKey = EXEnchantmentMap.getUpgrade(optKey.get());
-                    var registry = this.minecraft.level.registryAccess().registry(Registries.ENCHANTMENT);
-                    if (registry.isPresent() && registry.get().get(exKey) != null) {
-                        var exEnchant = registry.get().get(exKey);
-                        Component exDesc = Objects.requireNonNull(exEnchant).description();
+            boolean isCurse = currentEnchant.is(EnchantmentTags.CURSE);
 
-                        Component levelComponent = (exEnchant.getMaxLevel() > 1 && currentLevel != 0)
-                                ? Component.literal(" ").append(Component.translatable("enchantment.level." + currentLevel))
-                                : Component.empty();
 
-                        // Prefix with a clean arrow to indicate upgrade direction
-                        exLine = Component.literal("➔ ").append(exDesc).append(levelComponent);
+            // strikethrough cursed enchantment
+            if (isCurse) {
+                // get the curse again but make it struck through and
+                Component strikethroughCurse = (currentLevel != 0 && currentEnchant.value().getMaxLevel() > 1)
+                        ? currentEnchant.value().description().copy()
+                        .append(" ")
+                        .append(Component.translatable("enchantment.level." + currentLevel))
+                        .withStyle(ChatFormatting.ITALIC)
+                        : currentEnchant.value().description().copy().withStyle(ChatFormatting.STRIKETHROUGH);
+                Component curseLine = Component.literal("➔ ").append(strikethroughCurse);
+                int curseTextColor = !hasInk ? 0xA0A0A0 : (isHovered ? 0xFF5555 : 0xAA0000);
+                int curseEliminateTextColor = !hasInk ? 0xA0A0A0 : (isHovered ? 0xe7d05e : 0xA0A0A0);
+
+                // center magic
+                float lineScale = 0.70F;
+                float lineSpacing = 1.0F;
+                float fontHeight = this.font.lineHeight;
+                float totalBlockHeight = (fontHeight * 2 + lineSpacing) * lineScale;
+
+                float startY = itemY + (BUTTON_HEIGHT - totalBlockHeight) / 2.0F;
+                float line2Y = startY + (fontHeight + lineSpacing) * lineScale;
+
+                // render line 1
+                renderCenteredTextLine(guiGraphics, ogLine, renderX, startY, BUTTON_WIDTH, lineScale, curseTextColor);
+                // render line 2
+
+                renderCenteredTextLine(guiGraphics, curseLine, renderX, line2Y, BUTTON_WIDTH, lineScale, curseEliminateTextColor);
+
+            } else {
+                // upgrade
+                Component exLine = Component.empty();
+
+                if (this.minecraft != null && this.minecraft.level != null) {
+                    var optKey = currentEnchant.unwrapKey();
+                    if (optKey.isPresent()) {
+                        ResourceKey<Enchantment> exKey = EXEnchantmentMap.getUpgrade(optKey.get());
+                        var registry = this.minecraft.level.registryAccess().registry(net.minecraft.core.registries.Registries.ENCHANTMENT);
+                        if (registry.isPresent() && registry.get().get(exKey) != null) {
+                            var exEnchant = registry.get().get(exKey);
+                            Component exDesc = Objects.requireNonNull(exEnchant).description();
+
+                            Component levelComponent = (exEnchant.getMaxLevel() > 1 && currentLevel != 0)
+                                    ? Component.literal(" ").append(Component.translatable("enchantment.level." + currentLevel))
+                                    : Component.empty();
+
+                            exLine = Component.literal("➔ ").append(exDesc).append(levelComponent);
+                        }
                     }
                 }
-            }
-            // --- TWO-LINE CENTERING MATH ---
-            float lineScale = 0.70F; // Scaled so two lines fit vertically within 19px button height
-            float lineSpacing = 1.0F;
-            float fontHeight = this.font.lineHeight; // Standard font height is 9px
-            float totalBlockHeight = (fontHeight * 2 + lineSpacing) * lineScale; // ~13.3px
 
-            // Vertical starting position centered on the button
-            float startY = itemY + (BUTTON_HEIGHT - totalBlockHeight) / 2.0F;
-            float line2Y = startY + (fontHeight + lineSpacing) * lineScale;
+                // center magic
+                float lineScale = 0.70F;
+                float lineSpacing = 1.0F;
+                float fontHeight = this.font.lineHeight;
+                float totalBlockHeight = (fontHeight * 2 + lineSpacing) * lineScale;
 
-            // Render both lines centered horizontally
-            renderCenteredTextLine(guiGraphics, ogLine, renderX, startY, BUTTON_WIDTH, lineScale, textColor);
-            int exTextColor;
-            if (!hasInk) {
-                // disabled sprite
-                exTextColor = 0xA0A0A0; // Grayed-out text
-            } else if (isHovered) {
-                // highlighted sprite
-                exTextColor = 0xFFFF55; // Yellow text
-            } else {
-                // standard sprite
-                exTextColor = 0xFFFFFF; // White text
+                float startY = itemY + (BUTTON_HEIGHT - totalBlockHeight) / 2.0F;
+                float line2Y = startY + (fontHeight + lineSpacing) * lineScale;
+
+                // render line 1
+                renderCenteredTextLine(guiGraphics, ogLine, renderX, startY, BUTTON_WIDTH, lineScale, textColor);
+                // render line 2
+                int exTextColor = !hasInk ? 0xA0A0A0 : (isHovered ? 0xFFFF55 : 0xFFFFFF);
+                renderCenteredTextLine(guiGraphics, exLine, renderX, line2Y, BUTTON_WIDTH, lineScale, exTextColor);
             }
-            renderCenteredTextLine(guiGraphics, exLine, renderX, line2Y, BUTTON_WIDTH, lineScale, exTextColor);
         }
     }
 
