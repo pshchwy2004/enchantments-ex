@@ -41,6 +41,14 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
             EnchantmentsEX.MOD_ID,
             "container/stamping_table/enchantment_slot"
     );
+    private static final Identifier STAMP_ARROW = Identifier.fromNamespaceAndPath(
+            EnchantmentsEX.MOD_ID,
+            "container/stamping_table/stamp_arrow"
+    );
+    private static final Identifier STAMP_ARROW_DISABLED = Identifier.fromNamespaceAndPath(
+            EnchantmentsEX.MOD_ID,
+            "container/stamping_table/stamp_arrow_disabled"
+    );
     private static final int LIST_X = 60;
     private static final int LIST_Y = 14;
     private static final int BUTTON_WIDTH = 95;
@@ -48,6 +56,8 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
     private static final int VISIBLE_ROWS = 3;
     private static final int SCROLL_X = 158;
     private static final int SCROLL_Y = 14;
+    private static final int ARROW_X = 10;
+    private static final int ARROW_Y = 33;
 
 
     private float scrollOffs;
@@ -151,7 +161,7 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
                         .withStyle(ChatFormatting.ITALIC)
                         : currentEnchant.value().description().copy().withStyle(ChatFormatting.STRIKETHROUGH);
                 Component curseLine = Component.literal("➔ ").append(strikethroughCurse);
-                int curseTextColor = !hasInk ? 0xA0A0A0 : (isHovered ? 0xFF5555 : 0xAA0000);
+                int curseTextColor = !hasInk ? 0xA0A0A0 : (isHovered ? 0xFFA078 : 0xFF5555);
                 int curseEliminateTextColor = !hasInk ? 0xA0A0A0 : (isHovered ? 0xe7d05e : 0xA0A0A0);
 
                 // center magic
@@ -210,6 +220,16 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
                 renderCenteredTextLine(guiGraphics, exLine, renderX, line2Y, BUTTON_WIDTH, lineScale, exTextColor);
             }
         }
+
+        // render arrow
+
+        int arrowX = ARROW_X + x;
+        int arrowY = ARROW_Y + y;
+        Identifier arrow = !this.menu.getSlot(0).getItem().isEmpty() && ((available.isEmpty() || !hasInk))
+                ? STAMP_ARROW_DISABLED
+                : STAMP_ARROW;
+        guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, arrow, arrowX, arrowY, 12, 33);
+
     }
 
     /**
