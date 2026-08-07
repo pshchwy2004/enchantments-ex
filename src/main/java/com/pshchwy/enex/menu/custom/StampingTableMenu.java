@@ -46,21 +46,21 @@ public class StampingTableMenu extends AbstractContainerMenu {
         super(EXMenus.STAMPING_TABLE_MENU, id);
         this.access = access;
         selectedEnchantmentIndex = -1;
-        this.addSlot(new Slot(this.stampSlots, 0, 15, 47) { // enchanted book placement
+        this.addSlot(new Slot(this.stampSlots, 0, 26, 55) { // enchanted book placement
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return stack.is(Items.ENCHANTED_BOOK);
             }
         });
 
-        this.addSlot(new Slot(this.stampSlots, 1, 35, 47) {
+        this.addSlot(new Slot(this.stampSlots, 1, 26, 19) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return stack.is(EXItems.MOLTEN_INK);
             }
         });
-        addPlayerHotbar(inventory);
         addPlayerInventory(inventory);
+        addPlayerHotbar(inventory);
     }
 
     public StampingTableMenu(int id, Inventory inventory, BlockPos pos) {
@@ -79,37 +79,36 @@ public class StampingTableMenu extends AbstractContainerMenu {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
 
-            // slot index ranges
             int customSlotsCount = 2;
-            int totalSlotsCount = 38; // 2 block slots + 9 hotbar + 27 main inventory
+            int mainInventoryEnd = 29; // 2 custom + 27 main inventory = 29
+            int totalSlotsCount = 38;  // 29 + 9 hotbar = 38
 
             if (invSlot < customSlotsCount) {
-                // stamping table slots
-                // Move items into the player inventory/hotbar (slots 2 to 38)
-                if (!this.moveItemStackTo(itemStack2, customSlotsCount, totalSlotsCount, true)) {
-                    return ItemStack.EMPTY;
+                // hotbar first
+                if (!this.moveItemStackTo(itemStack2, mainInventoryEnd, totalSlotsCount, false)) {
+                    // main inventory
+                    if (!this.moveItemStackTo(itemStack2, customSlotsCount, mainInventoryEnd, false)) {
+                        return ItemStack.EMPTY;
+                    }
                 }
             } else {
-                // player inventory slots
+                // inventory -> stamping table/hotbar
                 if (itemStack2.is(Items.ENCHANTED_BOOK)) {
-                    // Try moving into the Enchanted Book slot (Slot 0)
                     if (!this.moveItemStackTo(itemStack2, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
                 } else if (itemStack2.is(EXItems.MOLTEN_INK)) {
-                    // Try moving into the Molten Ink slot (Slot 1)
                     if (!this.moveItemStackTo(itemStack2, 1, 2, false)) {
                         return ItemStack.EMPTY;
                     }
                 } else {
-                    // For any other item, shift-click splits between player inventory and hotbar
-                    // Since hotbar is slots 2-10 and inventory is slots 11-37:
-                    if (invSlot <= 10) { // From hotbar
-                        if (!this.moveItemStackTo(itemStack2, 11, totalSlotsCount, false)) { // move to inventory
+                    // move between main inventory and hotbar
+                    if (invSlot < mainInventoryEnd) { // From main inventory -> hotbar
+                        if (!this.moveItemStackTo(itemStack2, mainInventoryEnd, totalSlotsCount, false)) {
                             return ItemStack.EMPTY;
                         }
-                    } else if (invSlot < totalSlotsCount) { // From inventory
-                        if (!this.moveItemStackTo(itemStack2, 2, 11, false)) { // move to hotbar
+                    } else { // From hotbar -> Main inventory
+                        if (!this.moveItemStackTo(itemStack2, customSlotsCount, mainInventoryEnd, false)) {
                             return ItemStack.EMPTY;
                         }
                     }
