@@ -48,6 +48,9 @@
   "item.enchantmentsex.stamping_table": "冲压台",
   "sound.enchantmentsex.stamp": "冲压声",
 
+  "gui.enchantmentsex.tooltip.upgrade": "点击以升级魔咒",
+  "gui.enchantmentsex.tooltip.remove_curse": "点击以移除诅咒",
+  "gui.enchantmentsex.tooltip.requires_ink": "需要熔融墨水才能加工",
   "enchantmentsex.configuration.title": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml.title": "Enchantments EX Configs"

@@ -48,6 +48,9 @@
   "item.enchantmentsex.stamping_table": "Печатный стол",
   "sound.enchantmentsex.stamp": "Штамповка",
 
+  "gui.enchantmentsex.tooltip.upgrade": "Нажмите, чтобы улучшить чары",
+  "gui.enchantmentsex.tooltip.remove_curse": "Нажмите, чтобы снять проклятие",
+  "gui.enchantmentsex.tooltip.requires_ink": "Требуется расплавленная чернильная жидкость",
   "enchantmentsex.configuration.title": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml.title": "Enchantments EX Configs"
