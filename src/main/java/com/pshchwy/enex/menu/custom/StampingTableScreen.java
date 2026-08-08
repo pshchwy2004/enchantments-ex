@@ -384,15 +384,15 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
                 Component tooltipText;
                 if (!hasInk) {
                     // warning if molten ink slot is empty
-                    tooltipText = Component.translatable("gui.enchantments-ex.tooltip.requires_ink")
+                    tooltipText = Component.translatable("gui.enchantmentsex.tooltip.requires_ink")
                             .withStyle(ChatFormatting.RED);
                 } else if (isCurse) {
                     // curse elimination tooltip
-                    tooltipText = Component.translatable("gui.enchantments-ex.tooltip.remove_curse")
+                    tooltipText = Component.translatable("gui.enchantmentsex.tooltip.remove_curse")
                             .withStyle(ChatFormatting.GOLD);
                 } else {
                     // standard upgrade tooltip
-                    tooltipText = Component.translatable("gui.enchantments-ex.tooltip.upgrade")
+                    tooltipText = Component.translatable("gui.enchantmentsex.tooltip.upgrade")
                             .withStyle(ChatFormatting.YELLOW);
                 }
 
