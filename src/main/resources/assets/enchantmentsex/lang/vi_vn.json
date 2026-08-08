@@ -48,6 +48,9 @@
   "item.enchantmentsex.stamping_table": "Bàn dập",
   "sound.enchantmentsex.stamp": "Tiếng dập",
 
+  "gui.enchantmentsex.tooltip.upgrade": "Nhấp để nâng cấp phù phép",
+  "gui.enchantmentsex.tooltip.remove_curse": "Nhấp để xóa lời nguyền",
+  "gui.enchantmentsex.tooltip.requires_ink": "Cần mực nóng chảy để xử lý",
   "enchantmentsex.configuration.title": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml.title": "Enchantments EX Configs"

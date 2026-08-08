@@ -48,6 +48,9 @@
   "item.enchantmentsex.stamping_table": "Stempeltafel",
   "sound.enchantmentsex.stamp": "Stempelen",
 
+  "gui.enchantmentsex.tooltip.upgrade": "Klik om betovering te upgraden",
+  "gui.enchantmentsex.tooltip.remove_curse": "Klik om vloek te verwijderen",
+  "gui.enchantmentsex.tooltip.requires_ink": "Vereist gesmolten inkt om te verwerken",
   "enchantmentsex.configuration.title": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml.title": "Enchantments EX Configs"
