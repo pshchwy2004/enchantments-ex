@@ -48,6 +48,9 @@
   "item.enchantmentsex.stamping_table": "Stempeltisch",
   "sound.enchantmentsex.stamp": "Stempeln",
 
+  "gui.enchantmentsex.tooltip.upgrade": "Klicken, um Verzauberung zu verbessern",
+  "gui.enchantmentsex.tooltip.remove_curse": "Klicken, um Fluch zu entfernen",
+  "gui.enchantmentsex.tooltip.requires_ink": "Benötigt geschmolzene Tinte zum Verarbeiten",
   "enchantmentsex.configuration.title": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml.title": "Enchantments EX Configs"

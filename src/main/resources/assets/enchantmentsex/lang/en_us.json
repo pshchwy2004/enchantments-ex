@@ -48,6 +48,9 @@
   "item.enchantmentsex.stamping_table": "Stamping Table",
   "sound.enchantmentsex.stamp": "Stamping",
 
+  "gui.enchantmentsex.tooltip.upgrade": "Click to upgrade enchantment",
+  "gui.enchantmentsex.tooltip.remove_curse": "Click to remove curse",
+  "gui.enchantmentsex.tooltip.requires_ink": "Requires Molten Ink",
   "enchantmentsex.configuration.title": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml.title": "Enchantments EX Configs"
