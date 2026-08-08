@@ -46,5 +46,9 @@
   "item.enchantments-ex.molten_ink": "Encre fondue",
   "item.enchantments-ex.nether_crystal_fragment": "Fragment de cristal du Nether",
   "item.enchantments-ex.stamping_table": "Table d'estampage",
-  "sound.enchantments-ex.stamp": "Estampage"
+  "sound.enchantments-ex.stamp": "Estampage",
+
+  "gui.enchantments-ex.tooltip.upgrade": "Cliquer pour améliorer l'enchantement",
+  "gui.enchantments-ex.tooltip.remove_curse": "Cliquer pour retirer la malédiction",
+  "gui.enchantments-ex.tooltip.requires_ink": "Requiert de l'encre fondue pour traiter"
 }

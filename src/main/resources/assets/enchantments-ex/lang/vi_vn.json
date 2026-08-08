@@ -46,5 +46,9 @@
   "item.enchantments-ex.molten_ink": "Mực nóng chảy",
   "item.enchantments-ex.nether_crystal_fragment": "Mảnh tinh thể Nether",
   "item.enchantments-ex.stamping_table": "Bàn dập",
-  "sound.enchantments-ex.stamp": "Tiếng dập"
+  "sound.enchantments-ex.stamp": "Tiếng dập",
+
+  "gui.enchantments-ex.tooltip.upgrade": "Nhấp để nâng cấp phù phép",
+  "gui.enchantments-ex.tooltip.remove_curse": "Nhấp để xóa lời nguyền",
+  "gui.enchantments-ex.tooltip.requires_ink": "Cần mực nóng chảy để xử lý"
 }

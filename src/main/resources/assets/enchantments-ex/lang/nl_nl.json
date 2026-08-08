@@ -46,5 +46,9 @@
   "item.enchantments-ex.molten_ink": "Gesmolten inkt",
   "item.enchantments-ex.nether_crystal_fragment": "Netherkristalfragment",
   "item.enchantments-ex.stamping_table": "Stempeltafel",
-  "sound.enchantments-ex.stamp": "Stempelen"
+  "sound.enchantments-ex.stamp": "Stempelen",
+
+  "gui.enchantments-ex.tooltip.upgrade": "Klik om betovering te upgraden",
+  "gui.enchantments-ex.tooltip.remove_curse": "Klik om vloek te verwijderen",
+  "gui.enchantments-ex.tooltip.requires_ink": "Vereist gesmolten inkt om te verwerken"
 }

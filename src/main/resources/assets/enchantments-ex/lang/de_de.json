@@ -46,5 +46,9 @@
   "item.enchantments-ex.molten_ink": "Geschmolzene Tinte",
   "item.enchantments-ex.nether_crystal_fragment": "Netherkristallsplitter",
   "item.enchantments-ex.stamping_table": "Stempeltisch",
-  "sound.enchantments-ex.stamp": "Stempeln"
+  "sound.enchantments-ex.stamp": "Stempeln",
+
+  "gui.enchantments-ex.tooltip.upgrade": "Klicken, um Verzauberung zu verbessern",
+  "gui.enchantments-ex.tooltip.remove_curse": "Klicken, um Fluch zu entfernen",
+  "gui.enchantments-ex.tooltip.requires_ink": "Benötigt geschmolzene Tinte zum Verarbeiten"
 }

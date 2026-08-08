@@ -46,5 +46,9 @@
   "item.enchantments-ex.molten_ink": "Tinta fundida",
   "item.enchantments-ex.nether_crystal_fragment": "Fragmento de cristal del Nether",
   "item.enchantments-ex.stamping_table": "Mesa de estampado",
-  "sound.enchantments-ex.stamp": "Estampado"
+  "sound.enchantments-ex.stamp": "Estampado",
+
+  "gui.enchantments-ex.tooltip.upgrade": "Haz clic para mejorar el encantamiento",
+  "gui.enchantments-ex.tooltip.remove_curse": "Haz clic para eliminar la maldición",
+  "gui.enchantments-ex.tooltip.requires_ink": "Requiere tinta fundida para procesar"
 }

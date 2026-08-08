@@ -46,5 +46,9 @@
   "item.enchantments-ex.molten_ink": "熔融墨水",
   "item.enchantments-ex.nether_crystal_fragment": "下界水晶碎片",
   "item.enchantments-ex.stamping_table": "冲压台",
-  "sound.enchantments-ex.stamp": "冲压声"
+  "sound.enchantments-ex.stamp": "冲压声",
+
+  "gui.enchantments-ex.tooltip.upgrade": "点击以升级魔咒",
+  "gui.enchantments-ex.tooltip.remove_curse": "点击以移除诅咒",
+  "gui.enchantments-ex.tooltip.requires_ink": "需要熔融墨水才能加工"
 }
