@@ -9,7 +9,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -344,5 +343,53 @@ public class StampingTableScreen extends AbstractContainerScreen<StampingTableMe
         guiGraphics.pose().scale(finalScale, finalScale, 1.0F);
         guiGraphics.drawString(this.font, text, 0, 0, color, true);
         guiGraphics.pose().popPose();
+    }
+
+    @Override
+    protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        super.renderTooltip(guiGraphics, mouseX, mouseY);
+
+        int x = this.leftPos;
+        int y = this.topPos;
+        int renderX = x + LIST_X;
+        int renderY = y + LIST_Y;
+
+        List<Holder<Enchantment>> available = this.menu.getAvailableEnchantments();
+        boolean hasInk = !this.menu.getSlot(1).getItem().isEmpty()
+                && this.menu.getSlot(1).getItem().is(EXItems.MOLTEN_INK);
+
+        int maxIndexToRender = this.startIndex + VISIBLE_ROWS;
+
+        // Check hover state for active enchantment buttons
+        for (int i = this.startIndex; i < maxIndexToRender && i < available.size(); i++) {
+            int currentRenderRow = i - this.startIndex;
+            int itemY = renderY + currentRenderRow * BUTTON_HEIGHT;
+
+            boolean isHovered = mouseX >= renderX && mouseX < renderX + BUTTON_WIDTH
+                    && mouseY >= itemY && mouseY < itemY + BUTTON_HEIGHT;
+
+            if (isHovered) {
+                Holder<Enchantment> currentEnchant = available.get(i);
+                boolean isCurse = currentEnchant.is(EnchantmentTags.CURSE);
+
+                Component tooltipText;
+                if (!hasInk) {
+                    // warning if molten ink slot is empty
+                    tooltipText = Component.translatable("gui.enchantments-ex.tooltip.requires_ink")
+                            .withStyle(ChatFormatting.RED);
+                } else if (isCurse) {
+                    // curse elimination tooltip
+                    tooltipText = Component.translatable("gui.enchantments-ex.tooltip.remove_curse")
+                            .withStyle(ChatFormatting.GOLD);
+                } else {
+                    // standard upgrade tooltip
+                    tooltipText = Component.translatable("gui.enchantments-ex.tooltip.upgrade")
+                            .withStyle(ChatFormatting.YELLOW);
+                }
+
+                guiGraphics.renderTooltip(this.font, tooltipText, mouseX, mouseY);
+                break; // Stop loop once hovered button is processed
+            }
+        }
     }
 }

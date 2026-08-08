@@ -48,6 +48,9 @@
   "item.enchantmentsex.stamping_table": "Mesa de estampado",
   "sound.enchantmentsex.stamp": "Estampado",
 
+  "gui.enchantmentsex.tooltip.upgrade": "Haz clic para mejorar el encantamiento",
+  "gui.enchantmentsex.tooltip.remove_curse": "Haz clic para eliminar la maldición",
+  "gui.enchantmentsex.tooltip.requires_ink": "Requiere tinta fundida para procesar",
   "enchantmentsex.configuration.title": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml": "Enchantments EX Configs",
   "enchantmentsex.configuration.section.enchantmentsex.common.toml.title": "Enchantments EX Configs"
