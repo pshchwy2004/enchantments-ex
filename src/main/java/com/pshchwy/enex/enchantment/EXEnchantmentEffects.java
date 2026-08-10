@@ -3,6 +3,8 @@ package com.pshchwy.enex.enchantment;
 import com.mojang.serialization.MapCodec;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.effect.*;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -63,6 +65,12 @@ public class EXEnchantmentEffects {
     @SuppressWarnings("unused")
     public static final DeferredHolder<MapCodec<? extends EnchantmentEntityEffect>, MapCodec<LastStandEffect>> LAST_STAND_EFFECT =
             ENTITY_EFFECT_TYPES.register("last_stand_effect", () -> LastStandEffect.CODEC);
+    @SuppressWarnings("unused")
+    public static final DeferredHolder<MapCodec<? extends EnchantmentEntityEffect>, MapCodec<ShulkerRedirectorEffect>> SHULKER_REDIRECTOR_EFFECT =
+            ENTITY_EFFECT_TYPES.register("shulker_redirector_effect", () -> ShulkerRedirectorEffect.CODEC);
+    @SuppressWarnings("unused")
+    public static final DeferredHolder<MapCodec<? extends EnchantmentEntityEffect>, MapCodec<CleanseEffect>> CLEANSE_EFFECT =
+            ENTITY_EFFECT_TYPES.register("cleanse_effect", () -> CleanseEffect.CODEC);
 
 
     public static final ResourceKey<Enchantment> AQUA_AFFINITY_EX = of("aqua_affinity_ex");

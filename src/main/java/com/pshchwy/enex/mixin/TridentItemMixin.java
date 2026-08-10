@@ -1,6 +1,7 @@
 package com.pshchwy.enex.mixin;
 
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
+import com.pshchwy.enex.misc.EXEnchantmentHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -37,7 +37,7 @@ abstract class TridentItemMixin {
     private void modUse(Level level, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
 
-        if (EnchantmentHelper.getTridentSpinAttackStrength(itemStack, player) > 0.0F && hasEnchantment(itemStack)) {
+        if (EnchantmentHelper.getTridentSpinAttackStrength(itemStack, player) > 0.0F && EXEnchantmentHelper.hasEnchantment(itemStack, EXEnchantmentEffects.RIPTIDE_EX)) {
             player.startUsingItem(interactionHand);
             cir.setReturnValue(InteractionResultHolder.consume(itemStack));
         }
@@ -49,7 +49,7 @@ abstract class TridentItemMixin {
             int j = this.getUseDuration(itemStack, livingEntity) - i;
             if (j >= 10) {
                 float f = EnchantmentHelper.getTridentSpinAttackStrength(itemStack, player);
-                if (f > 0.0F && !player.isInWaterOrRain() && hasEnchantment(itemStack)) {
+                if (f > 0.0F && !player.isInWaterOrRain() && EXEnchantmentHelper.hasEnchantment(itemStack, EXEnchantmentEffects.RIPTIDE_EX)) {
                     if (!(itemStack.getDamageValue() >= itemStack.getMaxDamage() - 1)) {
                         player.awardStat(Stats.ITEM_USED.get((TridentItem) (Object) this));
                         Holder<SoundEvent> holder = EnchantmentHelper.pickHighestLevel(itemStack, EnchantmentEffectComponents.TRIDENT_SOUND).orElse(SoundEvents.TRIDENT_THROW);
@@ -79,8 +79,4 @@ abstract class TridentItemMixin {
         }
     }
 
-    @Unique
-    private boolean hasEnchantment(ItemStack stack) {
-        return stack.getEnchantments().toString().contains(EXEnchantmentEffects.RIPTIDE_EX.location().getPath());
-    }
 }

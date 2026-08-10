@@ -239,6 +239,9 @@ public class EXEnchantmentTagProvider extends EnchantmentTagsProvider {
         this.tag(WIND_BURST_EXCLUSIVE)
                 .add(Enchantments.WIND_BURST)
                 .addOptional(EXEnchantmentEffects.WIND_BURST_EX.location());
+
+        this.tag(EnchantmentTags.SMELTS_LOOT)
+                .addOptional(EXEnchantmentEffects.FIRE_ASPECT_EX.location());
     }
 
     private static TagKey<Enchantment> create(String string) {

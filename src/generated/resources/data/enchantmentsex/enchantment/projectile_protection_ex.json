@@ -62,6 +62,14 @@
           ]
         }
       }
+    ],
+    "minecraft:tick": [
+      {
+        "effect": {
+          "type": "enchantmentsex:shulker_redirector_effect",
+          "amount": 1.0
+        }
+      }
     ]
   },
   "exclusive_set": "#enchantmentsex:exclusive_set/projectile_protection_exclusive",

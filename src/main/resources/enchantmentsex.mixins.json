@@ -8,6 +8,9 @@
     "AnvilMenuMixin",
     "FishingHookAccessor",
     "ItemCombinerMenuAccessor",
+    "PowderSnowBlockMixin",
+    "ProjectileAccessor",
+    "ShulkerBulletAccessor",
     "TridentItemMixin",
     "ZombieVillagerAccessor"
   ],
