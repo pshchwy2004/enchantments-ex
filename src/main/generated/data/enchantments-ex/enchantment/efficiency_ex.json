@@ -30,7 +30,11 @@
         "operation": "add_value"
       },
       {
-        "amount": 2.25,
+        "amount": {
+          "type": "minecraft:linear",
+          "base": 1.0,
+          "per_level_above_first": 1.0
+        },
         "attribute": "minecraft:block_interaction_range",
         "id": "enchantments-ex:enchantment.efficiency_ex",
         "operation": "add_value"

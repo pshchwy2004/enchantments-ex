@@ -53,6 +53,7 @@ public class EXMobTagProvider extends FabricTagProvider.EntityTypeTagProvider {
                 .add(EntityType.MAGMA_CUBE)
                 .add(EntityType.ZOMBIFIED_PIGLIN)
                 .add(EntityType.STRIDER)
+                .add(EntityType.SHULKER)
                 .setReplace(true);
 
         valueLookupBuilder(FLYING_MOBS)
