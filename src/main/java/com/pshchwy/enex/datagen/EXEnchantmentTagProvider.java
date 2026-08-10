@@ -13,7 +13,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 /// EX enchantment Tag provider in order to prevent EX enchantments and original enchantments from coexisting in a weapon (although it could hypothetically still be possible with commands)
@@ -238,6 +237,9 @@ public class EXEnchantmentTagProvider extends EnchantmentTagsProvider {
         this.tag(WIND_BURST_EXCLUSIVE)
                 .add(Enchantments.WIND_BURST)
                 .addOptional(EXEnchantmentEffects.WIND_BURST_EX);
+
+        this.tag(EnchantmentTags.SMELTS_LOOT)
+                .addOptional(EXEnchantmentEffects.FIRE_ASPECT_EX);
     }
 
     private static TagKey<Enchantment> create(String string) {
