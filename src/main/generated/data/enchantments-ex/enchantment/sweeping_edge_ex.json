@@ -22,16 +22,25 @@
         "attribute": "minecraft:player.sweeping_damage_ratio",
         "id": "enchantments-ex:sweeping_edge_ex_ratio",
         "operation": "add_value"
-      },
+      }
+    ],
+    "minecraft:damage": [
       {
-        "amount": {
-          "type": "minecraft:linear",
-          "base": -0.1,
-          "per_level_above_first": -0.1
+        "effect": {
+          "type": "minecraft:add",
+          "value": {
+            "type": "minecraft:linear",
+            "base": 2.5,
+            "per_level_above_first": 2.5
+          }
         },
-        "attribute": "minecraft:generic.flying_speed",
-        "id": "enchantments-ex:sweeping_edge_ex_drag",
-        "operation": "add_multiplied_base"
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "type": "#enchantments-ex:flying_mobs"
+          }
+        }
       }
     ],
     "minecraft:tick": [

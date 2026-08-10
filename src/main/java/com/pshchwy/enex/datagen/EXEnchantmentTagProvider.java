@@ -236,6 +236,9 @@ public class EXEnchantmentTagProvider extends FabricTagProvider<Enchantment> {
         getOrCreateTagBuilder(WIND_BURST_EXCLUSIVE)
                 .add(Enchantments.WIND_BURST)
                 .addOptional(EXEnchantmentEffects.WIND_BURST_EX.location());
+
+        getOrCreateTagBuilder(EnchantmentTags.SMELTS_LOOT)
+                .addOptional(EXEnchantmentEffects.FIRE_ASPECT_EX.location());
     }
 
     private static TagKey<Enchantment> create(String string) {
