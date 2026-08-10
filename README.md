@@ -21,27 +21,27 @@ Each EX enchantment will add additional buffs that complement your Minecraft exp
 | Channeling EX            | No longer needs active thunderstorms to summon lightning.                                                                                                                                                                                                                     |
 | Density EX               | Smash attacks inflict Weakness, Slowness, and Nausea to its target, and Resistance to the attacker.                                                                                                                                                                           |
 | Depth Strider EX         | Attack speed is increased per level underwater. Nearby dolphins gain Strength, Resistance, and Speed.                                                                                                                                                                         |
-| Efficiency EX            | Extra damage against shulkers. Increased block interaction range.                                                                                                                                                                                                             |
+| Efficiency EX            | Extra damage against shulkers. Increased block interaction range by 1*`level`.                                                                                                                                                                                                |
 | Feather Falling EX       | Safe fall distance is increased by 7 blocks.                                                                                                                                                                                                                                  |
 | Fire Aspect EX           | Deals extra damage per level to all targets already on fire or targets that are naturally immune to fire.                                                                                                                                                                     |
 | Fire Protection EX       | Extra level-based scaled damage protection when in the Nether.                                                                                                                                                                                                                |
 | Flame EX                 | Deals extra damage per level to all targets already on fire or targets that are naturally immune to fire.                                                                                                                                                                     |
-| Fortune EX               | Overworld ores will additionally drop their block version when mined. Nether Gold Ore drops gold ingots, and Ancient Debris drops Netherite Ingots.                                                                                                                           |
-| Frost Walker EX          | Reduces freezing damage and increases speed when walking on Ice per level.                                                                                                                                                                                                    |
+| Fortune EX               | Overworld ores will additionally drop their block version when mined. Nether Gold Ore drops gold ingots, and Ancient Debris drops Netherite Ingots. Raised enchantment max level to 5.                                                                                        |
+| Frost Walker EX          | Reduces freezing damage and increases speed when walking on Ice per level. Boots besides Leather Boots can walk on Powdered Snow.                                                                                                                                             |
 | Impaling EX              | Damage bonus now applies on Bedrock conditions (when the weather is raining or thundering, or when the target is in water). Also, adds air supply per hit.                                                                                                                    |
 | Infinity EX              | Now works on spectral and tipped arrows as well as firework rockets when applied to Crossbows via command.                                                                                                                                                                    |
 | Knockback EX             | Knocks enemies upward. Higher levels will create higher upward velocity per hit.                                                                                                                                                                                              |
 | Looting EX               | Multiplies mob experience gain depending on level.                                                                                                                                                                                                                            |
 | Loyalty EX               | When the trident hits a block, teleports any item within 3 blocks of where the trident landed to the player who threw it.                                                                                                                                                     |
 | Luck of the Sea EX       | Obtaining treasure from fishing will include additional loot, including rare, formerly non-renewable items.                                                                                                                                                                   |
-| Lunge EX                 | No longer consumes hunger and saturation when lunging (1.21.11 only).                                                                                                                                                                                                         |
+| Lunge EX                 | No longer consumes hunger and saturation when lunging (1.21.11+ only).                                                                                                                                                                                                        |
 | Lure EX                  | Any item or experience orb within 2 blocks of the fishing bobber is instantly retrieved by the player, and the fishing rod automatically returns when it catches fish.                                                                                                        |
 | Mending EX               | The durability repair effectiveness is doubled.                                                                                                                                                                                                                               |
 | Multishot EX             | Maximum enchantment level is increased to 5, shoots 4 arrows per level, and halves the projectile spread per level. Also, can enchant Bows and is compatible with Piercing or Piercing EX.                                                                                    |
 | Piercing EX              | Compatible with Multishot and Multishot EX, can be applied to bows, and does extra damage when using firework rockets or targeting Skeletons.                                                                                                                                 |
 | Power EX                 | Has a chance scaling by level of applying Wither II to targets.                                                                                                                                                                                                               |
-| Projectile Protection EX | Reduces knockback, and its projectile protection now also extends to the Warden's Sonic Boom.                                                                                                                                                                                 |
-| Protection EX            | Attackers have a scaled chance of being inflicted with Weakness.                                                                                                                                                                                                              |
+| Projectile Protection EX | Reduces knockback, and its projectile protection now also extends to the Warden's Sonic Boom. Shulker bullets within a level-scaled range will be redirected to target its owner if the owner is alive.                                                                       |
+| Protection EX            | Attackers have a scaled chance of being inflicted with Weakness. When this happens, one negative status effect is removed from the player.                                                                                                                                    |
 | Punch EX                 | Knocks enemies upward. Higher levels will create higher upward velocity per hit.                                                                                                                                                                                              |
 | Quick Charge EX          | Maximum enchantment level raised to 5. Also, lights arrows on fire upon firing.                                                                                                                                                                                               |
 | Respiration EX           | Any player with Dolphin's Grace, Water Breathing, or Conduit Power gains Regeneration per level.                                                                                                                                                                              |
@@ -68,9 +68,9 @@ The Nether Crystal Fragment is a brewing ingredient used to make Molten Ink, the
 
 ![img_4.png](img/img_4.png)
 
-![img_2.png](img/img_2.png)
+![img.png](img/whenustamping.png)
 
-The Stamping Table only accepts enchanted books. Selecting one enchantment consumes the Molten Ink and upgrades that enchantment.
+The Stamping Table only accepts enchanted books. Selecting one enchantment consumes the Molten Ink and upgrades that enchantment. You may also choose to remove a Curse.
 
 ### Anvil Mechanics
 
@@ -78,10 +78,6 @@ The Stamping Table only accepts enchanted books. Selecting one enchantment consu
 
 In an anvil, an EX enchantment can override the vanilla enchantment. The higher enchantment's level is always inherited. 
 
-
-## Setup
-
-For setup instructions, please see the [Fabric Documentation page](https://docs.fabricmc.net/develop/getting-started/creating-a-project#setting-up) related to the IDE that you are using.
 
 ## License
 

@@ -62,6 +62,14 @@
           ]
         }
       }
+    ],
+    "minecraft:tick": [
+      {
+        "effect": {
+          "type": "enchantments-ex:shulker_redirector_effect",
+          "amount": 1.0
+        }
+      }
     ]
   },
   "exclusive_set": "#enchantments-ex:exclusive_set/projectile_protection_exclusive",
