@@ -54,6 +54,7 @@ public class EXMobTagProvider extends EntityTypeTagsProvider {
                 .add(EntityType.MAGMA_CUBE)
                 .add(EntityType.ZOMBIFIED_PIGLIN)
                 .add(EntityType.STRIDER)
+                .add(EntityType.SHULKER)
                 .replace(true);
 
         this.tag(FLYING_MOBS)

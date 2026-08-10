@@ -13,7 +13,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 /// EX enchantment Tag provider in order to prevent EX enchantments and original enchantments from coexisting in a weapon (although it could hypothetically still be possible with commands)
@@ -42,7 +41,7 @@ public class EXEnchantmentTagProvider extends EnchantmentTagsProvider {
     public static final TagKey<Enchantment> LOOTING_EXCLUSIVE = create("looting_exclusive");
     public static final TagKey<Enchantment> LOYALTY_EXCLUSIVE = create("loyalty_exclusive");
     public static final TagKey<Enchantment> LUCK_OF_THE_SEA_EXCLUSIVE = create("luck_of_the_sea_exclusive");
-    // public static final TagKey<Enchantment> LUNGE_EXCLUSIVE = create("lunge_exclusive");
+    public static final TagKey<Enchantment> LUNGE_EXCLUSIVE = create("lunge_exclusive");
     public static final TagKey<Enchantment> LURE_EXCLUSIVE = create("lure_exclusive");
     public static final TagKey<Enchantment> MENDING_EXCLUSIVE = create("mending_exclusive");
     public static final TagKey<Enchantment> MULTISHOT_EXCLUSIVE = create("multishot_exclusive");
@@ -162,6 +161,10 @@ public class EXEnchantmentTagProvider extends EnchantmentTagsProvider {
                 .add(Enchantments.LURE)
                 .addOptional(EXEnchantmentEffects.LURE_EX);
 
+        this.tag(LUNGE_EXCLUSIVE)
+                .add(Enchantments.LUNGE)
+                .addOptional(EXEnchantmentEffects.LUNGE_EX);
+
         this.tag(MENDING_EXCLUSIVE)
                 .add(Enchantments.MENDING)
                 .addOptional(EXEnchantmentEffects.MENDING_EX);
@@ -238,6 +241,9 @@ public class EXEnchantmentTagProvider extends EnchantmentTagsProvider {
         this.tag(WIND_BURST_EXCLUSIVE)
                 .add(Enchantments.WIND_BURST)
                 .addOptional(EXEnchantmentEffects.WIND_BURST_EX);
+
+        this.tag(EnchantmentTags.SMELTS_LOOT)
+                .addOptional(EXEnchantmentEffects.FIRE_ASPECT_EX);
     }
 
     private static TagKey<Enchantment> create(String string) {
