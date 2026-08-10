@@ -12,6 +12,7 @@
     "minecraft:ghast",
     "minecraft:magma_cube",
     "minecraft:zombified_piglin",
-    "minecraft:strider"
+    "minecraft:strider",
+    "minecraft:shulker"
   ]
 }

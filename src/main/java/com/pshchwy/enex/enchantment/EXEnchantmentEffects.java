@@ -87,8 +87,12 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> POWER_EX = of("power_ex");
 
     public static final ResourceKey<Enchantment> PROJECTILE_PROTECTION_EX = of("projectile_protection_ex");
+    @SuppressWarnings("unused")
+    public static MapCodec<ShulkerRedirectorEffect> SHULKER_REDIRECTOR_EFFECT = register("shulker_redirector_effect", ShulkerRedirectorEffect.CODEC);
 
     public static final ResourceKey<Enchantment> PROTECTION_EX = of("protection_ex");
+    @SuppressWarnings("unused")
+    public static MapCodec<CleanseEffect> CLEANSE_EFFECT = register("cleanse_effect", CleanseEffect.CODEC);
 
     public static final ResourceKey<Enchantment> PUNCH_EX = of("punch_ex");
 

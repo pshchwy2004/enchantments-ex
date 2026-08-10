@@ -11,6 +11,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -34,7 +36,7 @@ public class EXMobTagProvider extends FabricTagsProvider.EntityTypeTagsProvider 
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider wrapperLookup) {
+    protected void addTags(HolderLookup.@NonNull Provider wrapperLookup) {
         tag(BREACH_EX_VULNERABLE)
                 .add(getRK(EntityTypes.ENDER_DRAGON))
                 .add(getRK(EntityTypes.IRON_GOLEM))
@@ -56,6 +58,7 @@ public class EXMobTagProvider extends FabricTagsProvider.EntityTypeTagsProvider 
                 .add(getRK(EntityTypes.MAGMA_CUBE))
                 .add(getRK(EntityTypes.ZOMBIFIED_PIGLIN))
                 .add(getRK(EntityTypes.STRIDER))
+                .add(getRK(EntityTypes.SHULKER))
                 .setReplace(true);
 
         tag(FLYING_MOBS)
@@ -74,6 +77,6 @@ public class EXMobTagProvider extends FabricTagsProvider.EntityTypeTagsProvider 
     }
 
     private static ResourceKey<EntityType<?>> getRK (EntityType<?> entityType) {
-        return BuiltInRegistries.ENTITY_TYPE.getResourceKey(entityType).get();
+        return BuiltInRegistries.ENTITY_TYPE.getResourceKey(entityType).orElseThrow();
     }
 }

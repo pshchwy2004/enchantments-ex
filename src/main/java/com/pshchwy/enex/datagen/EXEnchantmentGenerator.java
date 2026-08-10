@@ -558,7 +558,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                 .withEffect( // more block interaction range
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.efficiency_ex"), Attributes.BLOCK_INTERACTION_RANGE, LevelBasedValue.constant(2.25F), AttributeModifier.Operation.ADD_VALUE
+                                Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.efficiency_ex"), Attributes.BLOCK_INTERACTION_RANGE, LevelBasedValue.perLevel(1.0F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .withEffect( // extra damage to shulkers
@@ -631,7 +631,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 Enchantment.definition(
                                         // which items can be enchanted
                                         items.getOrThrow(ItemTags.FIRE_ASPECT_ENCHANTABLE),
-                                        items.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
+                                        items.getOrThrow(ItemTags.SHARP_WEAPON_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
@@ -834,7 +834,7 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         // weight of showing up in enchantment table
                                         1,
                                         // enchantment max level
-                                        3,
+                                        5,
                                         // base cost for level 1 of the enchantment, and min levels required for something higher
                                         Enchantment.dynamicCost(15, 9),
                                         // same fields as above but for max cost
@@ -1404,6 +1404,10 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         )
 
                 )
+                .withEffect(
+                        EnchantmentEffectComponents.TICK,
+                        new ShulkerRedirectorEffect(LevelBasedValue.constant(1.0f))
+                )
                 .withEffect( // reduces generic knockback
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
@@ -1451,7 +1455,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                         LevelBasedValue.perLevel(2.5F, 0.5F),
                                         LevelBasedValue.perLevel(1.0F),
                                         LevelBasedValue.perLevel(1.0F)
-                                )
+                                ),
+                                new CleanseEffect(LevelBasedValue.constant(1.0F))
                         ),
                         LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(LevelBasedValue.perLevel(0.15F)))
                 )
@@ -1761,9 +1766,24 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                                 AttributeModifier.Operation.ADD_MULTIPLIED_BASE
                         )
                 )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SWEEPING_EDGE_EXCLUSIVE))
                 .withEffect(
                         EnchantmentEffectComponents.TICK,
                         new BaneOfPhantomsEffect(LevelBasedValue.constant(0.0f))
+                )
+                .withEffect(
+                        EnchantmentEffectComponents.DAMAGE,
+                        new AddValue(LevelBasedValue.perLevel(2.5f, 2.5f)),
+                        LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.THIS,
+                                EntityPredicate.Builder.entity()
+                                        .entityType(
+                                                EntityTypePredicate.of(
+                                                                entityTypes,
+                                                                EXMobTagProvider.FLYING_MOBS
+                                                )
+                                        )
+                        )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SWEEPING_EDGE_EXCLUSIVE))
         );

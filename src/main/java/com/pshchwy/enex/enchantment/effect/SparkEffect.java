@@ -2,8 +2,11 @@ package com.pshchwy.enex.enchantment.effect;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
@@ -47,6 +50,8 @@ public record SparkEffect(LevelBasedValue amount) implements EnchantmentEntityEf
                 deltaX, deltaY, deltaZ,
                 speed
         );
+
+        world.playSound(null, BlockPos.containing(pos), SoundEvents.WOLF_ARMOR_CRACK,  SoundSource.HOSTILE, 1.0F, 1.0F);
 
 
 
