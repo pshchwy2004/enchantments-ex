@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:lunge",
+    {
+      "id": "enchantmentsex:lunge_ex",
+      "required": false
+    }
+  ]
+}
