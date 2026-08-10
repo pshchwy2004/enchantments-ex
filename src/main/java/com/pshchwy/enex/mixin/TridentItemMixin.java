@@ -1,6 +1,7 @@
 package com.pshchwy.enex.mixin;
 
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
+import com.pshchwy.enex.misc.EXEnchantmentHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -24,7 +25,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -40,7 +40,7 @@ abstract class TridentItemMixin {
     private void modUse(Level level, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
 
-        if (EnchantmentHelper.getTridentSpinAttackStrength(itemStack, player) > 0.0F && hasEnchantment(itemStack)) {
+        if (EnchantmentHelper.getTridentSpinAttackStrength(itemStack, player) > 0.0F && EXEnchantmentHelper.hasEnchantment(itemStack, EXEnchantmentEffects.RIPTIDE_EX)) {
             player.startUsingItem(interactionHand);
             cir.setReturnValue(InteractionResult.CONSUME);
         }
@@ -54,7 +54,7 @@ abstract class TridentItemMixin {
                 ci.setReturnValue(false);
             } else {
                 float f = EnchantmentHelper.getTridentSpinAttackStrength(itemStack, player);
-                if (f > 0.0F && !player.isInWaterOrRain() && !hasEnchantment(itemStack)) {
+                if (f > 0.0F && !player.isInWaterOrRain() && !EXEnchantmentHelper.hasEnchantment(itemStack, EXEnchantmentEffects.RIPTIDE_EX)) {
                     ci.setReturnValue(false);
                 } else if (itemStack.nextDamageWillBreak()) {
                     ci.setReturnValue(false);
@@ -105,8 +105,5 @@ abstract class TridentItemMixin {
         }
     }
 
-    @Unique
-    private boolean hasEnchantment(ItemStack stack) {
-        return stack.getEnchantments().toString().contains(EXEnchantmentEffects.RIPTIDE_EX.identifier().getPath());
-    }
+
 }
