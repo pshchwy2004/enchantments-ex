@@ -1,0 +1,15 @@
+{
+  "conditions": [
+    {
+      "profession": "minecraft:cleric",
+      "satisfaction_boost": 25
+    },
+    {
+      "profession": "minecraft:librarian",
+      "satisfaction_boost": 25
+    }
+  ],
+  "items": {
+    "enchantments-ex:molten_ink": 40
+  }
+}
