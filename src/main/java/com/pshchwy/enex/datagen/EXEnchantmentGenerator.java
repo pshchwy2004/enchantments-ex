@@ -1778,7 +1778,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
                                 Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "sweeping_edge_ex_drag"),
-                                Attributes.FLYING_SPEED,
+                                Attributes.AIR_DRAG_MODIFIER,
                                 LevelBasedValue.perLevel(-0.10F, -0.10F),
                                 AttributeModifier.Operation.ADD_MULTIPLIED_BASE
                         )
