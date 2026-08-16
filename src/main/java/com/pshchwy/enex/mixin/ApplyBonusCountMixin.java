@@ -6,6 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -30,19 +31,19 @@ public class ApplyBonusCountMixin {
             method = "run",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getItemEnchantmentLevel(Lnet/minecraft/core/Holder;Lnet/minecraft/world/item/ItemStack;)I"
+                    target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getItemEnchantmentLevel(Lnet/minecraft/core/Holder;Lnet/minecraft/world/item/ItemInstance;)I"
             )
     )
-    private int redirectGetItemEnchantmentLevel(Holder<Enchantment> holder, ItemStack tool, ItemStack itemStack, LootContext lootContext) {
-        int vanillaLevel = EnchantmentHelper.getItemEnchantmentLevel(holder, tool);
+    private int redirectGetItemEnchantmentLevel(Holder<Enchantment> enchantment, ItemInstance piece, ItemStack itemStack, LootContext context) {
+        int vanillaLevel = EnchantmentHelper.getItemEnchantmentLevel(enchantment, piece);
 
         if (this.enchantment.is(Enchantments.FORTUNE)) {
-            Entity entity = lootContext.getOptionalParameter(LootContextParams.THIS_ENTITY);
+            Entity entity = context.getOptionalParameter(LootContextParams.THIS_ENTITY);
             if (entity instanceof LivingEntity livingEntity) {
                 HolderLookup.RegistryLookup<Enchantment> lookup = livingEntity.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
                 Holder<Enchantment> fortuneExHolder = lookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX);
 
-                int exLevel = EnchantmentHelper.getItemEnchantmentLevel(fortuneExHolder, tool);
+                int exLevel = EnchantmentHelper.getItemEnchantmentLevel(fortuneExHolder, piece);
                 return vanillaLevel + exLevel;
             }
         }
