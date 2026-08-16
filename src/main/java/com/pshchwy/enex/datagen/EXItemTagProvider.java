@@ -10,6 +10,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -17,6 +18,7 @@ import java.util.concurrent.CompletableFuture;
 public class EXItemTagProvider extends FabricTagProvider.ItemTagProvider {
 
     public static final TagKey<Item> STAMPING_CLOTHS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "stamping_cloths"));
+    public static final TagKey<Item> FIRE_ASPECT_EX_ENCHANTABLE = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantable/fire_aspect_ex_enchantable"));
 
     /**
      * Constructs a new {@link FabricTagProvider} with the default computed path.
@@ -31,12 +33,16 @@ public class EXItemTagProvider extends FabricTagProvider.ItemTagProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider wrapperLookup) {
+    protected void addTags(HolderLookup.@NonNull Provider wrapperLookup) {
         valueLookupBuilder(STAMPING_CLOTHS)
                 .addOptionalTag(ItemTags.WOOL_CARPETS)
                 .add(Items.PAPER)
                 .add(Items.LEATHER)
                 .add(Items.RABBIT_HIDE)
                 .setReplace(true);
+
+        valueLookupBuilder(FIRE_ASPECT_EX_ENCHANTABLE)
+                .addOptionalTag(ItemTags.FIRE_ASPECT_ENCHANTABLE)
+                .addOptionalTag(ItemTags.AXES);
     }
 }
