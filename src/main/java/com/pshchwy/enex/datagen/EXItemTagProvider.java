@@ -20,8 +20,8 @@ import java.util.concurrent.CompletableFuture;
 /// This class declares item tags for NeoForge.
 public class EXItemTagProvider extends ItemTagsProvider {
 
-    public static final TagKey<Item> STAMPING_CLOTHS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "stamping_cloths"));
-    public static final TagKey<Item> FIRE_ASPECT_EX_ENCHANTABLE = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantable/fire_aspect_ex_enchantable"));
+    public static final TagKey<Item> STAMPING_CLOTHS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "stamping_cloths"));
+    public static final TagKey<Item> FIRE_ASPECT_EX_ENCHANTABLE = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantable/fire_aspect_ex_enchantable"));
 
     public EXItemTagProvider(
             PackOutput output,

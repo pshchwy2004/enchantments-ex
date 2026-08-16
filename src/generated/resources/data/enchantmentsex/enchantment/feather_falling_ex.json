@@ -11,7 +11,7 @@
           "base": 5.0,
           "per_level_above_first": 5.0
         },
-        "attribute": "minecraft:safe_fall_distance",
+        "attribute": "minecraft:generic.safe_fall_distance",
         "id": "enchantmentsex:enchantment.feather_falling_ex",
         "operation": "add_value"
       }
