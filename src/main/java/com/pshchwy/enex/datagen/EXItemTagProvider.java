@@ -19,6 +19,7 @@ import java.util.concurrent.CompletableFuture;
 public class EXItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
 
     public static final TagKey<Item> STAMPING_CLOTHS = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "stamping_cloths"));
+    public static final TagKey<Item> FIRE_ASPECT_EX_ENCHANTABLE = TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantable/fire_aspect_ex_enchantable"));
 
     /**
      * Constructs a new {@link FabricTagsProvider} with the default computed path.
@@ -40,5 +41,9 @@ public class EXItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
                 .add(EXItems.getRK(Items.LEATHER))
                 .add(EXItems.getRK(Items.RABBIT_HIDE))
                 .setReplace(true);
+
+        valueLookupBuilder(FIRE_ASPECT_EX_ENCHANTABLE)
+                .addOptionalTag(ItemTags.FIRE_ASPECT_ENCHANTABLE)
+                .addOptionalTag(ItemTags.AXES);
     }
 }

@@ -1,0 +1,15 @@
+{
+  "conditions": [
+    {
+      "profession": "minecraft:cleric",
+      "satisfaction_boost": 25
+    },
+    {
+      "profession": "minecraft:librarian",
+      "satisfaction_boost": 25
+    }
+  ],
+  "items": {
+    "enchantments-ex:nether_crystal_fragment": 50
+  }
+}
