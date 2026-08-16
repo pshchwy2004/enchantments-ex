@@ -42,7 +42,7 @@ public class EXItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
                 .add(EXItems.getRK(Items.RABBIT_HIDE))
                 .setReplace(true);
 
-        valueLookupBuilder(FIRE_ASPECT_EX_ENCHANTABLE)
+        tag(FIRE_ASPECT_EX_ENCHANTABLE)
                 .addOptionalTag(ItemTags.FIRE_ASPECT_ENCHANTABLE)
                 .addOptionalTag(ItemTags.AXES);
     }
