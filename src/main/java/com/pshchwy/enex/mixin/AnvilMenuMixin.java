@@ -125,7 +125,7 @@ public abstract class AnvilMenuMixin {
                                         int holder2Level = mutable.getLevel(holder2);
 
                                         // Recalculate r
-                                        r = (holder2Level == entry.getIntValue()) ? Math.clamp(entry.getIntValue() + 1, 0, enchantment.getMaxLevel()) : Math.max(holder2Level, entry.getIntValue());
+                                        r = (holder2Level == entry.getIntValue()) ? Math.clamp(entry.getIntValue() + 1, 0, Math.max(enchantment.getMaxLevel(), entry.getIntValue())) : Math.max(holder2Level, entry.getIntValue());
                                         break;
                                     }
                                 }
