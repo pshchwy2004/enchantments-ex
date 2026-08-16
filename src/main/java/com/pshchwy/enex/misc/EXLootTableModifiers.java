@@ -41,6 +41,7 @@ public class EXLootTableModifiers {
     private static final ResourceLocation REDSTONE_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/redstone_ore");
     private static final ResourceLocation DEEPSLATE_REDSTONE_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/deepslate_redstone_ore");
     private static final ResourceLocation NETHER_GOLD_ORE_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/nether_gold_ore");
+    @SuppressWarnings("unused")
     private static final ResourceLocation ANCIENT_DEBRIS_ID = ResourceLocation.fromNamespaceAndPath("minecraft", "blocks/ancient_debris");
     public static void modifyLootTables() {
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
@@ -194,6 +195,7 @@ public class EXLootTableModifiers {
                         .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
                 tableBuilder.withPool(poolBuilder);
             }
+            /*
             else if (source.isBuiltin() && (key.location().equals(ANCIENT_DEBRIS_ID))) {
                 // We make the pool and add an item
                 LootPool.Builder poolBuilder = LootPool.lootPool()
@@ -211,9 +213,10 @@ public class EXLootTableModifiers {
                 tableBuilder.withPool(poolBuilder);
             }
 
+             */
+
             // luck of the sea fishing shenanigans
             if (source.isBuiltin() && key.location().equals(ResourceLocation.fromNamespaceAndPath("minecraft", "gameplay/fishing/treasure"))) {
-                HolderSet<ResourceKey<Enchantment>> exSets;
                 ArrayList<Holder<Enchantment>> exList = new ArrayList<>();
                 for (ResourceKey<Enchantment> rk : EXEnchantmentMap.getAllEXEnchantments()) {
                     exList.add(registryLookup.getOrThrow(rk));

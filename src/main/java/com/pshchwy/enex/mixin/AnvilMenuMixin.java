@@ -97,6 +97,9 @@ public abstract class AnvilMenuMixin {
                         int r = entry.getIntValue(); // r calculates final enchantment level
                         r = q == r ? r + 1 : Math.max(r, q);
                         Enchantment enchantment = holder.value();
+                        if (r > enchantment.getMaxLevel()) {
+                            r = enchantment.getMaxLevel();
+                        }
                         boolean bl4 = enchantment.canEnchant(itemStack);
                         if (((AnvilMenuAccessor) this).enex$getPlayer().getAbilities().instabuild || itemStack.is(Items.ENCHANTED_BOOK)) {
                             bl4 = true;
@@ -121,7 +124,7 @@ public abstract class AnvilMenuMixin {
                                         int holder2Level = mutable.getLevel(holder2);
 
                                         // Recalculate r
-                                        r = Math.max(holder2Level, entry.getIntValue());
+                                        r = (holder2Level == entry.getIntValue()) ? Math.clamp(entry.getIntValue() + 1, 0, enchantment.getMaxLevel()) : Math.max(holder2Level, entry.getIntValue());
                                         break;
                                     }
                                 }
@@ -145,9 +148,7 @@ public abstract class AnvilMenuMixin {
                             bl3 = true;
                         } else { // sets the enchantment
                             bl2 = true;
-                            if (r > enchantment.getMaxLevel()) {
-                                r = enchantment.getMaxLevel();
-                            }
+
 
                             mutable.set(holder, r); // adds the enchantment
                             int s = enchantment.getAnvilCost();
