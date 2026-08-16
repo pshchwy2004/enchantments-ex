@@ -607,7 +607,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .withEffect( // increase blocks needed to start taking FD
                         EnchantmentEffectComponents.ATTRIBUTES,
                         new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.feather_falling_ex"), Attributes.SAFE_FALL_DISTANCE, LevelBasedValue.constant(7.0F), AttributeModifier.Operation.ADD_VALUE
+                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.feather_falling_ex"), Attributes.SAFE_FALL_DISTANCE, LevelBasedValue.perLevel(5.0F), AttributeModifier.Operation.ADD_VALUE
                         )
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.FEATHER_FALLING_EXCLUSIVE))
@@ -618,7 +618,7 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
         context.register(EXEnchantmentEffects.FIRE_ASPECT_EX, Enchantment.enchantment(
                                 Enchantment.definition(
                                         // which items can be enchanted
-                                        items.getOrThrow(ItemTags.FIRE_ASPECT_ENCHANTABLE),
+                                        items.getOrThrow(EXItemTagProvider.FIRE_ASPECT_EX_ENCHANTABLE),
                                         items.getOrThrow(ItemTags.SHARP_WEAPON_ENCHANTABLE),
                                         // weight of showing up in enchantment table
                                         1,
