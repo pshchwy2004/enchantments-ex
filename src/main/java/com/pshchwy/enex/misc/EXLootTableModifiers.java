@@ -118,6 +118,7 @@ public class EXLootTableModifiers {
             event.getTable().addPool(poolBuilder.build());
         }
         // Ancient Debris
+        /*
         else if (key.equals(Blocks.ANCIENT_DEBRIS.getLootTable().orElseThrow())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.NETHERITE_INGOT))
@@ -125,6 +126,8 @@ public class EXLootTableModifiers {
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
+
+         */
         // Fishing Treasure
         else if (key.equals(BuiltInLootTables.FISHING_TREASURE)) {
             HolderSet<ResourceKey<Enchantment>> exSets;

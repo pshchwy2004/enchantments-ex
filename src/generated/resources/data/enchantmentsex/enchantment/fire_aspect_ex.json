@@ -121,6 +121,6 @@
   "slots": [
     "mainhand"
   ],
-  "supported_items": "#minecraft:enchantable/fire_aspect",
+  "supported_items": "#enchantments-ex:enchantable/fire_aspect_ex_enchantable",
   "weight": 1
 }
