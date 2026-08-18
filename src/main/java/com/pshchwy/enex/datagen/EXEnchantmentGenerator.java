@@ -1451,8 +1451,8 @@ public class EXEnchantmentGenerator extends FabricDynamicRegistryProvider {
                         AllOf.entityEffects(
                                 new ApplyMobEffect(
                                         HolderSet.direct(MobEffects.WEAKNESS),
-                                        LevelBasedValue.constant(1.5F),
-                                        LevelBasedValue.perLevel(2.5F, 0.5F),
+                                        LevelBasedValue.constant(10F),
+                                        LevelBasedValue.perLevel(10F, 2F),
                                         LevelBasedValue.perLevel(1.0F),
                                         LevelBasedValue.perLevel(1.0F)
                                 ),
