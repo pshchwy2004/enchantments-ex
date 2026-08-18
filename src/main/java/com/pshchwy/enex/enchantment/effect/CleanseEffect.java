@@ -30,14 +30,19 @@ public record CleanseEffect(LevelBasedValue amount) implements EnchantmentEntity
         // random chance (decided in generator) of removing 1 random debuff effect
         if (context.owner() instanceof Player player) {
             Map<Holder<MobEffect>, MobEffectInstance> effectSet = player.getActiveEffectsMap();
-            List<Holder<MobEffect>> keyList = new ArrayList<>();
-            effectSet.forEach((holder, effect) -> {
-                if (holder.value().getCategory() == MobEffectCategory.BENEFICIAL) {
-                    keyList.add(holder);
+            if (!effectSet.isEmpty()) {
+                List<Holder<MobEffect>> keyList = new ArrayList<>();
+                effectSet.forEach((holder, effect) -> {
+                    if (holder.value().getCategory() == MobEffectCategory.HARMFUL) {
+                        keyList.add(holder);
+                    }
+                });
+                if (!keyList.isEmpty()) {
+                    Holder<MobEffect> effect = keyList.get(world.getRandom().nextInt(keyList.size()));
+                    player.removeEffect(effect);
                 }
-            });
-            Holder<MobEffect> effect = keyList.get(Random.from(new Random()).nextInt(keyList.size()));
-            player.removeEffect(effect);
+            }
+
         }
 
     }
