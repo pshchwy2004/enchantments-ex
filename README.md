@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Enchantments EX is a Minecraft Fabric mod that aims to "enchant" the enchantment experience by adding a new tier of enchantments to all Vanilla enchantments (excluding Curses and Silk Touch).
+Enchantments EX is a Minecraft Fabric and NeoForge mod that aims to "enchant" the enchantment experience by adding a new tier of enchantments to all Vanilla enchantments (excluding Curses and Silk Touch).
 
 Each EX enchantment will add additional buffs that complement your Minecraft experience and make you stronger.
 
