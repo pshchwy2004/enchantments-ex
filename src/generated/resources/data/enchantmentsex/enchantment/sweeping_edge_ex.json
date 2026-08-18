@@ -29,7 +29,7 @@
           "base": -0.1,
           "per_level_above_first": -0.1
         },
-        "attribute": "minecraft:flying_speed",
+        "attribute": "minecraft:air_drag_modifier",
         "id": "enchantmentsex:sweeping_edge_ex_drag",
         "operation": "add_multiplied_base"
       }
