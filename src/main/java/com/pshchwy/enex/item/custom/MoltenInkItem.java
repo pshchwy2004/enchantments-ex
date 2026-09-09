@@ -30,13 +30,6 @@ public class MoltenInkItem extends PotionItem {
         return DRINK_DURATION;
     }
 
-    public @NotNull SoundEvent getDrinkingSound() {
-        return SoundEvents.HONEY_DRINK;
-    }
-
-    public @NotNull SoundEvent getEatingSound() {
-        return SoundEvents.HONEY_DRINK;
-    }
 
     /**
      * Kills the player when they drink it.
