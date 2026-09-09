@@ -11,7 +11,7 @@
           "base": 0.15,
           "per_level_above_first": 0.15
         },
-        "attribute": "minecraft:sneaking_speed",
+        "attribute": "minecraft:player.sneaking_speed",
         "id": "enchantments-ex:enchantment.swift_sneak_ex_sneak_speed",
         "operation": "add_value"
       }
