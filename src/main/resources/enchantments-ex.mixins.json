@@ -11,6 +11,7 @@
     "FishingHookAccessor",
     "ItemCombinerMenuAccessor",
     "LootItemRandomChanceWithEnchantedBonusConditionMixin",
+    "MatchToolMixin",
     "PowderSnowBlockMixin",
     "ProjectileAccessor",
     "ShulkerBulletAccessor",

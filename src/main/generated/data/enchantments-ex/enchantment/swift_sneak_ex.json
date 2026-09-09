@@ -14,12 +14,14 @@
         "attribute": "minecraft:sneaking_speed",
         "id": "enchantments-ex:enchantment.swift_sneak_ex_sneak_speed",
         "operation": "add_value"
-      },
+      }
+    ],
+    "minecraft:tick": [
       {
-        "amount": 0.5,
-        "attribute": "minecraft:step_height",
-        "id": "enchantments-ex:enchantment.swift_sneak_ex_step_height",
-        "operation": "add_value"
+        "effect": {
+          "type": "enchantments-ex:warden_deafening_effect",
+          "amount": 10.0
+        }
       }
     ]
   },

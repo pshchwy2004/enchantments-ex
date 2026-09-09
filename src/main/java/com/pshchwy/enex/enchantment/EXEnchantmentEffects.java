@@ -106,7 +106,6 @@ public class EXEnchantmentEffects {
 
     public static final ResourceKey<Enchantment> SHARPNESS_EX = of("sharpness_ex");
 
-    @SuppressWarnings("unused")
     public static final ResourceKey<Enchantment> SILK_TOUCH_EX = of("silk_touch_ex");
 
     public static final ResourceKey<Enchantment> SMITE_EX = of("smite_ex");
@@ -122,6 +121,8 @@ public class EXEnchantmentEffects {
     public static MapCodec<BaneOfPhantomsEffect> BANE_OF_PHANTOMS_EFFECT = register("bane_of_phantoms_effect", BaneOfPhantomsEffect.CODEC);
 
     public static final ResourceKey<Enchantment> SWIFT_SNEAK_EX = of("swift_sneak_ex");
+    @SuppressWarnings("unused")
+    public static MapCodec<WardenDeafeningEffect> WARDEN_DEAFENING_EFFECT = register("warden_deafening_effect", WardenDeafeningEffect.CODEC);
 
     public static final ResourceKey<Enchantment> THORNS_EX = of("thorns_ex");
 

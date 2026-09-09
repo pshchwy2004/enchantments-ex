@@ -53,6 +53,7 @@ public class EXEnchantmentTagProvider extends FabricTagProvider<Enchantment> {
     public static final TagKey<Enchantment> RESPIRATION_EXCLUSIVE = create("respiration_exclusive");
     public static final TagKey<Enchantment> RIPTIDE_EXCLUSIVES = create("riptide_exclusives");
     public static final TagKey<Enchantment> SHARPNESS_EXCLUSIVE = create("sharpness_exclusive");
+    public static final TagKey<Enchantment> SILK_TOUCH_EXCLUSIVE = create("silk_touch_exclusive");
     public static final TagKey<Enchantment> SMITE_EXCLUSIVE = create("smite_exclusive");
     public static final TagKey<Enchantment> SOUL_SPEED_EXCLUSIVE = create("soul_speed_exclusive");
     public static final TagKey<Enchantment> SWEEPING_EDGE_EXCLUSIVE = create("sweeping_edge_exclusive");
@@ -216,6 +217,10 @@ public class EXEnchantmentTagProvider extends FabricTagProvider<Enchantment> {
                 .add(Enchantments.SMITE)
                 .addOptional(EXEnchantmentEffects.SMITE_EX)
                 .addOptionalTag(EnchantmentTags.DAMAGE_EXCLUSIVE);
+
+        builder(SILK_TOUCH_EXCLUSIVE)
+                .add(Enchantments.SILK_TOUCH)
+                .addOptional(EXEnchantmentEffects.SILK_TOUCH_EX);
 
         builder(SOUL_SPEED_EXCLUSIVE)
                 .add(Enchantments.SOUL_SPEED)
