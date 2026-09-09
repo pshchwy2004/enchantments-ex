@@ -3,8 +3,6 @@ package com.pshchwy.enex.enchantment;
 import com.mojang.serialization.MapCodec;
 import com.pshchwy.enex.EnchantmentsEX;
 import com.pshchwy.enex.enchantment.effect.*;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
@@ -14,6 +12,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+/// This class holds all the Resource Keys of all EX enchantments, and their effects. Their registration happens in datagen.EXEnchantmentGenerator.java.
 public class EXEnchantmentEffects {
 
     // 1. Create the DeferredRegister for Enchantment Entity Effect Types
@@ -72,6 +71,10 @@ public class EXEnchantmentEffects {
     public static final DeferredHolder<MapCodec<? extends EnchantmentEntityEffect>, MapCodec<CleanseEffect>> CLEANSE_EFFECT =
             ENTITY_EFFECT_TYPES.register("cleanse_effect", () -> CleanseEffect.CODEC);
 
+    @SuppressWarnings("unused")
+    public static final DeferredHolder<MapCodec<? extends EnchantmentEntityEffect>, MapCodec<WardenDeafeningEffect>> WARDEN_DEAFENING_EFFECT =
+            ENTITY_EFFECT_TYPES.register("warden_deafening_effect", () -> WardenDeafeningEffect.CODEC);
+
 
     public static final ResourceKey<Enchantment> AQUA_AFFINITY_EX = of("aqua_affinity_ex");
     public static final ResourceKey<Enchantment> BANE_OF_ARTHROPODS_EX = of("bane_of_arthropods_ex");
@@ -107,7 +110,7 @@ public class EXEnchantmentEffects {
     public static final ResourceKey<Enchantment> RESPIRATION_EX = of("respiration_ex");
     public static final ResourceKey<Enchantment> RIPTIDE_EX = of("riptide_ex");
     public static final ResourceKey<Enchantment> SHARPNESS_EX = of("sharpness_ex");
-
+    public static final ResourceKey<Enchantment> SILK_TOUCH_EX = of("silk_touch_ex");
     public static final ResourceKey<Enchantment> SMITE_EX = of("smite_ex");
     public static final ResourceKey<Enchantment> SOUL_SPEED_EX = of("soul_speed_ex");
     public static final ResourceKey<Enchantment> SWEEPING_EDGE_EX = of("sweeping_edge_ex");
