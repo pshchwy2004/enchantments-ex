@@ -1,0 +1,4 @@
+// 1.21.1	2026-09-09T14:25:06.8437829	Enchantments EX/Tags for minecraft:entity_type
+e60972b7b40c034d872609803e3e1358d521c73e data\enchantments-ex\tags\entity_type\flying_mobs.json
+8d5480f3f01d636c550a66f7ab25fc9da3e7577f data\enchantments-ex\tags\entity_type\boss_mobs.json
+5be8a3ea5998f57335ff54f8f714858c31d09812 data\enchantments-ex\tags\entity_type\immune_to_fire.json

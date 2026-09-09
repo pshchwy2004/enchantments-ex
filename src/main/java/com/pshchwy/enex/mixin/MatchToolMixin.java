@@ -1,13 +1,12 @@
 package com.pshchwy.enex.mixin;
 
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
-import net.minecraft.advancements.predicates.ItemPredicate;
+import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -35,7 +34,7 @@ public class MatchToolMixin {
     @Inject(method = "test(Lnet/minecraft/world/level/storage/loot/LootContext;)Z", at = @At(value = "HEAD"), cancellable = true)
     private void overrideTest(final LootContext context,  final CallbackInfoReturnable<Boolean> cir) {
         if (predicate.isPresent() && isSilkTouchPredicate(context, predicate.get())) {
-            ItemInstance tool = context.getOptionalParameter(LootContextParams.TOOL);
+            ItemStack tool = context.getOptionalParameter(LootContextParams.TOOL);
             Entity entity = context.getOptionalParameter(LootContextParams.THIS_ENTITY);
             if (tool != null && entity instanceof Player player) {
                 HolderLookup.RegistryLookup<Enchantment> lookup = player.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
