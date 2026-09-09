@@ -1567,6 +1567,29 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 .build(EXEnchantmentEffects.RIPTIDE_EX.location())
         );
 
+        // register Silk Touch EX
+        context.register(EXEnchantmentEffects.SILK_TOUCH_EX, Enchantment.enchantment(
+                        Enchantment.definition(
+                                // which items can be enchanted
+                                items.getOrThrow(ItemTags.MINING_ENCHANTABLE),
+                                // weight of showing up in enchantment table
+                                1,
+                                // enchantment max level
+                                1,
+                                // base cost for level 1 of the enchantment, and min levels required for something higher
+                                Enchantment.dynamicCost(10, 10),
+                                // same fields as above but for max cost
+                                Enchantment.dynamicCost(25, 10),
+                                // anvil cost
+                                5,
+                                // valid slots
+                                EquipmentSlotGroup.MAINHAND
+                        )
+                )
+                .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SILK_TOUCH_EXCLUSIVE))
+                .build(EXEnchantmentEffects.SILK_TOUCH_EX.location())
+        );
+
         // register Soul Speed EX
         // builder def
         EntityPredicate.Builder soulSpeedBuilder = EntityPredicate.Builder.entity()
@@ -1780,13 +1803,8 @@ public class EXEnchantmentGenerator extends DatapackBuiltinEntriesProvider {
                 )
                 .exclusiveWith(enchantments.getOrThrow(EXEnchantmentTagProvider.SWIFT_SNEAK_EXCLUSIVE))
                 .withEffect(
-                        EnchantmentEffectComponents.ATTRIBUTES,
-                        new EnchantmentAttributeEffect(
-                                ResourceLocation.fromNamespaceAndPath(EnchantmentsEX.MOD_ID, "enchantment.swift_sneak_ex_step_height"),
-                                Attributes.STEP_HEIGHT,
-                                LevelBasedValue.constant(0.5F),
-                                AttributeModifier.Operation.ADD_VALUE
-                        )
+                        EnchantmentEffectComponents.TICK,
+                        new WardenDeafeningEffect(LevelBasedValue.constant(10.0f))
                 )
                 .build(EXEnchantmentEffects.SWIFT_SNEAK_EX.location())
         );

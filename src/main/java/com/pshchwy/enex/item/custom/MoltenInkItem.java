@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class MoltenInkItem extends PotionItem {
         super(properties);
     }
 
-    public int getUseDuration(ItemStack itemStack, LivingEntity livingEntity) {
+    public int getUseDuration(@NonNull ItemStack itemStack, @NonNull LivingEntity livingEntity) {
         return DRINK_DURATION;
     }
 
@@ -45,7 +46,7 @@ public class MoltenInkItem extends PotionItem {
      * @param livingEntity The entity using the item.
      * @return An ItemStack.
      */
-    public @NotNull ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
+    public @NotNull ItemStack finishUsingItem(@NonNull ItemStack itemStack, @NonNull Level level, @NonNull LivingEntity livingEntity) {
         Player player = livingEntity instanceof Player ? (Player)livingEntity : null;
         if (player instanceof ServerPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, itemStack);
@@ -80,12 +81,12 @@ public class MoltenInkItem extends PotionItem {
     }
 
     @Override
-    public @NotNull String getDescriptionId(ItemStack itemStack) {
+    public @NotNull String getDescriptionId(@NotNull ItemStack itemStack) {
         return this.getDescriptionId();
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
+    public void appendHoverText(@NotNull ItemStack itemStack, Item.@NotNull TooltipContext tooltipContext, @NotNull List<Component> list, @NotNull TooltipFlag tooltipFlag) {
 
     }
 

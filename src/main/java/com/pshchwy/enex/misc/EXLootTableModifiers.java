@@ -13,6 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
@@ -35,20 +37,14 @@ public class EXLootTableModifiers {
         ResourceKey<LootTable> key = event.getKey();
         HolderLookup.Provider registries = event.getRegistries();
         HolderLookup.RegistryLookup<Enchantment> registryLookup = registries.lookupOrThrow(Registries.ENCHANTMENT);
-
+        var silkTouchCondition = MatchTool.toolMatches(ItemPredicate.Builder.item().withComponents(DataComponentMatchers.Builder.components().partial(DataComponentPredicates.ENCHANTMENTS, EnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH), MinMaxBounds.Ints.atLeast(1))))).build()));
+        var fortuneEXCondition = MatchTool.toolMatches(ItemPredicate.Builder.item().withComponents(DataComponentMatchers.Builder.components().partial(DataComponentPredicates.ENCHANTMENTS, EnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))).build()));
+        var luckOfTheSeaEXCondition = MatchTool.toolMatches(ItemPredicate.Builder.item().withComponents(DataComponentMatchers.Builder.components().partial(DataComponentPredicates.ENCHANTMENTS, EnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX), MinMaxBounds.Ints.atLeast(1))))).build()));
         // Diamond Ores
         if (key.equals(Blocks.DIAMOND_ORE.getLootTable()) || key.equals(Blocks.DEEPSLATE_DIAMOND_ORE.getLootTable())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.DIAMOND_BLOCK))
-                    .when(
-                            MatchTool.toolMatches(
-                                    ItemPredicate.Builder.item()
-                                            .withSubPredicate(
-                                                    ItemSubPredicates.ENCHANTMENTS,
-                                                    ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                            )
-                            )
-                    )
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
@@ -56,15 +52,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.COAL_ORE.getLootTable()) || key.equals(Blocks.DEEPSLATE_COAL_ORE.getLootTable())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.COAL_BLOCK))
-                    .when(
-                            MatchTool.toolMatches(
-                                    ItemPredicate.Builder.item()
-                                            .withSubPredicate(
-                                                    ItemSubPredicates.ENCHANTMENTS,
-                                                    ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                            )
-                            )
-                    )
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
@@ -72,15 +60,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.COPPER_ORE.getLootTable()) || key.equals(Blocks.DEEPSLATE_COPPER_ORE.getLootTable())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.RAW_COPPER_BLOCK))
-                    .when(
-                            MatchTool.toolMatches(
-                                    ItemPredicate.Builder.item()
-                                            .withSubPredicate(
-                                                    ItemSubPredicates.ENCHANTMENTS,
-                                                    ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                            )
-                            )
-                    )
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
@@ -88,15 +68,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.IRON_ORE.getLootTable()) || key.equals(Blocks.DEEPSLATE_IRON_ORE.getLootTable())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.RAW_IRON_BLOCK))
-                    .when(
-                            MatchTool.toolMatches(
-                                    ItemPredicate.Builder.item()
-                                            .withSubPredicate(
-                                                    ItemSubPredicates.ENCHANTMENTS,
-                                                    ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                            )
-                            )
-                    )
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
@@ -104,15 +76,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.GOLD_ORE.getLootTable()) || key.equals(Blocks.DEEPSLATE_GOLD_ORE.getLootTable())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.RAW_GOLD_BLOCK))
-                    .when(
-                            MatchTool.toolMatches(
-                                    ItemPredicate.Builder.item()
-                                            .withSubPredicate(
-                                                    ItemSubPredicates.ENCHANTMENTS,
-                                                    ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                            )
-                            )
-                    )
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
@@ -120,15 +84,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.EMERALD_ORE.getLootTable()) || key.equals(Blocks.DEEPSLATE_EMERALD_ORE.getLootTable())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.EMERALD_BLOCK))
-                    .when(
-                            MatchTool.toolMatches(
-                                    ItemPredicate.Builder.item()
-                                            .withSubPredicate(
-                                                    ItemSubPredicates.ENCHANTMENTS,
-                                                    ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                            )
-                            )
-                    )
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
@@ -136,15 +92,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.LAPIS_ORE.getLootTable()) || key.equals(Blocks.DEEPSLATE_LAPIS_ORE.getLootTable())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.LAPIS_BLOCK))
-                    .when(
-                            MatchTool.toolMatches(
-                                    ItemPredicate.Builder.item()
-                                            .withSubPredicate(
-                                                    ItemSubPredicates.ENCHANTMENTS,
-                                                    ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                            )
-                            )
-                    )
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(4.0F, 9.0F)))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
@@ -153,15 +101,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.REDSTONE_ORE.getLootTable()) || key.equals(Blocks.DEEPSLATE_REDSTONE_ORE.getLootTable())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.REDSTONE_BLOCK))
-                    .when(
-                            MatchTool.toolMatches(
-                                    ItemPredicate.Builder.item()
-                                            .withSubPredicate(
-                                                    ItemSubPredicates.ENCHANTMENTS,
-                                                    ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                            )
-                            )
-                    )
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(4.0F, 5.0F)))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
@@ -170,15 +110,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.NETHER_GOLD_ORE.getLootTable())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.GOLD_INGOT))
-                    .when(
-                            MatchTool.toolMatches(
-                                    ItemPredicate.Builder.item()
-                                            .withSubPredicate(
-                                                    ItemSubPredicates.ENCHANTMENTS,
-                                                    ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                            )
-                            )
-                    )
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 6.0F)))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
@@ -188,19 +120,10 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.ANCIENT_DEBRIS.getLootTable().orElseThrow())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.NETHERITE_INGOT))
-                    .when(
-                            MatchTool.toolMatches(
-                                    ItemPredicate.Builder.item()
-                                            .withSubPredicate(
-                                                    ItemSubPredicates.ENCHANTMENTS,
-                                                    ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))
-                                            )
-                            )
-                    )
+                    .when(fortuneEXCondition)
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
-
          */
         // Fishing Treasure
         else if (key.equals(BuiltInLootTables.FISHING_TREASURE)) {
@@ -223,15 +146,7 @@ public class EXLootTableModifiers {
                     .add(LootItem.lootTableItem(Items.SPONGE).setWeight(10))
                     .add(LootItem.lootTableItem(Items.ENCHANTED_BOOK).apply(EnchantRandomlyFunction.randomEnchantment().withOneOf(HolderSet.direct(exList))).setWeight(10))
                     .add(LootItem.lootTableItem(Items.ECHO_SHARD).setWeight(10))
-                    .when(
-                            MatchTool.toolMatches(
-                                    ItemPredicate.Builder.item()
-                                            .withSubPredicate(
-                                                    ItemSubPredicates.ENCHANTMENTS,
-                                                    ItemEnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registryLookup.getOrThrow(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX), MinMaxBounds.Ints.atLeast(1))))
-                                            )
-                            )
-                    );
+                    .when(luckOfTheSeaEXCondition);
             event.getTable().addPool(poolBuilder.build());
         }
     }
