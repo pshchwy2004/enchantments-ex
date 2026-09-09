@@ -1,7 +1,7 @@
 package com.pshchwy.enex.mixin;
 
 import com.pshchwy.enex.enchantment.EXEnchantmentEffects;
-import net.minecraft.advancements.predicates.ItemPredicate;
+import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;

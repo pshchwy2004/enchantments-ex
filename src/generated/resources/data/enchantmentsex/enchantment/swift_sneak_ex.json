@@ -1,7 +1,7 @@
 {
   "anvil_cost": 5,
   "description": {
-    "translate": "enchantment.enchantments-ex.swift_sneak_ex"
+    "translate": "enchantment.enchantmentsex.swift_sneak_ex"
   },
   "effects": {
     "minecraft:attributes": [
@@ -12,20 +12,20 @@
           "per_level_above_first": 0.15
         },
         "attribute": "minecraft:sneaking_speed",
-        "id": "enchantments-ex:enchantment.swift_sneak_ex_sneak_speed",
+        "id": "enchantmentsex:enchantment.swift_sneak_ex_sneak_speed",
         "operation": "add_value"
       }
     ],
     "minecraft:tick": [
       {
         "effect": {
-          "type": "enchantments-ex:warden_deafening_effect",
+          "type": "enchantmentsex:warden_deafening_effect",
           "amount": 10.0
         }
       }
     ]
   },
-  "exclusive_set": "#enchantments-ex:exclusive_set/swift_sneak_exclusive",
+  "exclusive_set": "#enchantmentsex:exclusive_set/swift_sneak_exclusive",
   "max_cost": {
     "base": 75,
     "per_level_above_first": 25
