@@ -16,8 +16,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
-import java.util.List;
-
 /**
  * Molten Ink item. It is declared as a PotionItem due to the need for it to be brewed with Nether Crystal Fragments, though it poses no positive effect on any user.
  */
@@ -27,7 +25,7 @@ public class MoltenInkItem extends PotionItem {
         super(properties);
     }
 
-    public int getUseDuration(ItemStack itemStack, LivingEntity livingEntity) {
+    public int getUseDuration(@NonNull ItemStack itemStack, @NonNull LivingEntity livingEntity) {
         return DRINK_DURATION;
     }
 
@@ -39,7 +37,7 @@ public class MoltenInkItem extends PotionItem {
      * @param livingEntity The entity using the item.
      * @return An ItemStack.
      */
-    public @NotNull ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
+    public @NotNull ItemStack finishUsingItem(@NonNull ItemStack itemStack, @NonNull Level level, @NonNull LivingEntity livingEntity) {
         Player player = livingEntity instanceof Player ? (Player)livingEntity : null;
         if (player instanceof ServerPlayer) {
             CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, itemStack);
@@ -73,13 +71,9 @@ public class MoltenInkItem extends PotionItem {
         return itemStack;
     }
 
-    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
-
-    }
-
     @Override
-    public @NonNull Component getName(ItemStack stack) {
-        return stack.getComponents().getOrDefault(DataComponents.ITEM_NAME, CommonComponents.EMPTY);
+    public @NonNull Component getName(final ItemStack itemStack) {
+        return itemStack.getComponents().getOrDefault(DataComponents.ITEM_NAME, CommonComponents.EMPTY);
     }
 
 }

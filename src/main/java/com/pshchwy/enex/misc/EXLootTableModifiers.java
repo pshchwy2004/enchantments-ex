@@ -17,6 +17,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -39,14 +40,14 @@ public class EXLootTableModifiers {
         ResourceKey<LootTable> key = event.getKey();
         HolderLookup.Provider registries = event.getRegistries();
         HolderLookup.RegistryLookup<Enchantment> registryLookup = registries.lookupOrThrow(Registries.ENCHANTMENT);
-
+        var silkTouchCondition = MatchTool.toolMatches(ItemPredicate.Builder.item().withComponents(DataComponentMatchers.Builder.components().partial(DataComponentPredicates.ENCHANTMENTS, EnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH), MinMaxBounds.Ints.atLeast(1))))).build()));
         var fortuneEXCondition = MatchTool.toolMatches(ItemPredicate.Builder.item().withComponents(DataComponentMatchers.Builder.components().partial(DataComponentPredicates.ENCHANTMENTS, EnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EXEnchantmentEffects.FORTUNE_EX), MinMaxBounds.Ints.atLeast(1))))).build()));
         var luckOfTheSeaEXCondition = MatchTool.toolMatches(ItemPredicate.Builder.item().withComponents(DataComponentMatchers.Builder.components().partial(DataComponentPredicates.ENCHANTMENTS, EnchantmentsPredicate.enchantments(List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EXEnchantmentEffects.LUCK_OF_THE_SEA_EX), MinMaxBounds.Ints.atLeast(1))))).build()));
         // Diamond Ores
         if (key.equals(Blocks.DIAMOND_ORE.getLootTable().orElseThrow()) || key.equals(Blocks.DEEPSLATE_DIAMOND_ORE.getLootTable().orElseThrow())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.DIAMOND_BLOCK))
-                    .when(fortuneEXCondition)
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
@@ -54,7 +55,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.COAL_ORE.getLootTable().orElseThrow()) || key.equals(Blocks.DEEPSLATE_COAL_ORE.getLootTable().orElseThrow())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.COAL_BLOCK))
-                    .when(fortuneEXCondition)
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
@@ -62,7 +63,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.COPPER_ORE.getLootTable().orElseThrow()) || key.equals(Blocks.DEEPSLATE_COPPER_ORE.getLootTable().orElseThrow())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.RAW_COPPER_BLOCK))
-                    .when(fortuneEXCondition)
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
@@ -70,7 +71,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.IRON_ORE.getLootTable().orElseThrow()) || key.equals(Blocks.DEEPSLATE_IRON_ORE.getLootTable().orElseThrow())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.RAW_IRON_BLOCK))
-                    .when(fortuneEXCondition)
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
@@ -78,7 +79,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.GOLD_ORE.getLootTable().orElseThrow()) || key.equals(Blocks.DEEPSLATE_GOLD_ORE.getLootTable().orElseThrow())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.RAW_GOLD_BLOCK))
-                    .when(fortuneEXCondition)
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
@@ -86,7 +87,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.EMERALD_ORE.getLootTable().orElseThrow()) || key.equals(Blocks.DEEPSLATE_EMERALD_ORE.getLootTable().orElseThrow())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.EMERALD_BLOCK))
-                    .when(fortuneEXCondition)
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
@@ -94,7 +95,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.LAPIS_ORE.getLootTable().orElseThrow()) || key.equals(Blocks.DEEPSLATE_LAPIS_ORE.getLootTable().orElseThrow())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.LAPIS_BLOCK))
-                    .when(fortuneEXCondition)
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(4.0F, 9.0F)))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
@@ -103,7 +104,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.REDSTONE_ORE.getLootTable().orElseThrow()) || key.equals(Blocks.DEEPSLATE_REDSTONE_ORE.getLootTable().orElseThrow())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.REDSTONE_BLOCK))
-                    .when(fortuneEXCondition)
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(4.0F, 5.0F)))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
@@ -112,7 +113,7 @@ public class EXLootTableModifiers {
         else if (key.equals(Blocks.NETHER_GOLD_ORE.getLootTable().orElseThrow())) {
             LootPool.Builder poolBuilder = LootPool.lootPool()
                     .add(LootItem.lootTableItem(Items.GOLD_INGOT))
-                    .when(fortuneEXCondition)
+                    .when(fortuneEXCondition.and(silkTouchCondition.invert()))
                     .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 6.0F)))
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
@@ -126,7 +127,6 @@ public class EXLootTableModifiers {
                     .apply(ApplyBonusCount.addOreBonusCount(registryLookup.getOrThrow(EXEnchantmentEffects.FORTUNE_EX)));
             event.getTable().addPool(poolBuilder.build());
         }
-
          */
         // Fishing Treasure
         else if (key.equals(BuiltInLootTables.FISHING_TREASURE)) {
