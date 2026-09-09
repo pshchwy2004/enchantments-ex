@@ -2,7 +2,7 @@
   "values": [
     "minecraft:silk_touch",
     {
-      "id": "enchantments-ex:silk_touch_ex",
+      "id": "enchantmentsex:silk_touch_ex",
       "required": false
     }
   ]
